@@ -44,6 +44,7 @@
         <input type="hidden" id="currentTabIndex" name="currentTabIndex" value="0" />
         <input type="hidden" asp-for="BusinessUnitName" value="@(Context.Request.Query["bui"])" />
         <input type="hidden" asp-for="EncPidfid" value="@(Context.Request.Query["pidfid"])" />
+        <input type="hidden" id="selectedCountryInput" name="selectedCountry" value="">
 
 
         <div class="container-fluid background-white-card">
@@ -794,14 +795,13 @@
                                                     </div>
                                                     <hr />
                                                     <div class="card card-primary card-tabs" id="navCountryTabsdiv">
-                                                                <div class="card-header p-0 pt-1">
-                                                                    <ul class="nav nav-tabs row text-center m-0" id="navCountryTabs" role="tablist"></ul>
-                                                                </div>
-                                                            </div>
+                                                        <div class="card-header p-0 pt-1">
+                                                            <ul class="nav nav-tabs row text-center m-0" id="navCountryTabs" role="tablist"></ul>
+                                                        </div>
+                                                    </div>
                                                     <div class="row">
                                                         <label class="control-label" id="lblPackSizeStability">Pack Size Stability</label>
                                                         <div id="DvPackSizeStability">
-                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -831,45 +831,45 @@
                             {
                                 <li class="nav-item p-0 CustomtabsdepartmenttabPBFMainTab">
                                     <a class="nav-link active px-2"
-                                   id="custom-tabs-department-RnD-tab"
-                                   data-toggle="pill"
-                                   href="#custom-tabs-RnD" role="tab"
-                                   aria-controls="custom-tabs-RnD"
-                                   aria-selected="true">PBF/RnD</a>
+                                       id="custom-tabs-department-RnD-tab"
+                                       data-toggle="pill"
+                                       href="#custom-tabs-RnD" role="tab"
+                                       aria-controls="custom-tabs-RnD"
+                                       aria-selected="true">PBF/RnD</a>
                                 </li>
                             }
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
                             {
                                 <li class="nav-item p-0 CustomtabsdepartmenttabPBFMainTab">
                                     <a class="nav-link px-2"
-                                   id="custom-tabs-department-Analytical-tab"
-                                   data-toggle="pill"
-                                   href="#custom-tabs-Analytical"
-                                   role="tab"
-                                   aria-controls="custom-tabs-Analytical"
-                                   aria-selected="false">Analytical</a>
+                                       id="custom-tabs-department-Analytical-tab"
+                                       data-toggle="pill"
+                                       href="#custom-tabs-Analytical"
+                                       role="tab"
+                                       aria-controls="custom-tabs-Analytical"
+                                       aria-selected="false">Analytical</a>
                                 </li>
                             }
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                             {
                                 <li class="nav-item p-0 CustomtabsdepartmenttabPBFMainTab">
                                     <a class="nav-link px-2"
-                                   id="custom-tabs-department-Clinical-tab"
-                                   data-toggle="pill"
-                                   href="#custom-tabs-Clinical" role="tab"
-                                   aria-controls="custom-tabs-Clinical"
-                                   aria-selected="false">Clinical</a>
+                                       id="custom-tabs-department-Clinical-tab"
+                                       data-toggle="pill"
+                                       href="#custom-tabs-Clinical" role="tab"
+                                       aria-controls="custom-tabs-Clinical"
+                                       aria-selected="false">Clinical</a>
                                 </li>
                             }
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA))
                             {
                                 <li class="nav-item p-0 CustomtabsdepartmenttabPBFMainTab">
                                     <a class="nav-link px-2"
-                                   id="custom-tabs-department-RA-tab"
-                                   data-toggle="pill"
-                                   href="#custom-tabs-RA" role="tab"
-                                   aria-controls="custom-tabs-RA"
-                                   aria-selected="false">RA</a>
+                                       id="custom-tabs-department-RA-tab"
+                                       data-toggle="pill"
+                                       href="#custom-tabs-RA" role="tab"
+                                       aria-controls="custom-tabs-RA"
+                                       aria-selected="false">RA</a>
                                 </li>
                             }
 
@@ -883,7 +883,7 @@
                     {
                         <div class="card-body pbftables" id="dvAllBottomTabsPBF">
                             <div class="tab-content"
-                             id="custom-tabs-department-tabContent">
+                                 id="custom-tabs-department-tabContent">
                                 @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
                                 {
                                     if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
@@ -891,110 +891,110 @@
                                         <input type="hidden" id="hdnPBFRNDPermission" value="true" />
                                     }
                                     <div class="tab-pane fade show active"
-                                 id="custom-tabs-RnD" role="tabpanel"
-                                 aria-labelledby="custom-tabs-department-RnD-tab">
+                                         id="custom-tabs-RnD" role="tabpanel"
+                                         aria-labelledby="custom-tabs-department-RnD-tab">
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="card card-green card-outline card-outline-tabs m-0">
                                                     <div class="card-header p-0">
                                                         <ul class="nav nav-tabs m-0"
-                                                    id="custom-tabs-RNDdepartment-tab" role="tablist">
+                                                            id="custom-tabs-RNDdepartment-tab" role="tablist">
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link active px-2"
-                                                           id="custom-tabs-department-RnD-tab-DosageFormulation"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-DosageFormulation" role="tab"
-                                                           aria-controls="custom-tabs-RnD-DosageFormulation"
-                                                           aria-selected="true">Dosage Formulation</a>
+                                                                   id="custom-tabs-department-RnD-tab-DosageFormulation"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-DosageFormulation" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-DosageFormulation"
+                                                                   aria-selected="true">Dosage Formulation</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-APIRequirment"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-APIRequirment" role="tab"
-                                                           aria-controls="custom-tabs-RnD-APIRequirment"
-                                                           aria-selected="false">API Requirment</a>
+                                                                   id="custom-tabs-department-RnD-tab-APIRequirment"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-APIRequirment" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-APIRequirment"
+                                                                   aria-selected="false">API Requirment</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-ExcipientRequirement"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-ExcipientRequirement" role="tab"
-                                                           aria-controls="custom-tabs-RnD-ExcipientRequirement"
-                                                           aria-selected="false">Excipient Requirement</a>
+                                                                   id="custom-tabs-department-RnD-tab-ExcipientRequirement"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-ExcipientRequirement" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-ExcipientRequirement"
+                                                                   aria-selected="false">Excipient Requirement</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-PackagingMaterial"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-PackagingMaterial" role="tab"
-                                                           aria-controls="custom-tabs-RnD-PackagingMaterial"
-                                                           aria-selected="false">Packaging Material</a>
+                                                                   id="custom-tabs-department-RnD-tab-PackagingMaterial"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-PackagingMaterial" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-PackagingMaterial"
+                                                                   aria-selected="false">Packaging Material</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-ToolingandChangePartCost"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-ToolingandChangePartCost" role="tab"
-                                                           aria-controls="custom-tabs-RnD-ToolingandChangePartCost"
-                                                           aria-selected="false">Tooling and Change Part Cost</a>
+                                                                   id="custom-tabs-department-RnD-tab-ToolingandChangePartCost"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-ToolingandChangePartCost" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-ToolingandChangePartCost"
+                                                                   aria-selected="false">Tooling and Change Part Cost</a>
                                                             </li>
 
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tab"
-                                                           aria-controls="custom-tabs-RnD-CapexMiscellaneouseExpenses"
-                                                           aria-selected="false">Capex Miscellaneouse Expenses</a>
+                                                                   id="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-CapexMiscellaneouseExpenses"
+                                                                   aria-selected="false">Capex Miscellaneouse Expenses</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-PlantSupportCost"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-PlantSupportCost" role="tab"
-                                                           aria-controls="custom-tabs-RnD-PlantSupportCost"
-                                                           aria-selected="false">Plant Support Cost</a>
+                                                                   id="custom-tabs-department-RnD-tab-PlantSupportCost"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-PlantSupportCost" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-PlantSupportCost"
+                                                                   aria-selected="false">Plant Support Cost</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-ReferenceProductDetail"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-ReferenceProductDetail" role="tab"
-                                                           aria-controls="custom-tabs-RnD-ReferenceProductDetail"
-                                                           aria-selected="false">Reference Product Detail</a>
+                                                                   id="custom-tabs-department-RnD-tab-ReferenceProductDetail"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-ReferenceProductDetail" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-ReferenceProductDetail"
+                                                                   aria-selected="false">Reference Product Detail</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-ManPowerCostProjectDuration"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-ManPowerCostProjectDuration" role="tab"
-                                                           aria-controls="custom-tabs-RnD-ManPowerCostProjectDuration"
-                                                           aria-selected="false">Man Power Cost & Project Duration</a>
+                                                                   id="custom-tabs-department-RnD-tab-ManPowerCostProjectDuration"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-ManPowerCostProjectDuration" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-ManPowerCostProjectDuration"
+                                                                   aria-selected="false">Man Power Cost & Project Duration</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-FillingExpenses"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-FillingExpenses" role="tab"
-                                                           aria-controls="custom-tabs-RnD-FillingExpenses"
-                                                           aria-selected="false">Filling Expenses</a>
+                                                                   id="custom-tabs-department-RnD-tab-FillingExpenses"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-FillingExpenses" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-FillingExpenses"
+                                                                   aria-selected="false">Filling Expenses</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-PhaseWiseBudget"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-PhaseWiseBudget" role="tab"
-                                                           aria-controls="custom-tabs-RnD-PhaseWiseBudget"
-                                                           aria-selected="false">Phase Wise Budget</a>
+                                                                   id="custom-tabs-department-RnD-tab-PhaseWiseBudget"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-PhaseWiseBudget" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-PhaseWiseBudget"
+                                                                   aria-selected="false">Phase Wise Budget</a>
                                                             </li>
                                                             <li class="nav-item p-0 pbfRNDTab">
                                                                 <a class="nav-link px-2"
-                                                           id="custom-tabs-department-RnD-tab-HeadWiseBudget"
-                                                           data-toggle="pill"
-                                                           href="#custom-tabs-RnD-HeadWiseBudget" role="tab"
-                                                           aria-controls="custom-tabs-RnD-HeadWiseBudget"
-                                                           aria-selected="false">Head Wise Budget</a>
+                                                                   id="custom-tabs-department-RnD-tab-HeadWiseBudget"
+                                                                   data-toggle="pill"
+                                                                   href="#custom-tabs-RnD-HeadWiseBudget" role="tab"
+                                                                   aria-controls="custom-tabs-RnD-HeadWiseBudget"
+                                                                   aria-selected="false">Head Wise Budget</a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -1003,8 +1003,8 @@
                                                         <div class="tab-content" id="custom-tabs-RNDdepartment-tabContent">
 
                                                             <div class="tab-pane fade show active"
-                                                         id="custom-tabs-RnD-DosageFormulation" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-DosageFormulation">
+                                                                 id="custom-tabs-RnD-DosageFormulation" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-DosageFormulation">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables ">
@@ -1026,8 +1026,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-APIRequirment" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-APIRequirment">
+                                                                 id="custom-tabs-RnD-APIRequirment" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-APIRequirment">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1053,8 +1053,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-ExcipientRequirement" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-ExcipientRequirement">
+                                                                 id="custom-tabs-RnD-ExcipientRequirement" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-ExcipientRequirement">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1068,8 +1068,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-PackagingMaterial" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-PackagingMaterial">
+                                                                 id="custom-tabs-RnD-PackagingMaterial" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-PackagingMaterial">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1083,8 +1083,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-ToolingandChangePartCost" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-ToolingandChangePartCost">
+                                                                 id="custom-tabs-RnD-ToolingandChangePartCost" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-ToolingandChangePartCost">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1100,8 +1100,8 @@
                                                             </div>
 
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses">
+                                                                 id="custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1116,8 +1116,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-PlantSupportCost" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-PlantSupportCost">
+                                                                 id="custom-tabs-RnD-PlantSupportCost" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-PlantSupportCost">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftablesplantCost">
@@ -1155,8 +1155,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-ReferenceProductDetail" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-ReferenceProductDetail">
+                                                                 id="custom-tabs-RnD-ReferenceProductDetail" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-ReferenceProductDetail">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="pbftables">
@@ -1171,8 +1171,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-ManPowerCostProjectDuration" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-ManPowerCostProjectDuration">
+                                                                 id="custom-tabs-RnD-ManPowerCostProjectDuration" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-ManPowerCostProjectDuration">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1192,8 +1192,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-FillingExpenses" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-FillingExpenses">
+                                                                 id="custom-tabs-RnD-FillingExpenses" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-FillingExpenses">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1207,8 +1207,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-PhaseWiseBudget" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-PhaseWiseBudget">
+                                                                 id="custom-tabs-RnD-PhaseWiseBudget" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-PhaseWiseBudget">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1223,8 +1223,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="tab-pane fade show"
-                                                         id="custom-tabs-RnD-HeadWiseBudget" role="tabpanel"
-                                                         aria-labelledby="custom-tabs-department-RnD-tab-HeadWiseBudget">
+                                                                 id="custom-tabs-RnD-HeadWiseBudget" role="tabpanel"
+                                                                 aria-labelledby="custom-tabs-department-RnD-tab-HeadWiseBudget">
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="card-body pbftables">
@@ -1261,8 +1261,8 @@
                                         <input type="hidden" id="hdnPBFAnalyticalPermission" value="true" />
                                     }
                                     <div class="tab-pane fade show"
-                                 id="custom-tabs-Analytical" role="tabpanel"
-                                 aria-labelledby="custom-tabs-department-Analytical-tab">
+                                         id="custom-tabs-Analytical" role="tabpanel"
+                                         aria-labelledby="custom-tabs-department-Analytical-tab">
                                         <div class="container-fluid">
                                             <div class="row">
 
@@ -1281,8 +1281,8 @@
                                         <input type="hidden" id="hdnPBFClinicalPermission" value="true" />
                                     }
                                     <div class="tab-pane fade show"
-                                 id="custom-tabs-Clinical" role="tabpanel"
-                                 aria-labelledby="custom-tabs-department-clinical-tab">
+                                         id="custom-tabs-Clinical" role="tabpanel"
+                                         aria-labelledby="custom-tabs-department-clinical-tab">
                                         <div class="container-fluid">
 
                                             <div class="row">
@@ -1309,8 +1309,8 @@
                                 <input type="hidden" id="hdnPBFRAPermission" value="true" />
                                 @* }*@
                                 <div class="tab-pane fade show"
-                                 id="custom-tabs-RA" role="tabpanel"
-                                 aria-labelledby="custom-tabs-department-RA-tab">
+                                     id="custom-tabs-RA" role="tabpanel"
+                                     aria-labelledby="custom-tabs-department-RA-tab">
 
                                     @*  newly added code below*@
 
@@ -1462,23 +1462,23 @@
                 </div>
                 <br>
                 @Html.Partial("_PIDFApproveReject")
+
                 <div class="row">
                     <div class="col-12 text-end">
                         <div class="form-group" id="dvMainButton">
-                            <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')" style="display: none;">@SharedLocalizer["SaveDraft"]</button>
-                            <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-                                
-                            @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved)
+                            @if ((Model.StatusId >= (Int32)Master_PIDFStatus.IPDApproved && Model.StatusId <= (Int32)Master_PIDFStatus.FinanceInProgres) || Model.StatusId == 0)
                             {
+                                @if (Model.StatusId <= (Int32)Master_PIDFStatus.PBFInProgress)
+                                {
+                                    <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
+                                }
                                 <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-                                <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
                             }
+
                             @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFSubmitted)
                             {
                                 <button type="submit" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', @Model.Pidfid, @((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)');"><i class="fa fa-ban mr-1"></i>@SharedLocalizer["Reject"]</button>
-
                             }
-
                             <a id="btnPBFCancel" class="btn btn-danger me-3 outside-buttons operationButton" onclick="CancelPopup()">@SharedLocalizer["Cancel"]</a>
 
                         </div>
@@ -1524,5 +1524,5 @@
     const GetRaurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetRa";
     const GetPBFRACalculatedDateUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFRADates"
     var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
-    var StatusId="@Model.StatusId";
+    var StatusId = "@Model.StatusId";
 </script>

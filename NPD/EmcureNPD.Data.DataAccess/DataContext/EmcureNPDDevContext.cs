@@ -3424,7 +3424,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
 
                 entity.Property(e => e.Value).HasMaxLength(100);
-
+                entity.Property(e => e.CountryId).HasColumnName("CountryId");
                 entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfRnDPackSizeStabilities)
                     .HasForeignKey(d => d.PbfgeneralId)

@@ -11,6 +11,7 @@ namespace EmcureNPD.Business.Models
     public class PBFFormEntity
     {
         public long Pidfpbfid { get; set; }
+        public int selectedCountry { get; set; }
         public long Pidfid { get; set; }
         public string OralName { get; set; }
         public string ProjectName { get; set; }
