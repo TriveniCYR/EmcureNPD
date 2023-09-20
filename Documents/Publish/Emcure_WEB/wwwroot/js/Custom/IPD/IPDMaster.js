@@ -326,8 +326,7 @@ function SaveIPDClick(type) {
     isValidIPDForm = true;
     $('.originalDate').trigger("change");
     $('.extendedDate').trigger("change");
-
-    $('#SelectedCountryId').val(_selectcountryid);
+    getParentFormId().find('#SelectedCountryId').val(_selectcountryid);
     if (type == 'Drf') {
         $('#fIPDForm_' + _selectBusinessUnit).validate().settings.ignore = "*";
 
