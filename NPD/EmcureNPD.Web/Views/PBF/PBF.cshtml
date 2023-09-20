@@ -1461,14 +1461,15 @@
                     }
                 </div>
                 <br>
+
                 @Html.Partial("_PIDFApproveReject")
 
                 <div class="row">
                     <div class="col-12 text-end">
                         <div class="form-group" id="dvMainButton">
-                            @if ((Model.StatusId >= (Int32)Master_PIDFStatus.IPDApproved && Model.StatusId <= (Int32)Master_PIDFStatus.FinanceInProgres) || Model.StatusId == 0)
+                            @if (Model.StatusId <= (Int32)Master_PIDFStatus.FinanceInProgres)
                             {
-                                @if (Model.StatusId <= (Int32)Master_PIDFStatus.PBFInProgress)
+                                @if (Model.StatusId != (Int32)Master_PIDFStatus.PBFSubmitted)
                                 {
                                     <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
                                 }
