@@ -7,11 +7,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class MasterRole
     {
-        public MasterRole()
-        {
-            MasterUsers = new HashSet<MasterUser>();
-        }
-
         public int RoleId { get; set; }
         public string RoleName { get; set; }
         public bool? IsActive { get; set; }
@@ -21,7 +16,5 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? ModifyDate { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? DeletedDate { get; set; }
-
-        public virtual ICollection<MasterUser> MasterUsers { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<DBOperation> AddUpdateIPD(IPDEntity entityIPD);
 
-        Task<IPDEntity> GetIPDFormData(long pidfId, int buid);
+        Task<IPDEntity> GetIPDFormData(long pidfId, int buid,int countryId);
 
         Task<DataTableResponseModel> GetAllIPDPIDFList(DataTableAjaxPostModel model);
 
