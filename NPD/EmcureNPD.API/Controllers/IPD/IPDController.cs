@@ -120,12 +120,12 @@ namespace EmcureNPD.API.Controllers.IPD
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet, Route("GetIPDFormData/{pidfId}/{bussnessId}")]
-        public async Task<IActionResult> GetIPDFormData([FromRoute] long pidfId, int bussnessId)
+        [HttpGet, Route("GetIPDFormData/{pidfId}/{bussnessId}/{countryId}")]
+        public async Task<IActionResult> GetIPDFormData([FromRoute] long pidfId, int bussnessId,int countryId)
         {
             try
             {
-                var oPIDFEntity = await _IPDService.GetIPDFormData(pidfId, bussnessId);
+                var oPIDFEntity = await _IPDService.GetIPDFormData(pidfId, bussnessId, countryId);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (int)HttpStatusCode.OK);
                 else

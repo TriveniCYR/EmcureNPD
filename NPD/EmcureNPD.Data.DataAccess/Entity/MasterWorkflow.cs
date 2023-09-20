@@ -9,7 +9,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public MasterWorkflow()
         {
-            MasterWorkFlowTasks = new HashSet<MasterWorkFlowTask>();
+            MasterWorkFlowTask1s = new HashSet<MasterWorkFlowTask1>();
             PidfPbfs = new HashSet<PidfPbf>();
         }
 
@@ -21,7 +21,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
 
-        public virtual ICollection<MasterWorkFlowTask> MasterWorkFlowTasks { get; set; }
+        public virtual ICollection<MasterWorkFlowTask1> MasterWorkFlowTask1s { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class MasterWorkFlowTask
+    public partial class MasterWorkFlowTask1
     {
         public int TaskId { get; set; }
         public int? ParentId { get; set; }
@@ -17,5 +17,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? TaskLevel { get; set; }
         public int? StartDateOffset { get; set; }
         public int? EndDateOffset { get; set; }
+
+        public virtual MasterWorkflow Workflow { get; set; }
     }
 }

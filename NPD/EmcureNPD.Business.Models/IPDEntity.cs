@@ -15,13 +15,14 @@ namespace EmcureNPD.Business.Models
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "BusinessUnitName", ResourceType = typeof(Master))]
         public int? BusinessUnitId { get; set; }
+        public int SelectedCountryId { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        [Display(Name = "Market Name")]
+        [Display(Name = "Brand Name")]
         public string MarketName { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        public string DataExclusivity { get; set; }
+        public bool DataExclusivity { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string FillingType { get; set; }
@@ -48,9 +49,16 @@ namespace EmcureNPD.Business.Models
         public string Innovators { get; set; }
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string PatentStatus { get; set; }
-
+        public List<SelectListItem> PatenStatusList { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime? MarketExclusivityDate { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime? ExpectedFilingDate { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime? ExpectedLaunchDate { get; set; }
+        
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        public string LegalStatus { get; set; }
+        public bool LegalStatus { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int CostOfLitication { get; set; }
