@@ -253,7 +253,7 @@ function GetCountryList_PatentDetailsFormulation() {
 }
 function GetCountryList_PatentDetailsFormulationSuccess(data) {
     try {   //navCountryTabs_IPD
-        $("#navCountryTabs_IPD").html('');
+        getParentFormId().find('#navCountryTabs_IPD').html('');
         var html = "";
         if (data._object != null && data._object != undefined && data._object.length > 0) {
 
@@ -262,14 +262,14 @@ function GetCountryList_PatentDetailsFormulationSuccess(data) {
     <a class="nav-link clscountryTab" onClick="CountrytabClick_IPD('+ item.countryId + ',' + parseInt(_PIDFID) + ');" id="Countrytab_IPD_' + item.countryId + '">' + item.countryName + '</a></li>';
                 
             });
-            $("#navCountryTabs_IPD").append(html);
+            getParentFormId().find('#navCountryTabs_IPD').append(html);
 
             if (!IsCountryTabClick) {
                 var _countryId = (data._object[0] == undefined) ? 0 : data._object[0].countryId;
                 _selectcountryid = _countryId;
             }
             
-            $('#Countrytab_IPD_' + _selectcountryid).addClass('active');
+            getParentFormId().find('#Countrytab_IPD_' + _selectcountryid).addClass('active');
 
             LoadIPDForm(_PIDFID, _selectBusinessUnit,_selectcountryid);
         }
@@ -339,7 +339,7 @@ function SaveIPDClick(type) {
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
     SetIPDChildRows();
-    SetIPDChildRowsAPI();
+   // SetIPDChildRowsAPI();
     if (isValidIPDForm) {
         return true;
     } else {
@@ -398,27 +398,27 @@ function SaveIPDFormError(data) {
 function SetIPDChildRows() {
     $.each(getParentFormId().find('#PIDFTable tbody tr'), function (index, value) {
 
-        $(this).find("td:first select").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].CountryId");
+       // $(this).find("td:first input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].CountryId");
 
-        $(this).find("td:eq(1) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentNumber");
-        $(this).find("td:eq(2) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Type");
-        $(this).find("td:eq(3) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].OriginalExpiryDate");
-        $(this).find("td:eq(4) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].ExtensionExpiryDate");
-        $(this).find("td:eq(5) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Comments");
-        $(this).find("td:eq(6) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Strategy");
+        $(this).find("td:eq(0) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentNumber");
+        $(this).find("td:eq(1) select").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Type");
+        $(this).find("td:eq(2) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].OriginalExpiryDate");
+        $(this).find("td:eq(3) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].ExtensionExpiryDate");
+        $(this).find("td:eq(4) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Comments");
+       // $(this).find("td:eq(6) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Strategy");
 
         //$(this).find("td:eq(6) select").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].CountryId");
-        $(this).find("td:eq(7) select[id$=PatentStrategy]").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentStrategy");
-        $(this).find("td:eq(7) input[id$=PatentStrategyOther]").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentStrategyOther");
-        $(this).find("td:eq(8) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].BasicPatentExpiry");
-        $(this).find("td:eq(9) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].OtherLmitingPatentDate1");
-        $(this).find("td:eq(10) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].OtherLmitingPatentDate2");
-        $(this).find("td:eq(11) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].EarliestLaunchDate");
+       // $(this).find("td:eq(7) select[id$=PatentStrategy]").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentStrategy");
+        $(this).find("td:eq(5) input[id$=PatentStrategyOther]").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentStrategyOther");
+       // $(this).find("td:eq(8) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].BasicPatentExpiry");
+        //$(this).find("td:eq(9) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].OtherLmitingPatentDate1");
+       // $(this).find("td:eq(10) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].OtherLmitingPatentDate2");
+        $(this).find("td:eq(6) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].EarliestLaunchDate");
 
-        $(this).find("td:eq(12) select").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].AnyPatentstobeFiled");
-        $(this).find("td:eq(13) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].EarliestMarketEntry");
-        $(this).find("td:eq(14) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].StimatedNumberofgenericsinthe");
-        $(this).find("td:eq(15) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Lawfirmbeingused");
+       // $(this).find("td:eq(12) select").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].AnyPatentstobeFiled");
+        $(this).find("td:eq(7) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].EarliestMarketEntry");
+       // $(this).find("td:eq(14) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].StimatedNumberofgenericsinthe");
+       // $(this).find("td:eq(15) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Lawfirmbeingused");
 
     });
 }

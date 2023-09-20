@@ -22,7 +22,7 @@ namespace EmcureNPD.Business.Models
         public string MarketName { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        public bool DataExclusivity { get; set; }
+        public string DataExclusivity { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string FillingType { get; set; }
@@ -58,7 +58,7 @@ namespace EmcureNPD.Business.Models
         public DateTime? ExpectedLaunchDate { get; set; }
         
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        public bool LegalStatus { get; set; }
+        public string LegalStatus { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int CostOfLitication { get; set; }

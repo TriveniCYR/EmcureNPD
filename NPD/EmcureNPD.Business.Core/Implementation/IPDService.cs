@@ -120,7 +120,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     await _unitOfWork.SaveChangesAsync();
                     //
-                    var dbobjIPDGeneral = await _pidfIPDGeneralrepository.GetAsync(x=>x.Ipdid== entityIPD.IPDID && x.CountryId == entityIPD.SelectedCountryId);
+                    var dbobjIPDGeneral = await _pidfIPDGeneralrepository.GetAsync(x=>x.BusinessUnitId== entityIPD.BusinessUnitId && x.CountryId == entityIPD.SelectedCountryId);
                     var newobj = new PidfIpdGeneral();
                     if (dbobjIPDGeneral != null)
                     {
@@ -368,9 +368,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 PidfIpdGeneral _ObjIpdGeneral;
                 IPDEntity ipdmaindata = _mapperFactory.Get<PidfIpd, IPDEntity>(objData[0]);
                 if(countryId ==0)
-                _ObjIpdGeneral = _pidfIPDGeneralrepository.Get(x => x.Ipdid == ipdmaindata.IPDID);
+                _ObjIpdGeneral = _pidfIPDGeneralrepository.Get(x => x.BusinessUnitId == ipdmaindata.BusinessUnitId);
                 else
-                _ObjIpdGeneral = _pidfIPDGeneralrepository.Get(x => x.Ipdid == ipdmaindata.IPDID && x.CountryId == countryId);
+                _ObjIpdGeneral = _pidfIPDGeneralrepository.Get(x => x.BusinessUnitId == ipdmaindata.BusinessUnitId && x.CountryId == countryId);
                 if (_ObjIpdGeneral != null)
                 {
                     data = _mapperFactory.Get<PidfIpdGeneral, IPDEntity>(_ObjIpdGeneral);
@@ -386,8 +386,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     data.CountryIds = string.Join(",", _ipdCountryRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.CountryId.ToString()));
                     data.CountryId = data.RegionIds;
                 }
-                ipdmaindata.Innovators = objData[0].Innovators;
-                ipdmaindata.PatentStatus = objData[0].PatentStatus; 
+                data.Innovators = ipdmaindata.Innovators;
+                data.PatentStatus = ipdmaindata.PatentStatus; 
             }
             //if (CountryListForPatentDetails != null && CountryListForPatentDetails.Count > 0)
             //{
