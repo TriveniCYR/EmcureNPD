@@ -725,7 +725,7 @@ function PIDFBUtabClick(pidfId, buId) {
         window.location.href = 'PIDF?pidfid=' + pidfId + '&bui=' + buId + '&IsView=' + _mode;
     }
     else {
-        window.location.href = 'PIDF?pidfid=' + pidfId + '&bui=' + buId;
+        window.location.href = '/PIDF/PIDF?pidfid=' + pidfId + '&bui=' + buId;
     }
 }
 
