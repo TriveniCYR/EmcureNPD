@@ -50,15 +50,15 @@ $(document).ready(function () {
     }
     SetForIsExtendCountry(mode_IsCountryAdd);
 
-    $('#BusinessUnitId').change(function (e) {
-
+    $('#BusinessUnitId').change(function (e) { 
         var CurrentStatus = ($('#frmPIDF').find("#StatusId").val() == undefined) ? 0 : $('#frmPIDF').find("#StatusId").val();
 
        if ($(this).val() != "") {   
            if (parseInt($(this).val()) > 0) {
                var _businessUnitId = $(this).val();
                if (_PIDFId > 0) {
-                   if (_SelectedBusinessUnitPIDF > 0 && parseInt(CurrentStatus)>1) {
+                   if (_SelectedBusinessUnitPIDF > 0 && parseInt(CurrentStatus) > 0) //changed by YReddy on 09/21/2023 for fixing ENP-702
+                   {
                        _businessUnitId = _SelectedBusinessUnitPIDF
                    }
                }
