@@ -8,9 +8,14 @@ var _IsInrestedRadioClick = false;
 var mode_IsCountryAdd = true;
 $(document).ready(function () {
     try {
+        $("#CountryNote").append("");
         _PIDFId = parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
-        mode_IsCountryAdd = (getParameterByName("IsCountryAdd")=='1');
+        mode_IsCountryAdd = (getParameterByName("IsCountryAdd") == '1');
+         // changes by Vrushabh --start
+        if (getParameterByName("IsCountryAdd") == '1')
+            $("#CountryNote").append("<b>Note : You are allowed to edit existing country wise Strength until PIDF is submitted.</b>");
+        // End
         //if (getParameterByName("bui") == null)
         //    $("#TabBusinessUnitId").val(parseInt($('#hdnBusinessUnitId').val()));
         //else
@@ -725,7 +730,7 @@ function PIDFBUtabClick(pidfId, buId) {
         window.location.href = 'PIDF?pidfid=' + pidfId + '&bui=' + buId + '&IsView=' + _mode;
     }
     else {
-        window.location.href = '/PIDF/PIDF?pidfid=' + pidfId + '&bui=' + buId;
+         window.location.href = '/PIDF/PIDF?pidfid=' + pidfId + '&bui=' + buId;
     }
 }
 
