@@ -81,33 +81,36 @@ $(document).ready(function () {
     });
 
     $(document).on("change", "#PatentStatus", function () {
+        var formid = getParentFormId();
         var val = $(this).val();
         if (val == 'Generic') {
-            $('#IsComment').attr('readonly', true).attr('disabled', true);  
-            $(".IPDCommentText").attr("readonly", true); $(".IPDCommentText").attr("disabled", true)
+            formid.find('#IsComment').attr('readonly', true).attr('disabled', true);  
+            formid.find(".IPDCommentText").attr("readonly", true); $(".IPDCommentText").attr("disabled", true)
         } else {
-            $('#IsComment').removeAttr('disabled');
-            $('#IsComment').removeAttr('readonly');
-            $('.IPDCommentText').removeAttr('disabled');
-            $('.IPDCommentText').removeAttr('readonly');
+            formid.find('#IsComment').removeAttr('disabled');
+            formid.find('#IsComment').removeAttr('readonly');
+            formid.find('.IPDCommentText').removeAttr('disabled');
+            formid.find('.IPDCommentText').removeAttr('readonly');
         }
     });
     $(document).on("change", "#LegalStatus", function () {
+        var formid = getParentFormId();
         var val = $(this).val();
         if (val=='No') {
-            $('#CostOfLitication').attr('readonly', true).attr('disabled', true);
+            formid.find('#CostOfLitication').attr('readonly', true).attr('disabled', true);
         } else {
-            $('#CostOfLitication').removeAttr('disabled');
-            $('#CostOfLitication').removeAttr('readonly');
+            formid.find('#CostOfLitication').removeAttr('disabled');
+            formid.find('#CostOfLitication').removeAttr('readonly');
         }
     });
     $(document).on("change", "#DataExclusivity", function () {
+        var formid = getParentFormId();
         var val = $(this).val();
         if (val == 'No') {
-            $('#MarketExclusivityDate').attr('readonly', true).attr('disabled', true);
+            getParentFormId().find('#MarketExclusivityDate').attr('readonly', true).attr('disabled', true);
         } else {
-            $('#MarketExclusivityDate').removeAttr('disabled');
-            $('#MarketExclusivityDate').removeAttr('readonly');
+            formid.find('#MarketExclusivityDate').removeAttr('disabled');
+            formid.find('#MarketExclusivityDate').removeAttr('readonly');
         }
     });
  
@@ -159,12 +162,14 @@ function GetActiveBusinessUnitSuccess(data) {
 
 }
 function GetActiveBusinessUnitError(x, y, z) {
+  
     toastr.error(ErrorMessage);
 }
 
 function BUTabCLick_IPD(pidfId, BusinessUnitId) {
     _selectBusinessUnit = BusinessUnitId;
     _selectcountryid = 0;
+    IsCountryTabClick = false;
     LoadIPDForm(pidfId, BusinessUnitId, _selectcountryid)
 }
 
@@ -185,6 +190,7 @@ function GetRegionListSuccess(data) {
     }
 }
 function GetRegionListError(x, y, z) {
+    
     toastr.error(ErrorMessage);
 }
 
@@ -227,6 +233,7 @@ function GetCountryListSuccess(data) {
     }
 }
 function GetCountryListError(x, y, z) {
+    
     toastr.error(ErrorMessage);
 }
 
@@ -271,13 +278,14 @@ function GetCountryList_PatentDetailsFormulationSuccess(data) {
             
             getParentFormId().find('#Countrytab_IPD_' + _selectcountryid).addClass('active');
 
-            LoadIPDForm(_PIDFID, _selectBusinessUnit,_selectcountryid);
+           LoadIPDForm(_PIDFID, _selectBusinessUnit,_selectcountryid);// This line need to remove
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
 }
 function GetCountryList_PatentDetailsFormulationError(x, y, z) {
+    
     toastr.error(ErrorMessage);
 }
 function CountrytabClick_IPD(countryId, pidfid) {
@@ -318,6 +326,7 @@ function GetPatentStrategyListSuccess(data) {
     }
 }
 function GetPatentStrategyListError(x, y, z) {
+    
     toastr.error(ErrorMessage);
 }
 
@@ -589,15 +598,17 @@ function BussinesUnitStatusforIsInterested_IPDSuccess(data) {
                 GetCountryList_PatentDetailsFormulation();
                 GetPatentStrategyDropdownList();
                 Set_optionTextforAnyPatentstobeFiled();
-                $('#PatentStatus').trigger("change");
-                $('#LegalStatus').trigger("change");
-                $('#DataExclusivity').trigger("change");
+                var formid = getParentFormId();
+                formid.find('#PatentStatus').trigger("change");
+                formid.find('#LegalStatus').trigger("change");
+                formid.find('#DataExclusivity').trigger("change");
 
             });
         }
         else {
-            $('.clscountryTab').removeClass('active');
-            $('#Countrytab_IPD_' + _selectcountryid).addClass('active');
+            var formid = getParentFormId();
+            formid.find('.clscountryTab').removeClass('active');
+            formid.find('#Countrytab_IPD_' + _selectcountryid).addClass('active');
         }
     }
     else {
@@ -605,6 +616,7 @@ function BussinesUnitStatusforIsInterested_IPDSuccess(data) {
     }
 }
 function BussinesUnitStatusforIsInterested_IPDError(x, y, z) {
+   
     toastr.error(ErrorMessage);
 }
 
