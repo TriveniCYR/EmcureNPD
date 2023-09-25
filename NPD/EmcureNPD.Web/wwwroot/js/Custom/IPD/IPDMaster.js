@@ -79,18 +79,24 @@ $(document).ready(function () {
         if (!ValidateDuplicateCountryID(".SelectCountryPDAPI"))
             $(this).val(undefined)
     });
-
+    
     $(document).on("change", "#PatentStatus", function () {
         var formid = getParentFormId();
         var val = $(this).val();
         if (val == 'Generic') {
             formid.find('#IsComment').attr('readonly', true).attr('disabled', true);  
-            formid.find(".IPDCommentText").attr("readonly", true); $(".IPDCommentText").attr("disabled", true)
+            formid.find(".IPDCommentText").attr("readonly", true); $(".IPDCommentText").attr("disabled", true);
+            formid.find('#PIDFTable').find('input,select,i').attr('readonly', true).attr('disabled', true); 
+            formid.find('#PIDFTable').find('.operationButton').hide();
+            
         } else {
             formid.find('#IsComment').removeAttr('disabled');
             formid.find('#IsComment').removeAttr('readonly');
             formid.find('.IPDCommentText').removeAttr('disabled');
             formid.find('.IPDCommentText').removeAttr('readonly');
+            formid.find('#PIDFTable').find('input,select,i').removeAttr('disabled');
+            formid.find('#PIDFTable').find('input,select,i').removeAttr('readonly');
+            formid.find('#PIDFTable').find('.operationButton').show();
         }
     });
     $(document).on("change", "#LegalStatus", function () {
@@ -340,7 +346,10 @@ function SaveIPDClick(type) {
         $('#fIPDForm_' + _selectBusinessUnit).validate().settings.ignore = "*";
 
     } else {
-        isValidIPDForm = validatePatentDetails();
+        var val = getParentFormId().find('#PatentStatus').val();
+        if (val != 'Generic') {
+            isValidIPDForm = validatePatentDetails();
+        }
         isValidIPDForm = validateDynamicControldDetailsIPD();
     }
     getParentFormId().find('#SaveType').val(type);
