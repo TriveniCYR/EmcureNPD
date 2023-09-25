@@ -1427,7 +1427,7 @@ function PBFBindMasterCountry(data) {
             if (arrofcountryid.indexOf(item.countryID) == -1) {
                 arrofcountryid.push(item.countryID)
                 html += '<li class="nav-item col-6 p-0 pt-1">\
-    <a class="nav-link" onClick="CountrytabClick('+ item.countryID + ',' + parseInt($("#PIDFId").val()) + ')" id="Countrytab_' + item.countryID + '">' + item.countryName + '</a></li>';
+    <a class="nav-link" onClick="PBFCountrytabClick('+ item.countryID + ',' + parseInt($("#PIDFId").val()) + ')" id="Countrytab_PBF' + item.countryID + '">' + item.countryName + '</a></li>';
             }
         });
         $('#dvPBFContainer').find("#navCountryTabs").append(html);
@@ -1435,15 +1435,15 @@ function PBFBindMasterCountry(data) {
         var _countryId = (_CountryListforSelectedBU[0] == undefined) ? 0 : _CountryListforSelectedBU[0].countryID;
         selectedCountry = _countryId;
         $('#selectedCountryInput').val(selectedCountry);
-        $('#Countrytab_' + _countryId).addClass('active');
+        $('#Countrytab_PBF' + _countryId).addClass('active');
     }
     renderPackSize(selectedCountry,_selectBusinessUnit,_PIDFID);
 }
 
 $(document).ready(function () {
-    $(document).on('click', '[id^="Countrytab_"]', function () {
+    $(document).on('click', '[id^="Countrytab_PBF"]', function () {
         var countryVal = parseInt($(this).attr('id').split('_')[1]);
-        $('[id^="Countrytab_"]').removeClass('active');
+        $('[id^="Countrytab_PBF"]').removeClass('active');
         $(this).addClass('active');
         selectedCountry = countryVal;
         renderPackSize(selectedCountry, _selectBusinessUnit, parseInt($("#PIDFId").val()));

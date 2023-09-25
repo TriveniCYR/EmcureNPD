@@ -34,7 +34,7 @@
                         <input type="hidden" asp-for="SelectedCountryId" />
                         
                         @Html.LabelFor(model => model.ProjectName, "Project Name", new { @class = "control-label" })
-                        @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["Project Name"] } })
+                        @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Project Name"] } })
                         @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -70,6 +70,7 @@
             <div class="clearfix">&nbsp;</div>
             @*-----------------End- of-Country---------------------*@
 
+            <div id="PatenetedDetails">
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group required">
@@ -98,14 +99,14 @@
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.ExpectedFilingDate, "Expected Filing Date", new { @class = "control-label" }) <span class="text-danger">*</span>
-                       @Html.TextBoxFor(@modal=> modal.ExpectedFilingDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control"})
+                            @Html.TextBoxFor(@modal=> modal.ExpectedFilingDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control customvalidateformcontrol"})
                         @Html.ValidationMessageFor(model => model.ExpectedFilingDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.ExpectedLaunchDate, "Expected Launch Date", new { @class = "control-label" }) <span class="text-danger">*</span>
-                        @Html.TextBoxFor(@modal=> modal.ExpectedLaunchDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control"})
+                        @Html.LabelFor(model => model.ExpectedLaunchDate, "Expected Launch Date", new { @class = "control-label " }) <span class="text-danger">*</span>
+                            @Html.TextBoxFor(@modal=> modal.ExpectedLaunchDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control customvalidateformcontrol"})
                         @Html.ValidationMessageFor(model => model.ExpectedLaunchDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -119,8 +120,8 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.ApprovedGenetics, "Approved Genetics", new { @class = "control-label" }) <span class="text-danger">*</span>
-                        @Html.EditorFor(model => model.ApprovedGenetics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["Approved Genetics"] } })
+                        @Html.LabelFor(model => model.ApprovedGenetics, "Approved Generics", new { @class = "control-label" }) <span class="text-danger">*</span>
+                        @Html.EditorFor(model => model.ApprovedGenetics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["Approved Generics"] } })
                         @Html.ValidationMessageFor(model => model.ApprovedGenetics, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -175,6 +176,7 @@
                     </div>
                 </div>
             </div>
+           
             @if (Model.IsComment)
             {
                 <div class="row" id="dvIPDComments">
@@ -195,19 +197,20 @@
                     </div>
                 </div>
             }
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header bg-primary">
-                            <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details for Formulation</button></h3>
+                            <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details</button></h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body" style="display: block;">
-                            <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                        <div class="card-body table-overflow" style="display: block;">
+                            <table id="PIDFTable" class="table table-bordered table-striped table-hover " style="width:100%">
                                 <thead>
                                     <tr>
                                       
@@ -292,7 +295,7 @@
                                                             @* <select id="IDSelectPatentStrategyPD" class="form-control SelectPatentStrategyPD"></select>*@
                                                            @* @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectPatentStrategyPD SelectPatentStrategyCommon", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentStrategy"})*@
                                                             <input type="hidden" id="hdnPatentFormulationPatentStrategy" value="@Model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy" />
-                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentStrategyOther, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control PatentStrategyOtherPD",id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentStrategyOther"}})
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentStrategyOther, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control PatentStrategyOtherPD",id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentStrategyOther",@placeholder = @MasterLocalizer["Startegy"]}})
                                                         </div>
                                                     </div>
                                                 </td>
