@@ -74,10 +74,15 @@ function ValidateYearForm() {
         }
         else {
             if (kv.value == '') {
-                /*$('#valmsg' + kv.name).text('Required');*/
-                $('#' + kv.name).addClass('InvalidBox');
-                //IsValid = false;
-                ArrofInvalid.push(kv.name);
+                ///*$('#valmsg' + kv.name).text('Required');*/
+                //$('#' + kv.name).addClass('InvalidBox');
+                ////IsValid = false;
+                //ArrofInvalid.push(kv.name);
+                if (!(kv.name == "TotalApireq")) {
+                    $('#' + kv.name).addClass('InvalidBox');
+                    ArrofInvalid.push(kv.name);
+                }
+
             }
             else {
                 $('#valmsg' + kv.name).text('').hide();
@@ -549,9 +554,15 @@ function AddYearClick() { //SaveYearClick
         //var IsValid = true;;
         $.each($('#AddYearForm').serializeArray(), function (_, kv) {
             if (kv.value == '') {
-                $('#valmsg' + kv.name).text('Required').show();
-                //IsValid = false;
-                ArrofInvalid.push(kv.name);
+                //$('#valmsg' + kv.name).text('Required').show();
+                ////IsValid = false;
+                //ArrofInvalid.push(kv.name);
+
+                if (!(kv.name == "TotalApireq")) {
+                    $('#valmsg' + kv.name).text('Required').show();
+                    //IsValid = false;
+                    ArrofInvalid.push(kv.name);
+                }
             }
             entityYear[getPropertyName(kv.name)] = kv.value;
         });
