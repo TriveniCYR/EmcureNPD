@@ -1220,14 +1220,14 @@
                                                 </div>
 
                                             </div>
-
+                                            @if(IsViewMode==null){
                                             @Html.HiddenFor(model => model.PBFnextbutton, new { id = "btnNextRnDTabSelectedValue", name = "PBFnextbutton" })
                                             <div class="row">
                                                 <div class="col-12 text-end">
                                                     <a class="btn btn-primary outside-buttons mt-2" id="btnNextRnDTab">Next</a>
                                                 </div>
                                             </div>
-
+                                            }
                                         </div>
                                     </div>
                                 }
@@ -1460,6 +1460,8 @@
                             <a id="btnPBFCancel" class="btn btn-danger me-3 outside-buttons operationButton" onclick="CancelPopup()">@SharedLocalizer["Cancel"]</a>
 
                         </div>
+                        <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons" onClick="SavePBFForm('Draft')" style="display: none;">@SharedLocalizer["SaveDraft"]</button>
+
                     </div>
                 </div>
             </div>
