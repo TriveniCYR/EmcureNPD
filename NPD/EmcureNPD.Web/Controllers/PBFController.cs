@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -538,7 +540,6 @@ namespace EmcureNPD.Web.Controllers
                 pbfEntity.RNDPackagings = pbfEntity.RNDPackagingRawData != null ? JsonConvert.DeserializeObject<List<RNDPackaging>>(pbfEntity.RNDPackagingRawData) : new List<RNDPackaging>();
                 pbfEntity.RNDToolingChangeparts = pbfEntity.RNDToolingChangePartRawData != null ? JsonConvert.DeserializeObject<List<RNDToolingChangepart>>(pbfEntity.RNDToolingChangePartRawData) : new List<RNDToolingChangepart>();
                 pbfEntity.RNDCapexMiscellaneousExpenses = pbfEntity.RNDCapexMiscellaneousExpensesRawData != null ? JsonConvert.DeserializeObject<List<RNDCapexMiscellaneousExpense>>(pbfEntity.RNDCapexMiscellaneousExpensesRawData) : new List<RNDCapexMiscellaneousExpense>();
-                //pbfEntity.RNDPlantSupportCosts = pbfEntity.RNDPlantSupportCostRawData != null ? JsonConvert.DeserializeObject<List<RNDPlantSupportCost>>(pbfEntity.RNDPlantSupportCostRawData) : new List<RNDPlantSupportCost>();
                 pbfEntity.RNDFillingExpenses = pbfEntity.RNDFillingExpensesRawData != null ? JsonConvert.DeserializeObject<List<RNDFillingExpense>>(pbfEntity.RNDFillingExpensesRawData) : new List<RNDFillingExpense>();
                 pbfEntity.RNDManPowerCosts = pbfEntity.RNDManPowerCostProjectDurationRawData != null ? JsonConvert.DeserializeObject<List<RNDManPowerCost>>(pbfEntity.RNDManPowerCostProjectDurationRawData) : new List<RNDManPowerCost>();
                 pbfEntity.RNDHeadWiseBudgets = pbfEntity.RNDHeadWiseBudgetRawData != null ? JsonConvert.DeserializeObject<List<RNDHeadWiseBudget>>(pbfEntity.RNDHeadWiseBudgetRawData) : new List<RNDHeadWiseBudget>();
@@ -554,10 +555,30 @@ namespace EmcureNPD.Web.Controllers
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
-                //pbfEntity.CreatedBy = _helper.GetLoggedInUserId();
+                var form = new MultipartFormDataContent();
+
+                if (pbfEntity.PbfGeneralTdpEntity[0].EmcureImage != null)
+                {
+                    var emcureFileStream = pbfEntity.PbfGeneralTdpEntity[0].EmcureImage.OpenReadStream();
+                    var emcureFileContent = new StreamContent(emcureFileStream);
+                    emcureFileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+                    form.Add(emcureFileContent, "emcureImage", pbfEntity.PbfGeneralTdpEntity[0].EmcureImage.FileName);
+                }
+                
+                if (pbfEntity.PbfGeneralTdpEntity[0].InnovatorImage != null)
+                {
+                    var innovatorFileStream = pbfEntity.PbfGeneralTdpEntity[0].InnovatorImage.OpenReadStream();
+                    var innovatorFileContent = new StreamContent(innovatorFileStream);
+                    innovatorFileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+                    form.Add(innovatorFileContent, "innovatorImage", pbfEntity.PbfGeneralTdpEntity[0].InnovatorImage.FileName);
+                }
+                pbfEntity.PbfGeneralTdpEntity[0].InnovatorImage = null;
+                pbfEntity.PbfGeneralTdpEntity[0].EmcureImage = null;
+                form.Add(new StringContent(JsonConvert.SerializeObject(pbfEntity)), "Data");
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pbfEntity))).Result;
+
+                HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.SavePBF, HttpMethod.Post, token, form).Result;
 
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 ModelState.Clear();
@@ -586,7 +607,7 @@ namespace EmcureNPD.Web.Controllers
 						// return View(pbfEntity);
 						return RedirectToAction("PIDFList", "PIDF", new { screenId });
 					}
-                    catch
+                    catch(Exception ex)
                     {
 						// return View(pbfEntity);
 						return RedirectToAction("PIDFList", "PIDF", new { screenId });

@@ -6,9 +6,13 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\API List\**" />
+    <Compile Remove="wwwroot\Uploads\PIDF\TDT\**" />
     <Content Remove="Controllers\API List\**" />
+    <Content Remove="wwwroot\Uploads\PIDF\TDT\**" />
     <EmbeddedResource Remove="Controllers\API List\**" />
+    <EmbeddedResource Remove="wwwroot\Uploads\PIDF\TDT\**" />
     <None Remove="Controllers\API List\**" />
+    <None Remove="wwwroot\Uploads\PIDF\TDT\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Uploads\PIDF\TDT\" />
+    <Folder Include="wwwroot\Uploads\PIDF\TDP\" />
   </ItemGroup>
 
 </Project>

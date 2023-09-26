@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -116,13 +118,21 @@ namespace EmcureNPD.API.Controllers.PBF
         //}
         [HttpPost]
         [Route("InsertUpdatePBFDetails")]
-        public async Task<IActionResult> InsertUpdatePBFDetails(PBFFormEntity pbfEntity)
+        [Consumes("multipart/form-data")]
+
+        public async Task<IActionResult> InsertUpdatePBFDetails([FromForm] IFormCollection jsonObject)
         {
             try
             {
-                DBOperation oResponse = await _PBFService.AddUpdatePBFDetails(pbfEntity);
+
+                jsonObject.TryGetValue("Data", out StringValues Data);
+                PBFFormEntity pbfEntity = JsonConvert.DeserializeObject<PBFFormEntity>(Data);
+
+                var files = jsonObject.Files;
+
+                DBOperation oResponse = await _PBFService.AddUpdatePBFDetails(pbfEntity, files, _webHostEnvironment.WebRootPath);
                 if (oResponse == DBOperation.Success)
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (1 > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
             }
@@ -152,7 +162,8 @@ namespace EmcureNPD.API.Controllers.PBF
         {
             try
             {
-                return _ObjectResponse.CreateData(await _PBFService.PBFAllTabDetails(PIDFId, BUId, pbfId, PbfRndDetailsId), (Int32)HttpStatusCode.OK);
+                var APIurl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
+                return _ObjectResponse.CreateData(await _PBFService.PBFAllTabDetails(PIDFId, BUId, pbfId, PbfRndDetailsId, APIurl), (Int32)HttpStatusCode.OK);
             }
             catch (Exception e)
             {

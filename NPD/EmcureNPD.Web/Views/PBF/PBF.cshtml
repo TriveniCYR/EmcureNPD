@@ -29,7 +29,7 @@
     <h2 class="m-0" id="hPIDFTitle">Project Budget Form</h2>
 </div>
 <div id="dvPBFContainer">
-    <form id="AddPBFForm" asp-action="PBF" asp-controller="PBF" method="post">
+    <form id="AddPBFForm" asp-action="PBF" asp-controller="PBF" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Pidfid" />
         <input type="hidden" asp-for="Pidfpbfid" />
         <input type="hidden" asp-for="PBFGeneralId" />
@@ -597,13 +597,14 @@
                                                     </div>
                                                 </div>
 
+
                                                 <div class="row" id="headerDiv">
                                                     <div class="col-md-4" style="background-color:black;color:whitesmoke;font-size: 25px;font-weight: bold;">
                                                         TDP
                                                     </div>
                                                     <div class="col-md-4" style="background-color:black;color:yellow;font-size: 25px;font-weight: bold;">
                                                         Innovator
-                                                        <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[0].IsEmcure" value="false" />
+                                                        <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[0].Innovator[0].IsEmcure" value="false" />
                                                     </div>
                                                     <div class="col-md-4" style="background-color:black;color:darkorange;font-size: 25px;font-weight: bold;">
                                                         Emcure
@@ -612,40 +613,16 @@
                                                 </div>
                                                 <div class="row" id="TdpDiv">
                                                     <table id="Tdptable" class="table table-bordered table-striped table-hover">
-
                                                         <thead id="tdpThead" class="bg-primary text-bold">
+                                                            <!-- Header for the first section of the table -->
                                                         </thead>
                                                         <tbody id="tbody">
-                                                            <tr id="tr1">
-                                                                <td>Description</td>
-                                                            </tr>
-                                                            <tr id="tr2">
-                                                                <td>Shape</td>
-                                                            </tr>
-                                                            <tr id="tr3">
-                                                                <td>Color</td>
-                                                            </tr>
-                                                            <tr id="tr4">
-                                                                <td>Engraving</td>
-                                                            </tr>
-                                                            <tr id="tr5">
-                                                                <td>Packaging</td>
-                                                            </tr>
-                                                            <tr id="tr6">
-                                                                <td>Primary</td>
-                                                            </tr>
-                                                            <tr id="tr7">
-                                                                <td>Secondry</td>
-                                                            </tr>
-                                                            <tr id="tr8">
-                                                                <td>Self-Life</td>
-                                                            </tr>
-                                                            <tr id="tr9">
-                                                                <td>Storage/Handling</td>
-                                                            </tr>
+                                                         
                                                         </tbody>
                                                     </table>
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -795,14 +772,13 @@
                                                     </div>
                                                     <hr />
                                                     <div class="card card-primary card-tabs" id="navCountryTabsdiv">
-                                                                <div class="card-header p-0 pt-1">
-                                                                    <ul class="nav nav-tabs row text-center m-0" id="navCountryTabs" role="tablist"></ul>
-                                                                </div>
-                                                            </div>
+                                                        <div class="card-header p-0 pt-1">
+                                                            <ul class="nav nav-tabs row text-center m-0" id="navCountryTabs" role="tablist"></ul>
+                                                        </div>
+                                                    </div>
                                                     <div class="row">
                                                         <label class="control-label" id="lblPackSizeStability">Pack Size Stability</label>
                                                         <div id="DvPackSizeStability">
-                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1467,13 +1443,13 @@
                     <div class="col-12 text-end">
                         <div class="form-group" id="dvMainButton">
                             <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')" style="display: none;">@SharedLocalizer["SaveDraft"]</button>
-                               <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-                                 
-                            @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId==0)
+                            <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
+
+                            @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId == 0)
                             {
                                 <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-                                
-                               
+
+
                             }
                             @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFSubmitted)
                             {
@@ -1526,5 +1502,5 @@
     const GetRaurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetRa";
     const GetPBFRACalculatedDateUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFRADates"
     var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
-    var StatusId="@Model.StatusId";
+    var StatusId = "@Model.StatusId";
 </script>

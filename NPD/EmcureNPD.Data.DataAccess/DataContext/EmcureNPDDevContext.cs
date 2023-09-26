@@ -1421,9 +1421,9 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.IsEmcure).HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.IsPrimaryPackaging).HasDefaultValueSql("((0))");
+                entity.Property(e => e.PrimaryPackaging).HasMaxLength(100); 
 
-                entity.Property(e => e.IsSecondryPackaging).HasDefaultValueSql("((0))");
+                entity.Property(e => e.SecondryPackaging).HasMaxLength(100);
 
                 entity.Property(e => e.Packaging).IsUnicode(false);
 

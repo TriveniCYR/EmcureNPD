@@ -43,7 +43,6 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<DBOperation> Medical(PIDFMedicalViewModel medicalModel, IFormFileCollection files, string path)
         {
             PidfMedical objPIDFMedical;
-            PidfMedicalFile objPIDFMedicalFile;
             PIDFMedicalViewModel oldPIDFFEntity;
             if (medicalModel.PidfmedicalId > 0)
             {

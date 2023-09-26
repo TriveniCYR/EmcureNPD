@@ -26,13 +26,13 @@ namespace EmcureNPD.Business.Core.Interface
         //Task<PIDFPBFClinicalFormEntity> GetPbfClinicalFormDetails(long pidfId, int buid, long? strengthid);
 
         // ---------------------------PBFDetails----------------------------
-        Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity);
+        Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity, IFormFileCollection files, string webRootPath);
 
         Task<DBOperation> AddUpdateRnD(PidfPbfGeneralEntity PidfPbfGeneralEntity);
 
         Task<PBFFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
 
-        Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId, int pbfId = 0, int PbfRndDetailsId = 0);
+        Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId, int pbfId = 0, int PbfRndDetailsId = 0,string APIurl=null);
         Task<List<MasterPlantLineEntity>> GetLineByPlantId(int id);
         Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId, int BuId);
         Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission();

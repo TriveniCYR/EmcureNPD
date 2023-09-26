@@ -10,6 +10,8 @@ using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -278,13 +280,14 @@ namespace EmcureNPD.Business.Core.Implementation
                 return data;
             }
         }
-        public async Task<PidfProductStrengthGeneralRanD> GetStrengthForPBFTDP(long pidfId)
+        public async Task<PidfProductStrengthGeneralRanD> GetStrengthForPBFTDP(long pidfId,int BUId)
         {
             var data = new PidfProductStrengthGeneralRanD();
             try
             {
                 SqlParameter[] osqlParameter = {
-                       new SqlParameter("@PIDFId", pidfId)
+                       new SqlParameter("@PIDFId", pidfId),
+                       new SqlParameter("@BUId", BUId)
                    };
 
                 var dbresult = await _pbfRepository.GetDataSetBySP("GetStrengthForPBF_TDP", System.Data.CommandType.StoredProcedure, osqlParameter);
@@ -331,15 +334,16 @@ namespace EmcureNPD.Business.Core.Implementation
                 return data;
             }
         }
-        public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
+        public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity, IFormFileCollection files,string _webrootPath)
         {
             try
             {
                 //Dummy function to same PIDFPBF Data
                 long pbfgeneralid = 0;
-                PidfPbf objPIDFPbf;
+                
+
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-                pbfgeneralid = await SavePidfAndPBFCommanDetailsnew1(pbfEntity.Pidfid, pbfEntity);
+                pbfgeneralid = await SavePidfAndPBFCommanDetailsnew1(pbfEntity.Pidfid, pbfEntity,files,_webrootPath);
 
                 if (pbfgeneralid > 0)
                 {
@@ -389,7 +393,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         #endregion saving RnD Details
 
-        public async Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId, int pbfId = 0, int PbfRndDetailsId = 0)
+        public async Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId, int pbfId = 0, int PbfRndDetailsId = 0, string APIurl=null)
         {
             dynamic DropdownObjects = new ExpandoObject();
 
@@ -426,8 +430,8 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
             DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId, BUId);
             DropdownObjects.PidfPbfGeneralPackSizeStability = await GetGeneralPackSizeStability(PIDFId, BUId);
-            DropdownObjects.GetStrengthForPBFTDP = await GetStrengthForPBFTDP(PIDFId);
-            DropdownObjects.GetTDPList = await GetTDT(PIDFId);
+            DropdownObjects.GetStrengthForPBFTDP = await GetStrengthForPBFTDP(PIDFId, BUId);
+            DropdownObjects.GetTDPList = await GetTDT(PIDFId, APIurl);
             DropdownObjects.GetCountyForBussinessUnitAndPIDF = await GetCountyForBussinessUnitAndPIDF(PIDFId, BUId);
             return DropdownObjects;
         }
@@ -490,7 +494,7 @@ namespace EmcureNPD.Business.Core.Implementation
         }
 
         #region Private Methods
-
+     
         public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)
         {
             long pidfpbfid = 0;
@@ -1330,70 +1334,43 @@ namespace EmcureNPD.Business.Core.Implementation
         }
 
 
-        private async Task<long> SaveTDT(PBFFormEntity pbfentity, long pbfgeneralid)
+        private async Task<long> SaveTDT(PBFFormEntity pbfentity, long pbfgeneralid, IFormFileCollection files, string _webrootPath)
         {
             try
             {
-                int index = 0;
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
+                var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\TDP");
+                string emcureuniqueFileName = null;
+                string innovatoruniqueFileName = null;
+                IFormFile emcureFile=null;
+                IFormFile innovatorFile=null;
+
+                if (files.Count > 0)
+                {
+                    emcureFile = files[0];
+                    emcureuniqueFileName = Path.GetFileNameWithoutExtension(emcureFile.FileName)
+                        + Guid.NewGuid().ToString().Substring(0, 4)
+                        + Path.GetExtension(emcureFile.FileName);
+
+                    if (files.Count > 1)
+                    {
+                        innovatorFile = files[1];
+                        innovatoruniqueFileName = Path.GetFileNameWithoutExtension(innovatorFile.FileName)
+                            + Guid.NewGuid().ToString().Substring(0, 4)
+                            + Path.GetExtension(innovatorFile.FileName);
+                    }
+                }
                 foreach (var item in pbfentity.PbfGeneralTdpEntity)
                 {
-                    var IsEmcure = index % 2 == 0 ? true : false;
-                    var objPbfGeneralTdp = _PbfGeneralTdp.GetAllQuery().
-              Where(x => x.TradeDressProposalId == item.TradeDressProposalId).FirstOrDefault();
-
-                    var objPbfGeneralTdpRemovableList = _PbfGeneralTdp.GetAllQuery().
-             Where(x => x.TradeDressProposalId == item.TradeDressProposalId).ToList();
-                    if (objPbfGeneralTdp != null)
+                    foreach (var innovator in item.InnovatorData)
                     {
-                        //_PbfGeneralTdp.RemoveRange(objPbfGeneralTdpRemovableList);
-                        //   await _unitOfWork.SaveChangesAsync();
-
-                        objPbfGeneralTdp.Pidfid = pbfentity.Pidfid;
-                        objPbfGeneralTdp.Approch = pbfentity.PbfGeneralTdpEntity[0].Approch;
-                        objPbfGeneralTdp.PbfId = pbfentity.Pidfpbfid;
-                        objPbfGeneralTdp.PidfpbfGeneralId = pbfgeneralid;
-                        objPbfGeneralTdp.PidfproductStrngthId = pbfentity.PbfGeneralTdpEntity[0].PidfproductStrngthId;
-                        objPbfGeneralTdp.FormulaterResponsiblePerson = pbfentity.PbfGeneralTdpEntity[0].FormulaterResponsiblePerson;
-
-                        objPbfGeneralTdp.Description = item.Description;
-                        objPbfGeneralTdp.Shape = item.Shape;
-                        objPbfGeneralTdp.Color = item.Color;
-                        objPbfGeneralTdp.Engraving = item.Engraving;
-                        objPbfGeneralTdp.Packaging = item.Packaging;
-                        objPbfGeneralTdp.ShelfLife = item.ShelfLife;
-                        objPbfGeneralTdp.StorageHandling = item.StorageHandling;
-                        objPbfGeneralTdp.IsPrimaryPackaging = item.IsPrimaryPackaging;
-                        objPbfGeneralTdp.IsSecondryPackaging = item.IsSecondryPackaging;
-                        objPbfGeneralTdp.IsEmcure = IsEmcure;
-                        objPbfGeneralTdp.CreatedDate = DateTime.Now;
-                        objPbfGeneralTdp.CreatedBy = loggedInUserId;
-                        _PbfGeneralTdp.UpdateAsync(objPbfGeneralTdp);
+                        await SaveTDTSection(innovator, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, item.Approch, false , innovator.PidfproductStrngthId, item.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[0].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[0].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[0].ShelfLife, pbfentity.PbfGeneralTdpEntity[0].StorageHandling,innovatorFile, innovatoruniqueFileName,path);
                     }
-                    else
+
+                    foreach (var emcure in item.EmcureData)
                     {
-                        PbfGeneralTdp objPbfGeneralTdpAdd = new();
-                        objPbfGeneralTdpAdd.Pidfid = pbfentity.Pidfid;
-                        objPbfGeneralTdpAdd.Approch = pbfentity.PbfGeneralTdpEntity[0].Approch;
-                        objPbfGeneralTdpAdd.PbfId = pbfentity.Pidfpbfid;
-                        objPbfGeneralTdpAdd.PidfpbfGeneralId = pbfgeneralid;
-                        objPbfGeneralTdpAdd.PidfproductStrngthId = pbfentity.PbfGeneralTdpEntity[0].PidfproductStrngthId;
-                        objPbfGeneralTdpAdd.FormulaterResponsiblePerson = pbfentity.PbfGeneralTdpEntity[0].FormulaterResponsiblePerson;
-                        objPbfGeneralTdpAdd.Description = item.Description;
-                        objPbfGeneralTdpAdd.Shape = item.Shape;
-                        objPbfGeneralTdpAdd.Color = item.Color;
-                        objPbfGeneralTdpAdd.Engraving = item.Engraving;
-                        objPbfGeneralTdpAdd.Packaging = item.Packaging;
-                        objPbfGeneralTdpAdd.ShelfLife = item.ShelfLife;
-                        objPbfGeneralTdpAdd.StorageHandling = item.StorageHandling;
-                        objPbfGeneralTdpAdd.IsPrimaryPackaging = item.IsPrimaryPackaging;
-                        objPbfGeneralTdpAdd.IsSecondryPackaging = item.IsSecondryPackaging;
-                        objPbfGeneralTdpAdd.IsEmcure = IsEmcure;
-                        objPbfGeneralTdpAdd.CreatedDate = DateTime.Now;
-                        objPbfGeneralTdpAdd.CreatedBy = loggedInUserId;
-                        _PbfGeneralTdp.AddAsync(objPbfGeneralTdpAdd);
+                        await SaveTDTSection(emcure, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, item.Approch, true, emcure.PidfproductStrngthId, item.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[0].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[0].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[0].ShelfLife, pbfentity.PbfGeneralTdpEntity[0].StorageHandling, emcureFile, emcureuniqueFileName, path);
                     }
-                    index++;
                 }
 
                 await _unitOfWork.SaveChangesAsync();
@@ -1403,13 +1380,141 @@ namespace EmcureNPD.Business.Core.Implementation
                 return 0;
             }
             return pbfentity.Pidfpbfid;
+        }
 
-        }
-        private async Task<List<PbfGeneralTdpEntity>> GetTDT(long PIDFID)
+        private async Task SaveTDTSection(TdpSectionModel section, long pbfgeneralid, int loggedInUserId, long pidfid, string approch, bool isEmcure, long? PidfproductStrngthId,string FormulaterResponsiblePerson , string PrimaryPackaging, string SecondaryPackaging, string ShelfLife, string StorageHandling,IFormFile file,string filename, string path)
         {
-            var dbObj = await _PbfGeneralTdp.GetAllAsync(x => x.Pidfid == PIDFID);
-            return _mapperFactory.GetList<PbfGeneralTdp, PbfGeneralTdpEntity>(dbObj.OrderByDescending(x => x.TradeDressProposalId).ToList());
+            var objPbfGeneralTdp =  _PbfGeneralTdp.GetAllQuery()
+                .Where(x => x.TradeDressProposalId == section.TradeDressProposalId)
+                .FirstOrDefault();
+
+            if (objPbfGeneralTdp != null)
+            {
+                // Update existing record
+                objPbfGeneralTdp.Pidfid = pidfid;
+                objPbfGeneralTdp.Approch = approch;
+                objPbfGeneralTdp.PbfId = pidfid;
+                objPbfGeneralTdp.PidfpbfGeneralId = pbfgeneralid;
+                objPbfGeneralTdp.PidfproductStrngthId = PidfproductStrngthId;
+                objPbfGeneralTdp.FormulaterResponsiblePerson = FormulaterResponsiblePerson;
+                objPbfGeneralTdp.Description = section.Description;
+                objPbfGeneralTdp.Shape = section.Shape;
+                objPbfGeneralTdp.Color = section.Color;
+                objPbfGeneralTdp.Engraving = section.Engraving;
+                if (file != null && file.Length > 0)
+                {
+                    objPbfGeneralTdp.Packaging = filename;
+                    await FileUpload(file, path, filename);
+                }
+                else
+                {
+                    objPbfGeneralTdp.Packaging = null;
+                }
+                objPbfGeneralTdp.ShelfLife = ShelfLife;
+                objPbfGeneralTdp.StorageHandling = StorageHandling;
+                objPbfGeneralTdp.PrimaryPackaging = PrimaryPackaging;
+                objPbfGeneralTdp.SecondryPackaging = SecondaryPackaging;
+                objPbfGeneralTdp.IsEmcure = isEmcure;
+                objPbfGeneralTdp.CreatedDate = DateTime.Now;
+                objPbfGeneralTdp.CreatedBy = loggedInUserId;
+                _PbfGeneralTdp.UpdateAsync(objPbfGeneralTdp);
+            }
+            else
+            {
+                // Create a new record
+                PbfGeneralTdp objPbfGeneralTdpAdd = new();
+                objPbfGeneralTdpAdd.Pidfid = pidfid;
+                objPbfGeneralTdpAdd.Approch = approch;
+                objPbfGeneralTdpAdd.PbfId = pidfid;
+                objPbfGeneralTdpAdd.PidfpbfGeneralId = pbfgeneralid;
+                objPbfGeneralTdpAdd.PidfproductStrngthId = PidfproductStrngthId;
+                objPbfGeneralTdpAdd.FormulaterResponsiblePerson = FormulaterResponsiblePerson;
+                objPbfGeneralTdpAdd.Description = section.Description;
+                objPbfGeneralTdpAdd.Shape = section.Shape;
+                objPbfGeneralTdpAdd.Color = section.Color;
+                objPbfGeneralTdpAdd.Engraving = section.Engraving;
+                if (file != null && file.Length > 0)
+                {
+                    objPbfGeneralTdpAdd.Packaging = filename;
+                    await FileUpload(file, path, filename);
+                }
+                else
+                {
+                    objPbfGeneralTdpAdd.Packaging = null;
+                }
+                objPbfGeneralTdpAdd.ShelfLife = ShelfLife;
+                objPbfGeneralTdpAdd.StorageHandling = StorageHandling;
+                objPbfGeneralTdpAdd.PrimaryPackaging = PrimaryPackaging;
+                objPbfGeneralTdpAdd.SecondryPackaging = SecondaryPackaging;
+                objPbfGeneralTdpAdd.IsEmcure = isEmcure;
+                objPbfGeneralTdpAdd.CreatedDate = DateTime.Now;
+                objPbfGeneralTdpAdd.CreatedBy = loggedInUserId;
+                _PbfGeneralTdp.AddAsync(objPbfGeneralTdpAdd);
+            }
         }
+
+        private async Task<PbfGeneralTdpEntity> GetTDT(long PIDFID,string APIurl)
+        {
+         
+            var dbObj = await _PbfGeneralTdp.GetAllAsync(x => x.Pidfid == PIDFID);
+            if (dbObj.Count() > 0)
+            {
+                string baseURL = APIurl + "/Uploads/PIDF/TDP";
+                var innovatorfilename = dbObj.Where(x => x.IsEmcure == false).Select(x => x.Packaging).FirstOrDefault();
+                var innovatorfullPath = baseURL + "/" + innovatorfilename;
+                var innovatorData = dbObj
+                    .Where(x => x.IsEmcure == false)
+                    .Select(x => new TdpSectionModel
+                    {
+
+                        Description = x.Description,
+                        Shape = x.Shape,
+                        Color = x.Color,
+                        Engraving = x.Engraving,
+                        TradeDressProposalId = x.TradeDressProposalId,
+                        PackagingInnovator = (Convert.ToString(innovatorfilename) == "") ? "" : innovatorfullPath,
+                        IsEmcure = false
+
+                    })
+                    .ToList();
+                var emcurefilename = dbObj.Where(x => x.IsEmcure == true).Select(x => x.Packaging).FirstOrDefault();
+                var emcurefullPath = baseURL + "/" + emcurefilename;
+                var emcureData = dbObj
+                    .Where(x => x.IsEmcure == true)
+                    .Select(x => new TdpSectionModel
+                    {
+
+                        Description = x.Description,
+                        Shape = x.Shape,
+                        Color = x.Color,
+                        Engraving = x.Engraving,
+                        TradeDressProposalId = x.TradeDressProposalId,
+                        PackagingEmcure = (Convert.ToString(emcurefilename) == "") ? "" : emcurefullPath,
+                        IsEmcure = true
+                    })
+                    .ToList();
+
+                var tdpEntity = new PbfGeneralTdpEntity
+                {
+                    PidfproductStrngthId = dbObj.FirstOrDefault().PidfproductStrngthId,
+                    FormulaterResponsiblePerson = dbObj.FirstOrDefault().FormulaterResponsiblePerson,
+                    Approch = dbObj.FirstOrDefault().FormulaterResponsiblePerson,
+                    PrimaryPackaging = dbObj.FirstOrDefault().PrimaryPackaging,
+                    SecondaryPackaging = dbObj.FirstOrDefault().SecondryPackaging,
+                    ShelfLife = dbObj.FirstOrDefault().ShelfLife,
+                    StorageHandling = dbObj.FirstOrDefault().StorageHandling,
+                    InnovatorData = innovatorData,
+                    EmcureData = emcureData
+                };
+
+                return tdpEntity;
+            }
+            else
+            {
+                return new PbfGeneralTdpEntity();
+            }
+        }
+
         public async Task<long> SavePidfAndPBFCommanDetailsnew(long pidfid, PBFFormEntity pbfentity)
         {
             long pidfpbfid = 0;
@@ -1422,7 +1527,6 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
                 PidfPbf objPIDFPbf;
-                Pidf objPIDFupdate;
                 objPIDFPbf = _pbfRepository.GetAllQuery().Where(x => x.Pidfid == pbfentity.Pidfid).FirstOrDefault();
                 var OldPBFEntity = _mapperFactory.Get<PidfPbf, PBFFormEntity>(objPIDFPbf);
                 if (objPIDFPbf != null)
@@ -2198,7 +2302,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        public async Task<long> SavePidfAndPBFCommanDetailsnew1(long pidfid, PBFFormEntity pbfentity)
+        public async Task<long> SavePidfAndPBFCommanDetailsnew1(long pidfid, PBFFormEntity pbfentity, IFormFileCollection files, string _webrootPath)
         {
             long pidfpbfid = 0;
             long pbfgeneralid = 0;
@@ -2733,7 +2837,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //await SavePackSizeStability(pbfentity, pbfgeneralid);
                 #endregion
                 #region TDT
-                //await SaveTDT(pbfentity, pbfgeneralid);
+                await SaveTDT(pbfentity, pbfgeneralid,files,_webrootPath);
                 #endregion
                 return pbfgeneralid;
             }

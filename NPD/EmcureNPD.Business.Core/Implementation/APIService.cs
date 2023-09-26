@@ -312,7 +312,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var loggedInUser = _helper.GetLoggedInUser();
             bool hasNewUploadFile = true;
             string uniqueFileName = "";
-            string ErrorMsg = "";
+            
 
             _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
             dynamic jsonObject = JsonConvert.DeserializeObject(Data);
@@ -332,8 +332,8 @@ namespace EmcureNPD.Business.Core.Implementation
                                 + Guid.NewGuid().ToString().Substring(0, 4)
                                 + Path.GetExtension(MarketCGIFile.FileName);
 
-                var fullPath = path + "\\" + MarketCGIFile.FileName;
-                var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
+                //var fullPath = path + "\\" + MarketCGIFile.FileName;
+                //var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
 
                 // ErrorMsg = FileValidation(MarketCGIFile);
             }

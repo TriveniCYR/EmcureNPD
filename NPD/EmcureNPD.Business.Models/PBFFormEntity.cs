@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Resource.Resources;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -358,27 +359,60 @@ namespace EmcureNPD.Business.Models
     }
     #endregion
     #region TDT
+    //public class PbfGeneralTdpEntity
+    //{
+    //    public long TradeDressProposalId { get; set; }
+    //    public string Approch { get; set; }
+    //    public long? Pidfid { get; set; }
+    //    public long? PbfId { get; set; }
+    //    public long? PidfpbfGeneralId { get; set; }
+    //    public long? PidfproductStrngthId { get; set; }
+    //    public string Description { get; set; }
+    //    public string Shape { get; set; }
+    //    public string Color { get; set; }
+    //    public string Engraving { get; set; }
+    //    public string Packaging { get; set; }
+    //    public bool? IsPrimaryPackaging { get; set; }
+    //    public bool? IsSecondryPackaging { get; set; }
+    //    public string ShelfLife { get; set; }
+    //    public string StorageHandling { get; set; }
+    //    public bool? IsEmcure { get; set; }
+    //    public DateTime CreatedDate { get; set; }
+    //    public int? CreatedBy { get; set; }
+    //    public string FormulaterResponsiblePerson { get; set; }
+    //}
+
     public class PbfGeneralTdpEntity
     {
-        public long TradeDressProposalId { get; set; }
-        public string Approch { get; set; }
-        public long? Pidfid { get; set; }
-        public long? PbfId { get; set; }
-        public long? PidfpbfGeneralId { get; set; }
         public long? PidfproductStrngthId { get; set; }
+        public List<TdpSectionModel> InnovatorData { get; set; }
+        public List<TdpSectionModel> EmcureData { get; set; }
+        public string FormulaterResponsiblePerson { get; set; }
+        public string Approch { get; set; }
+        public string PrimaryPackaging { get; set; }
+        public string SecondaryPackaging { get; set; }
+        public string ShelfLife { get; set; }
+        public string StorageHandling { get; set; }
+        public IFormFile InnovatorImage { get; set; }
+        public IFormFile EmcureImage { get; set; }
+   
+
+    }
+
+    public class TdpSectionModel
+    {
+        public long? PidfproductStrngthId { get; set; }
+        public string PackagingEmcure { get; set; }
+        public string PackagingInnovator { get; set; }
         public string Description { get; set; }
         public string Shape { get; set; }
         public string Color { get; set; }
         public string Engraving { get; set; }
-        public string Packaging { get; set; }
-        public bool? IsPrimaryPackaging { get; set; }
-        public bool? IsSecondryPackaging { get; set; }
-        public string ShelfLife { get; set; }
-        public string StorageHandling { get; set; }
         public bool? IsEmcure { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int? CreatedBy { get; set; }
-        public string FormulaterResponsiblePerson { get; set; }
+        public long TradeDressProposalId { get; set; }
+
     }
+
+
     #endregion
 }
