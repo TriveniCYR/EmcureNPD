@@ -25,7 +25,7 @@ namespace EmcureNPD.Web.Controllers
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private readonly IHelper _helper;
-
+        
         #endregion Properties
 
         public PBFController(IConfiguration configuration,
@@ -35,6 +35,7 @@ namespace EmcureNPD.Web.Controllers
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
             _helper = helper;
+            
         }
 
         public IActionResult PIDFList()
@@ -519,6 +520,15 @@ namespace EmcureNPD.Web.Controllers
                 {
                     string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
                     var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
+                    oPBForm.RFDApplicant = retPIDF._object.RFDApplicant;
+                    oPBForm.RFDCountryId=(Int32)retPIDF._object.RFDCountryId;
+                    oPBForm.RFDIndication= retPIDF._object.RFDIndication;
+                    oPBForm.RFDInnovators=retPIDF._object.RFDInnovators;
+                    oPBForm.BrandName= retPIDF._object.RFDBrand;
+                    oPBForm.RFDPriceDiscounting = retPIDF._object.RFDPriceDiscounting;
+                    oPBForm.RFDInitialRevenuePotential = retPIDF._object.RFDInitialRevenuePotential;
+                    oPBForm.RFDCommercialBatchSize = retPIDF._object.RFDCommercialBatchSize;
+
                 }
             }
             oPBForm.BusinessUnitsByUser = _helper.GetAssignedBusinessUnit();
