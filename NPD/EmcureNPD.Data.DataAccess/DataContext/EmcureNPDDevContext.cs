@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
+
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -18,6 +19,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         {
         }
 
+        public virtual DbSet<DboMasterManageUser> DboMasterManageUsers { get; set; }
         public virtual DbSet<MasterActivityType> MasterActivityTypes { get; set; }
         public virtual DbSet<MasterAnalytical> MasterAnalyticals { get; set; }
         public virtual DbSet<MasterApiCharterAnalyticalDepartment> MasterApiCharterAnalyticalDepartments { get; set; }
@@ -91,6 +93,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterUserRegionMapping> MasterUserRegionMappings { get; set; }
         public virtual DbSet<MasterWishListType> MasterWishListTypes { get; set; }
         public virtual DbSet<MasterWorkFlowTask> MasterWorkFlowTasks { get; set; }
+        public virtual DbSet<MasterWorkFlowTask1> MasterWorkFlowTasks1 { get; set; }
         public virtual DbSet<MasterWorkflow> MasterWorkflows { get; set; }
         public virtual DbSet<PbfGeneralTdp> PbfGeneralTdps { get; set; }
         public virtual DbSet<Pidf> Pidfs { get; set; }
@@ -117,6 +120,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfFinanceProjection> PidfFinanceProjections { get; set; }
         public virtual DbSet<PidfIpd> PidfIpds { get; set; }
         public virtual DbSet<PidfIpdCountry> PidfIpdCountries { get; set; }
+        public virtual DbSet<PidfIpdGeneral> PidfIpdGenerals { get; set; }
         public virtual DbSet<PidfIpdPatentDetail> PidfIpdPatentDetails { get; set; }
         public virtual DbSet<PidfIpdRegion> PidfIpdRegions { get; set; }
         public virtual DbSet<PidfManagementApprovalStatusHistory> PidfManagementApprovalStatusHistories { get; set; }
@@ -177,6 +181,19 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         {
             modelBuilder.HasDefaultSchema("emcurenpddev_dbUser")
                 .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<DboMasterManageUser>(entity =>
+            {
+                entity.HasKey(e => e.UserId);
+
+                entity.ToTable("dbo.Master_ManageUser");
+
+                entity.Property(e => e.FullName).HasMaxLength(50);
+
+                entity.Property(e => e.MobileNumber).HasMaxLength(15);
+
+                entity.Property(e => e.Password).HasMaxLength(50);
+            });
 
             modelBuilder.Entity<MasterActivityType>(entity =>
             {
@@ -1246,12 +1263,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.MasterUsers)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Master_User_Master_Role");
             });
 
             modelBuilder.Entity<MasterUserBusinessUnitMapping>(entity =>
@@ -1363,6 +1374,22 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             modelBuilder.Entity<MasterWorkFlowTask>(entity =>
             {
                 entity.HasKey(e => e.TaskId)
+                    .HasName("PK__Master_W__7C6949B16ABC543B");
+
+                entity.ToTable("Master_WorkFlow_Tasks", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IsActive).HasColumnName("isActive");
+
+                entity.Property(e => e.TaskName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<MasterWorkFlowTask1>(entity =>
+            {
+                entity.HasKey(e => e.TaskId)
                     .HasName("PK__Master_W__7C6949B1D5008284");
 
                 entity.ToTable("Master_WorkFlowTasks", "dbo");
@@ -1376,7 +1403,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Workflow)
-                    .WithMany(p => p.MasterWorkFlowTasks)
+                    .WithMany(p => p.MasterWorkFlowTask1s)
                     .HasForeignKey(d => d.WorkflowId)
                     .HasConstraintName("FK__Master_Wo__Workf__1CE7F9F6");
             });
@@ -2419,6 +2446,41 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_IPD_Country_PIDF_IPD");
             });
 
+            modelBuilder.Entity<PidfIpdGeneral>(entity =>
+            {
+                entity.ToTable("PIDF_IPD_General", "dbo");
+
+                entity.Property(e => e.PidfIpdGeneralId).HasColumnName("PIDF_IPD_General_Id");
+
+                entity.Property(e => e.ApprovedGenetics).HasMaxLength(100);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DataExclusivity).HasMaxLength(200);
+
+                entity.Property(e => e.ExpectedFilingDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ExpectedLaunchDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Ipdid).HasColumnName("IPDID");
+
+                entity.Property(e => e.LaunchedGenetics).HasMaxLength(100);
+
+                entity.Property(e => e.LegalStatus).HasMaxLength(100);
+
+                entity.Property(e => e.MarketExclusivityDate).HasColumnType("datetime");
+
+                entity.Property(e => e.MarketName).HasMaxLength(200);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Ipd)
+                    .WithMany(p => p.PidfIpdGenerals)
+                    .HasForeignKey(d => d.Ipdid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_IPD_General_IPDID");
+            });
+
             modelBuilder.Entity<PidfIpdPatentDetail>(entity =>
             {
                 entity.HasKey(e => e.PatentDetailsId);
@@ -2450,6 +2512,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.PatentNumber).HasMaxLength(50);
 
                 entity.Property(e => e.PatentStrategyOther).HasMaxLength(100);
+
+                entity.Property(e => e.PidfIpdGeneralId).HasColumnName("PIDF_IPD_General_Id");
 
                 entity.Property(e => e.StimatedNumberofgenericsinthe)
                     .HasMaxLength(100)

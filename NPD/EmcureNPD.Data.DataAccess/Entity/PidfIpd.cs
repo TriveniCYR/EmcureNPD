@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public PidfIpd()
         {
             PidfIpdCountries = new HashSet<PidfIpdCountry>();
+            PidfIpdGenerals = new HashSet<PidfIpdGeneral>();
             PidfIpdPatentDetails = new HashSet<PidfIpdPatentDetail>();
             PidfIpdRegions = new HashSet<PidfIpdRegion>();
         }
@@ -37,6 +38,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual Pidf Pidf { get; set; }
         public virtual ICollection<PidfIpdCountry> PidfIpdCountries { get; set; }
+        public virtual ICollection<PidfIpdGeneral> PidfIpdGenerals { get; set; }
         public virtual ICollection<PidfIpdPatentDetail> PidfIpdPatentDetails { get; set; }
         public virtual ICollection<PidfIpdRegion> PidfIpdRegions { get; set; }
     }

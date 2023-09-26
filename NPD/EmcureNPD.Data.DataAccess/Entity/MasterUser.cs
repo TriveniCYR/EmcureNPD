@@ -45,7 +45,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? MobileCountryId { get; set; }
         public bool? ApigroupLeader { get; set; }
 
-        public virtual MasterRole Role { get; set; }
         public virtual ICollection<MasterNotificationUser> MasterNotificationUsers { get; set; }
         public virtual ICollection<MasterUserBusinessUnitMapping> MasterUserBusinessUnitMappings { get; set; }
         public virtual ICollection<MasterUserCountryMapping> MasterUserCountryMappings { get; set; }

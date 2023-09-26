@@ -201,7 +201,7 @@ function InitializePIDFList() {
                         html += '<a class="ml-1 large-font" href="' + _PIDFForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                     }
                 } else if (_screenId == "2") {
-                    var _IPDForm = '/IPD/IPD?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '&ipd=' + row.ipd;   
+                    var _IPDForm = '/IPD/IPD?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '&ipd=' + row.ipd;
 
                     var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6 || row.pidfStatusID == 9 || row.pidfStatusID == 7 || (row.pidfStatusID > 8 && row.pidfStatusID <18));
                     if (IsEditIPD || IsAddIPD) {
@@ -225,7 +225,7 @@ function InitializePIDFList() {
                     var _CommercialForm = '/Commercial/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '&commercial=' + row.commercial + '&pbf=' + row.pbf;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15 || row.pidfStatusID == 16 || row.pidfStatusID == 17 || (row.pidfStatusID > 11 && row.pidfStatusID < 18));//|| row.pidfStatusID == 9
                     if (IsEditCommercial || IsAddCommercial) {
-                        html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _CommercialForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                        html += '<a class="large-font commercial" id="' + row.pidfStatusID + '" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _CommercialForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
                     }
                     var _enableView = (row.pidfStatusID > 7);
                     if (IsViewCommercial) {

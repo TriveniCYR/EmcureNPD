@@ -46,6 +46,8 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterCountry> _countryrepository { get; set; }
         private IRepository<MasterPatentStrategy> _patentStrategyrepository { get; set; }
         private IRepository<MasterUserCountryMapping> _masterUserCountryMappingrepository { get; set; }
+
+        private IRepository<PidfIpdGeneral> _pidfIPDGeneralrepository { get; set; }
         private IRepository<PidfstatusHistory> _pidfstatusHistoryRepository { get; set; }
         private readonly IHelper _helper;
 
@@ -77,6 +79,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _masterUserCountryMappingrepository = _unitOfWork.GetRepository<MasterUserCountryMapping>();
             _patentStrategyrepository = _unitOfWork.GetRepository<MasterPatentStrategy>();
             _pidfstatusHistoryRepository = _unitOfWork.GetRepository<PidfstatusHistory>();
+            _pidfIPDGeneralrepository = _unitOfWork.GetRepository<PidfIpdGeneral>();
         }
 
         public async Task<IPDEntity> FillDropdown()
@@ -95,11 +98,12 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<DBOperation> AddUpdateIPD(IPDEntity entityIPD)
         {
             //PidfIpd objIPD = await _repository.GetAsync(x=>x.BusinessUnitId== entityIPD.SelectedTabBusinessUnit && x.Pidfid== entityIPD.PIDFID);
-            PidfIpd objIPD;
-            IPDEntity oldIPDFEntity;
+            PidfIpd objIPD = new PidfIpd();
+            
+            IPDEntity oldIPDFEntity = new IPDEntity();
             if (entityIPD.IPDID > 0)
             {
-                objIPD = await _repository.GetAsync(entityIPD.IPDID);
+                objIPD = await _repository.GetAsync(x=>x.Pidfid==entityIPD.PIDFID && x.BusinessUnitId == entityIPD.BusinessUnitId);
                 if (objIPD != null)
                 {
                     entityIPD.ModifyBy = Convert.ToInt32(entityIPD.CreatedBy);
@@ -112,43 +116,82 @@ namespace EmcureNPD.Business.Core.Implementation
                     oldIPDFEntity.ProjectName = entityIPD.ProjectName;
 
                     objIPD = _mapperFactory.Get<IPDEntity, PidfIpd>(entityIPD);
-
                     _repository.UpdateAsync(objIPD);
+                    await _unitOfWork.SaveChangesAsync();
+                   
+                }
+                else
+                {
+                    objIPD = _mapperFactory.Get<IPDEntity, PidfIpd>(entityIPD);
+                    objIPD.Ipdid = 0;
+                    objIPD.Pidfid = entityIPD.PIDFID;
+                    objIPD.Innovators = entityIPD.Innovators;
+                    objIPD.PatentStatus = entityIPD.PatentStatus;
+                    objIPD.CreatedBy = _helper.GetLoggedInUser().UserId;
+                    objIPD.CreatedDate = DateTime.Now;
+                    _repository.AddAsync(objIPD);
 
                     await _unitOfWork.SaveChangesAsync();
+                  
+                }
+                var dbobjIPDGeneral = await _pidfIPDGeneralrepository.GetAsync(x => x.Ipdid == objIPD.Ipdid && x.CountryId == entityIPD.SelectedCountryId);
+                    var newobj = new PidfIpdGeneral();
+                    if (dbobjIPDGeneral != null)
+                    {
+                        newobj = _mapperFactory.Get<IPDEntity, PidfIpdGeneral>(entityIPD);
+                        newobj.PidfIpdGeneralId = dbobjIPDGeneral.PidfIpdGeneralId;
+                        newobj.CountryId = entityIPD.SelectedCountryId;
+                        // newobj.Ipdid = objIPD.Ipdid;
+                        _pidfIPDGeneralrepository.UpdateAsync(newobj);
+                        await _unitOfWork.SaveChangesAsync();
+
+                        if (entityIPD.pidf_IPD_PatentDetailsEntities != null && entityIPD.pidf_IPD_PatentDetailsEntities.Count() > 0)
+                        {
+                            var productStrengthList = _ipdParentRepository.GetAllQuery().Where(x => x.PidfIpdGeneralId == dbobjIPDGeneral.PidfIpdGeneralId);
+                            oldIPDFEntity.pidf_IPD_PatentDetailsEntities = new List<PIDF_IPD_PatentDetailsEntity>();
+                            foreach (var item in productStrengthList)
+                            {
+                                oldIPDFEntity.pidf_IPD_PatentDetailsEntities.Add(_mapperFactory.Get<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(item));
+                                _ipdParentRepository.Remove(item);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        newobj = _mapperFactory.Get<IPDEntity, PidfIpdGeneral>(entityIPD);
+                        newobj.PidfIpdGeneralId = 0;
+                        newobj.CountryId = entityIPD.SelectedCountryId;
+                        newobj.Ipdid = objIPD.Ipdid;
+                        _pidfIPDGeneralrepository.AddAsync(newobj);
+                        await _unitOfWork.SaveChangesAsync();
+                    }
 
                     if (entityIPD.pidf_IPD_PatentDetailsEntities != null && entityIPD.pidf_IPD_PatentDetailsEntities.Count() > 0)
                     {
-                        var productStrengthList = _ipdParentRepository.GetAllQuery().Where(x => x.Ipdid == entityIPD.IPDID);
-                        oldIPDFEntity.pidf_IPD_PatentDetailsEntities = new List<PIDF_IPD_PatentDetailsEntity>();
-                        foreach (var item in productStrengthList)
-                        {
-                            oldIPDFEntity.pidf_IPD_PatentDetailsEntities.Add(_mapperFactory.Get<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(item));
-                            _ipdParentRepository.Remove(item);
-                        }
-
                         foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntities)
                         {
-                            if (item.CountryId != null)
-                            {
-                                PidfIpdPatentDetail pidf_ipd_PDetail;
-                                item.IPDID = objIPD.Ipdid;
-                                pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
-                                pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatenDetailsForFormulation;
-                                _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
-                            }
+
+                            PidfIpdPatentDetail pidf_ipd_PDetail;
+                            pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
+                            pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatenDetailsForFormulation;
+                            pidf_ipd_PDetail.PidfIpdGeneralId = newobj.PidfIpdGeneralId;
+                            pidf_ipd_PDetail.Ipdid = objIPD.Ipdid;
+                            pidf_ipd_PDetail.CountryId = entityIPD.SelectedCountryId;
+                            _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+
                         }
-                        foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntitiesAPI)
-                        {
-                            if (item.CountryId != null)
-                            {
-                                PidfIpdPatentDetail pidf_ipd_PDetail;
-                                item.IPDID = objIPD.Ipdid;
-                                pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
-                                pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatientDetailsForAPI;
-                                _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
-                            }
-                        }
+                        //foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntitiesAPI)
+                        //{
+                        //    if (item.CountryId != null)
+                        //    {
+                        //        PidfIpdPatentDetail pidf_ipd_PDetail;
+                        //        item.IPDID = objIPD.Ipdid;
+                        //        pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
+                        //        pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatientDetailsForAPI;
+                        //        _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+                        //    }
+                        //}
                         await _unitOfWork.SaveChangesAsync();
                     }
                     if (!string.IsNullOrEmpty(entityIPD.RegionIds))
@@ -202,11 +245,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     var isSuccess = await _auditLogService.CreateAuditLog<IPDEntity>(Utility.Audit.AuditActionType.Update,
                        ModuleEnum.IPD, oldIPDFEntity, entityIPD, Convert.ToInt32(entityIPD.IPDID));
-                }
-                else
-                {
-                    return DBOperation.NotFound;
-                }
+              
             }
             else
             {
@@ -224,41 +263,50 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 var id = objIPD.Ipdid;
 
+                var newobj = new PidfIpdGeneral();
+                newobj = _mapperFactory.Get<IPDEntity, PidfIpdGeneral>(entityIPD);
+                newobj.PidfIpdGeneralId = 0;
+                newobj.CountryId = entityIPD.SelectedCountryId;
+                newobj.Ipdid = objIPD.Ipdid;
+                _pidfIPDGeneralrepository.AddAsync(newobj);
+                await _unitOfWork.SaveChangesAsync();
+
                 if (entityIPD.pidf_IPD_PatentDetailsEntities != null && entityIPD.pidf_IPD_PatentDetailsEntities.Count() > 0)
                 {
                     oldIPDFEntity.pidf_IPD_PatentDetailsEntities = new List<PIDF_IPD_PatentDetailsEntity>();
                     foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntities)
                     {
-                        if (item.CountryId != null)
-                        {
-                            PidfIpdPatentDetail pidf_ipd_PDetail;
-                            item.IPDID = id;
-                            pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
-                            pidf_ipd_PDetail.Ipdid = id;
-                            pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatenDetailsForFormulation;
-                            _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
-                        }
+
+                        PidfIpdPatentDetail pidf_ipd_PDetail;
+
+                        pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
+                        pidf_ipd_PDetail.PidfIpdGeneralId = newobj.PidfIpdGeneralId;
+                        pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatenDetailsForFormulation;
+                        pidf_ipd_PDetail.Ipdid = id;
+                        pidf_ipd_PDetail.CountryId = entityIPD.SelectedCountryId;
+                        _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
                 //For PAtent Details API
-                if (entityIPD.pidf_IPD_PatentDetailsEntitiesAPI != null && entityIPD.pidf_IPD_PatentDetailsEntitiesAPI.Count() > 0)
-                {
-                    oldIPDFEntity.pidf_IPD_PatentDetailsEntitiesAPI = new List<PIDF_IPD_PatentDetailsEntity>();
-                    foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntitiesAPI)
-                    {
-                        if (item.CountryId != null)
-                        {
-                            PidfIpdPatentDetail pidf_ipd_PDetail;
-                            item.IPDID = id;
-                            pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
-                            pidf_ipd_PDetail.Ipdid = id;
-                            pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatientDetailsForAPI;
-                            _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
-                        }
-                    }
-                    await _unitOfWork.SaveChangesAsync();
-                }
+                //if (entityIPD.pidf_IPD_PatentDetailsEntitiesAPI != null && entityIPD.pidf_IPD_PatentDetailsEntitiesAPI.Count() > 0)
+                //{
+                //    oldIPDFEntity.pidf_IPD_PatentDetailsEntitiesAPI = new List<PIDF_IPD_PatentDetailsEntity>();
+                //    foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntitiesAPI)
+                //    {
+                //        if (item.CountryId != null)
+                //        {
+                //            PidfIpdPatentDetail pidf_ipd_PDetail;
+                //            item.IPDID = id;
+                //            pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
+                //            pidf_ipd_PDetail.Ipdid = id;
+                //            pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatientDetailsForAPI;
+                //            _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+                //        }
+                //    }
+                //    await _unitOfWork.SaveChangesAsync();
+                //}
                 if (!string.IsNullOrEmpty(entityIPD.RegionIds))
                 {
                     var regionRemove = _ipdRegionRepository.GetAllQuery().Where(x => x.Ipdid == entityIPD.IPDID);
@@ -320,11 +368,11 @@ namespace EmcureNPD.Business.Core.Implementation
             return DBOperation.Success;
         }
 
-        public async Task<IPDEntity> GetIPDFormData(long pidfId, int buid)
+        public async Task<IPDEntity> GetIPDFormData(long pidfId, int buid, int countryId)
         {
             Expression<Func<PidfIpd, bool>> expr = (buid == -1) ? u => u.Pidfid == pidfId : u => u.BusinessUnitId == buid && u.Pidfid == pidfId;
 
-            var dynamicObj = (DataTable) await GetCountryByIsInterestedCountry(buid.ToString(), pidfId.ToString()); // Business ID hardcoded to 1
+            var dynamicObj = (DataTable)await GetCountryByIsInterestedCountry(buid.ToString(), pidfId.ToString()); // Business ID hardcoded to 1
             List<MasterCountryEntity> CountryListForPatentDetails = dynamicObj.DataTableToList<MasterCountryEntity>();
             //data.pidf_IPD_PatentDetailsCountries = CountryListForPatentDetails;
             List<PIDF_IPD_PatentDetailsEntity> objPatentDetails = new();
@@ -332,33 +380,57 @@ namespace EmcureNPD.Business.Core.Implementation
             IPDEntity data = new IPDEntity();
             if (objData != null && objData.Count > 0)
             {
-                data = _mapperFactory.Get<PidfIpd, IPDEntity>(objData[0]);
-                data.pidf_IPD_PatentDetailsEntities = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID && x.PatentType == (short?)IPDPatenDetailsType.PatenDetailsForFormulation).ToList());
-                data.pidf_IPD_PatentDetailsEntitiesAPI = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID && x.PatentType == (short?)IPDPatenDetailsType.PatientDetailsForAPI).ToList());
-                data.RegionIds = string.Join(",", _ipdRegionRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.RegionId.ToString()));
-                data.RegionId = data.RegionIds;
-                data.CountryIds = string.Join(",", _ipdCountryRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.CountryId.ToString()));
-                data.CountryId = data.RegionIds;
-
-
-            }
-            if (CountryListForPatentDetails != null && CountryListForPatentDetails.Count > 0)
-            {
-                foreach (var country in CountryListForPatentDetails)
+                PidfIpdGeneral _ObjIpdGeneral;
+                IPDEntity ipdmaindata = _mapperFactory.Get<PidfIpd, IPDEntity>(objData[0]);
+                if (countryId == 0)
+                    _ObjIpdGeneral = _pidfIPDGeneralrepository.Get(x => x.Ipdid == ipdmaindata.IPDID);
+                else
+                    _ObjIpdGeneral = _pidfIPDGeneralrepository.Get(x => x.Ipdid == ipdmaindata.IPDID && x.CountryId == countryId);
+                if (_ObjIpdGeneral != null)
                 {
-                    var listitem = new PIDF_IPD_PatentDetailsEntity();
-                    listitem.CountryId = country.CountryId;
-                    objPatentDetails.Add(listitem);
+                    data = _mapperFactory.Get<PidfIpdGeneral, IPDEntity>(_ObjIpdGeneral);
+
+                    data.pidf_IPD_PatentDetailsEntities = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAllQuery().Where(x => x.PidfIpdGeneralId == _ObjIpdGeneral.PidfIpdGeneralId && x.CountryId == _ObjIpdGeneral.CountryId && x.PatentType == (short?)IPDPatenDetailsType.PatenDetailsForFormulation).ToList());
+                    //data.ProjectName= objData[0].ProjectName;
+                    data.Innovators = objData[0].Innovators;
+                    data.PatentStatus = objData[0].PatentStatus;
+
+                    data.pidf_IPD_PatentDetailsEntitiesAPI = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID && x.PatentType == (short?)IPDPatenDetailsType.PatientDetailsForAPI).ToList());
+                    data.RegionIds = string.Join(",", _ipdRegionRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.RegionId.ToString()));
+                    data.RegionId = data.RegionIds;
+                    data.CountryIds = string.Join(",", _ipdCountryRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.CountryId.ToString()));
+                    data.CountryId = data.RegionIds;
+                }
+                data.Innovators = ipdmaindata.Innovators;
+                data.PatentStatus = ipdmaindata.PatentStatus;
+                data.IPDID = ipdmaindata.IPDID;
+            }
+            else
+            {
+                PidfIpd ExstingIPDObj = _repository.Get(x => x.Pidfid == pidfId);
+                if (ExstingIPDObj != null)
+                {
+                    data.IPDID = ExstingIPDObj.Ipdid;
                 }
             }
-            if(data.pidf_IPD_PatentDetailsEntities==null || data.pidf_IPD_PatentDetailsEntities.Count == 0)
+                //if (CountryListForPatentDetails != null && CountryListForPatentDetails.Count > 0)
+                //{
+                //    foreach (var country in CountryListForPatentDetails)
+                //    {
+                //        var listitem = new PIDF_IPD_PatentDetailsEntity();
+                //        listitem.CountryId = country.CountryId;
+                //        objPatentDetails.Add(listitem);
+                //    }
+                //}
+                if (data.pidf_IPD_PatentDetailsEntities == null || data.pidf_IPD_PatentDetailsEntities.Count == 0)
             {
-                data.pidf_IPD_PatentDetailsEntities = objPatentDetails;
+                List<PIDF_IPD_PatentDetailsEntity> _obj = new List<PIDF_IPD_PatentDetailsEntity>() { new PIDF_IPD_PatentDetailsEntity() };
+                data.pidf_IPD_PatentDetailsEntities = _obj;
             }
-            if (data.pidf_IPD_PatentDetailsEntitiesAPI == null || data.pidf_IPD_PatentDetailsEntitiesAPI.Count == 0)
-            {
-                data.pidf_IPD_PatentDetailsEntitiesAPI = objPatentDetails;
-            }
+            //if (data.pidf_IPD_PatentDetailsEntitiesAPI == null || data.pidf_IPD_PatentDetailsEntitiesAPI.Count == 0)
+            //{
+            //    data.pidf_IPD_PatentDetailsEntitiesAPI = objPatentDetails;
+            //}
 
             data.MasterBusinessUnitEntities = _mapperFactory.GetList<MasterBusinessUnit, MasterBusinessUnitEntity>
                 (_businessUnitrepository.GetAllQuery().Where(xx => xx.IsActive).ToList());
@@ -476,7 +548,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
             var TotalCount = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalCount"]) : 0);
 
-            List<MasterCountryEntity> objList = PIDFList.DataTableToList<MasterCountryEntity>();            
+            List<MasterCountryEntity> objList = PIDFList.DataTableToList<MasterCountryEntity>();
 
             return objList;
         }
@@ -817,7 +889,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return DropdownObjects;
         }
-        public async Task<dynamic> GetCountryByIsInterestedCountry(string BUId,string PidfId)
+        public async Task<dynamic> GetCountryByIsInterestedCountry(string BUId, string PidfId)
         {
             dynamic DropdownObjects = new ExpandoObject();
             SqlParameter[] osqlParameter = {

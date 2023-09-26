@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -50,6 +51,9 @@ namespace EmcureNPD.Web.Controllers
             PIDFCommercialEntity oPIDForm = new();
             try
             {
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+
                 //if (!(IsView == 1))
                 //{
                 //    string PIDFID = UtilityHelper.Decreypt(pidfid);
@@ -71,6 +75,13 @@ namespace EmcureNPD.Web.Controllers
                 oPIDForm = GetPIDFCommercialModel(pidfid, bui);
                 oPIDForm.IsView = (IsView == null) ? 0 : (int)IsView;
                 oPIDForm._Partial = _Partial;
+                HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + oPIDForm.Pidfid, HttpMethod.Get, token).Result;
+                if (responseMS.IsSuccessStatusCode)
+                {
+                    string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
+                    var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
+                    ViewBag.PIDFID = retPIDF._object.StatusId;
+                }
                 return View(oPIDForm);
             }
             catch (Exception e)

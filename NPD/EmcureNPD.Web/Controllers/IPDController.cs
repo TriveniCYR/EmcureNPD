@@ -6,6 +6,7 @@ using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
@@ -38,12 +39,19 @@ namespace EmcureNPD.Web.Controllers
 
         //[Route("IPD/IPD")]
         [HttpGet]
-        public IActionResult IPD(string pidfid, string bui, bool _Partial = false, bool IsViewMode = false)
+        public IActionResult IPD(string pidfid, string bui, string countryid, bool _Partial = false, bool IsViewMode = false)
         {
             ModelState.Clear();
             IPDEntity oIPD = new();
             try
             {
+                IPDEntity oIPD_New = new();
+                List<SelectListItem> _PatenStatus = new List<SelectListItem>();
+                _PatenStatus.Add(new SelectListItem() { Text = "Generic", Value = "Generic" });
+                _PatenStatus.Add(new SelectListItem() { Text = "Patented", Value = "Patented" });
+
+                oIPD_New.PatenStatusList = _PatenStatus;
+
                 string IsView = HttpContext.Request.Query["IsView"];
                 //if (!IsViewMode && !(IsView == "1"))
                 //{
@@ -73,9 +81,11 @@ namespace EmcureNPD.Web.Controllers
                 else
                     bussnessId = UtilityHelper.Decreypt(bui);
 
-                oIPD = GetModelForIPDForm(pidfid, bussnessId);
+                oIPD = GetModelForIPDForm(pidfid, bussnessId, countryid);
                 oIPD._Partial = _Partial;
                 oIPD.IsViewMode = IsViewMode;
+
+                oIPD.PatenStatusList = oIPD_New.PatenStatusList;
                 return View(oIPD);
             }
             catch (Exception e)
@@ -87,7 +97,7 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult IPDPartial(long pidfid, int bui)
+        public IActionResult IPDPartial(long pidfid, int bui, int? countryid)
         {
             IPDEntity oIPD = new();
             try
@@ -100,7 +110,7 @@ namespace EmcureNPD.Web.Controllers
                 //}
                 ViewBag.Access = objPermssion;
 
-                oIPD = GetModelForIPDForm(pidfid.ToString(), bui.ToString());
+                oIPD = GetModelForIPDForm(pidfid.ToString(), bui.ToString(), countryid.ToString());
 
                 return PartialView("_IPDPartial", oIPD);
             }
@@ -113,14 +123,15 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction] // Get Model for View IPD.cshtml
-        private IPDEntity GetModelForIPDForm(string pidfid, string bussnessId)
+        private IPDEntity GetModelForIPDForm(string pidfid, string bussnessId, string countryId)
         {
             IPDEntity oIPD = new();
             try
             {
+                countryId = (countryId ==null)? "0" : countryId;
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetIPDFormData + "/" + pidfid + "/" + bussnessId, HttpMethod.Get, token).Result;
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetIPDFormData + "/" + pidfid + "/" + bussnessId + "/" + countryId, HttpMethod.Get, token).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;

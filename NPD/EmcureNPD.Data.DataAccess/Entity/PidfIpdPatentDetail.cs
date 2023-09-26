@@ -27,6 +27,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? CountryId { get; set; }
         public int? PatentStrategy { get; set; }
         public string PatentStrategyOther { get; set; }
+        public long? PidfIpdGeneralId { get; set; }
 
         public virtual PidfIpd Ipd { get; set; }
     }
