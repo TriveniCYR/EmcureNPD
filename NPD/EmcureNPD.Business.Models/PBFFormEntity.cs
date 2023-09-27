@@ -410,6 +410,10 @@ namespace EmcureNPD.Business.Models
         public string Engraving { get; set; }
         public bool? IsEmcure { get; set; }
         public long TradeDressProposalId { get; set; }
+        public string PrimaryPackaging { get; set; }
+        public string SecondaryPackaging { get; set; }
+        public string ShelfLife { get; set; }
+        public string StorageHandling { get; set; }
 
     }
 

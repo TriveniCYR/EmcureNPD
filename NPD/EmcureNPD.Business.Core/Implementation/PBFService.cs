@@ -1369,7 +1369,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     foreach (var emcure in item.EmcureData)
                     {
-                        await SaveTDTSection(emcure, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, item.Approch, true, emcure.PidfproductStrngthId, item.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[0].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[0].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[0].ShelfLife, pbfentity.PbfGeneralTdpEntity[0].StorageHandling, emcureFile, emcureuniqueFileName, path);
+                        await SaveTDTSection(emcure, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, item.Approch, true, emcure.PidfproductStrngthId, item.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[1].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[1].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[1].ShelfLife, pbfentity.PbfGeneralTdpEntity[1].StorageHandling, emcureFile, emcureuniqueFileName, path);
                     }
                 }
 
@@ -1463,7 +1463,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 var innovatorfilename = dbObj.Where(x => x.IsEmcure == false).Select(x => x.Packaging).FirstOrDefault();
                 var innovatorfullPath = baseURL + "/" + innovatorfilename;
                 var innovatorData = dbObj
-                    .Where(x => x.IsEmcure == false)
+                    .Where(x => x.IsEmcure == false).OrderByDescending(x=>x.PidfproductStrngthId)
                     .Select(x => new TdpSectionModel
                     {
 
@@ -1473,14 +1473,19 @@ namespace EmcureNPD.Business.Core.Implementation
                         Engraving = x.Engraving,
                         TradeDressProposalId = x.TradeDressProposalId,
                         PackagingInnovator = (Convert.ToString(innovatorfilename) == "") ? "" : innovatorfullPath,
-                        IsEmcure = false
+                        IsEmcure = false,
+                        PrimaryPackaging=x.PrimaryPackaging,
+                        SecondaryPackaging=x.SecondryPackaging,
+                        ShelfLife=x.ShelfLife,
+                        StorageHandling=x.StorageHandling
+
 
                     })
                     .ToList();
                 var emcurefilename = dbObj.Where(x => x.IsEmcure == true).Select(x => x.Packaging).FirstOrDefault();
                 var emcurefullPath = baseURL + "/" + emcurefilename;
                 var emcureData = dbObj
-                    .Where(x => x.IsEmcure == true)
+                    .Where(x => x.IsEmcure == true).OrderByDescending(x => x.PidfproductStrngthId)
                     .Select(x => new TdpSectionModel
                     {
 
@@ -1490,7 +1495,11 @@ namespace EmcureNPD.Business.Core.Implementation
                         Engraving = x.Engraving,
                         TradeDressProposalId = x.TradeDressProposalId,
                         PackagingEmcure = (Convert.ToString(emcurefilename) == "") ? "" : emcurefullPath,
-                        IsEmcure = true
+                        IsEmcure = true,
+                        PrimaryPackaging = x.PrimaryPackaging,
+                        SecondaryPackaging = x.SecondryPackaging,
+                        ShelfLife = x.ShelfLife,
+                        StorageHandling = x.StorageHandling
                     })
                     .ToList();
 
@@ -1499,10 +1508,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     PidfproductStrngthId = dbObj.FirstOrDefault().PidfproductStrngthId,
                     FormulaterResponsiblePerson = dbObj.FirstOrDefault().FormulaterResponsiblePerson,
                     Approch = dbObj.FirstOrDefault().FormulaterResponsiblePerson,
-                    PrimaryPackaging = dbObj.FirstOrDefault().PrimaryPackaging,
-                    SecondaryPackaging = dbObj.FirstOrDefault().SecondryPackaging,
-                    ShelfLife = dbObj.FirstOrDefault().ShelfLife,
-                    StorageHandling = dbObj.FirstOrDefault().StorageHandling,
                     InnovatorData = innovatorData,
                     EmcureData = emcureData
                 };
