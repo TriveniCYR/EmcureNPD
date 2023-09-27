@@ -188,11 +188,16 @@
 
                                     <div class="col-12 mb-2 text-end">
                                         <a class="btn btn-primary operationButton" onclick="AddPackStyle()"><i class="fa fa-plus"></i> Add Pack Size</a>
-                                        @if (ViewBag.PIDFID >(Int32)Master_PIDFStatus.FinanceInProgres)
-                                       {
+                                        @*@if (Model.IsView == 1 && ViewBag.StatusId == (Int32)Master_PIDFStatus.Completed)
+                                        {
+                                            
+                                        }else{
+                                            <a class="btn btn-info operationButton ml-2" id="extendCountry" onclick="RedirectToPIDF()"><i class="fa fa-plus"></i> Extend Country</a>
+                                        }*@
+                                        @if (ViewBag.StatusId <= (Int32)Master_PIDFStatus.FinanceInProgres && ViewBag.IsView != 1)
+                                        {
                                             <a class="btn btn-info operationButton ml-2" onclick="RedirectToPIDF()"><i class="fa fa-plus"></i> Extend Country</a>
-                                       }
-                                       @* <a class="btn btn-info operationButton ml-2" onclick="RedirectToPIDF()"><i class="fa fa-plus"></i> Extend Country</a>*@
+                                        }
                                     </div>
 
                                     <div id="dvCommercialPackStyle" class="modal themeModal " role="dialog">
@@ -314,11 +319,11 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
-                                                                    <div class="form-group required">
+                                                                    <div class="form-group">
                                                                         @Html.LabelFor(model => model.TotalApireq,@MasterLocalizer["TotalAPIReq"], new { @class = "control-label" })
-                                                                        <span class="text-danger">*</span>
+                                                                        @*<span class="text-danger">*</span>*@
                                                                         @Html.TextBoxFor(model => model.TotalApireq, new { @type="number", @min="0", @autocomplete = "off", @class = " decimalTwo positive form-control checkbox-checked", @placeholder = @MasterLocalizer["TotalAPIReq"] })
-                                                                        <label id="valmsgTotalApireq" class="text-danger"></label>
+                                                                        @*<label id="valmsgTotalApireq" class="text-danger"></label>*@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
@@ -363,7 +368,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.PriceErosion,@MasterLocalizer["PriceErosion"], new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.PriceErosion, new { @type="number", @min="0",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceErosion"] })
+                                                                        @Html.TextBoxFor(model => model.PriceErosion, new { @type="number", @min="-100",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceErosion"] })
                                                                         <label id="valmsgPriceErosion" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
@@ -380,7 +385,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.BrandPrice,@MasterLocalizer["Brand Price"], new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.BrandPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalTwo positive form-control", @placeholder = @MasterLocalizer["Brand Price"] })
+                                                                        @Html.TextBoxFor(model => model.BrandPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalThree positive form-control", @placeholder = @MasterLocalizer["Brand Price"] })
                                                                         <label id="valmsgBrandPrice" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
@@ -388,7 +393,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.GenericPrice,@MasterLocalizer["Generic Price"], new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.GenericPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalTwo positive form-control", @placeholder = @MasterLocalizer["Generic Price"] })
+                                                                        @Html.TextBoxFor(model => model.GenericPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalThree positive form-control", @placeholder = @MasterLocalizer["Generic Price"] })
                                                                         <label id="valmsgGenericPrice" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
@@ -396,7 +401,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.TargetCostOfGood,"Target Cost Of Good", new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.TargetCostOfGood, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalTwo positive form-control", @placeholder = @MasterLocalizer["Target Cost Of Good"] })
+                                                                        @Html.TextBoxFor(model => model.TargetCostOfGood, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalThree positive form-control", @placeholder = @MasterLocalizer["Target Cost Of Good"] })
                                                                         <label id="valmsgGenericPrice" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
