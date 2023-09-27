@@ -568,12 +568,12 @@ namespace EmcureNPD.Web.Controllers
                 }
                 var form = new MultipartFormDataContent();
 
-                if (pbfEntity.PbfGeneralTdpEntity[0].EmcureImage != null)
+                if (pbfEntity.PbfGeneralTdpEntity[1].EmcureImage != null)
                 {
-                    var emcureFileStream = pbfEntity.PbfGeneralTdpEntity[0].EmcureImage.OpenReadStream();
+                    var emcureFileStream = pbfEntity.PbfGeneralTdpEntity[1].EmcureImage.OpenReadStream();
                     var emcureFileContent = new StreamContent(emcureFileStream);
                     emcureFileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
-                    form.Add(emcureFileContent, "emcureImage", pbfEntity.PbfGeneralTdpEntity[0].EmcureImage.FileName);
+                    form.Add(emcureFileContent, "emcureImage", pbfEntity.PbfGeneralTdpEntity[1].EmcureImage.FileName);
                 }
                 
                 if (pbfEntity.PbfGeneralTdpEntity[0].InnovatorImage != null)
@@ -584,7 +584,7 @@ namespace EmcureNPD.Web.Controllers
                     form.Add(innovatorFileContent, "innovatorImage", pbfEntity.PbfGeneralTdpEntity[0].InnovatorImage.FileName);
                 }
                 pbfEntity.PbfGeneralTdpEntity[0].InnovatorImage = null;
-                pbfEntity.PbfGeneralTdpEntity[0].EmcureImage = null;
+                pbfEntity.PbfGeneralTdpEntity[1].EmcureImage = null;
                 form.Add(new StringContent(JsonConvert.SerializeObject(pbfEntity)), "Data");
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);

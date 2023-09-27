@@ -1406,6 +1406,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPbfGeneralTdp.Packaging = filename;
                     await FileUpload(file, path, filename);
                 }
+                else if (objPbfGeneralTdp.Packaging!=null && file==null)
+                {
+                    objPbfGeneralTdp.Packaging = objPbfGeneralTdp.Packaging;
+                }
                 else
                 {
                     objPbfGeneralTdp.Packaging = null;
@@ -1472,7 +1476,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         Color = x.Color,
                         Engraving = x.Engraving,
                         TradeDressProposalId = x.TradeDressProposalId,
-                        PackagingInnovator = (Convert.ToString(innovatorfilename) == "") ? "" : innovatorfullPath,
+                        PackagingInnovator = innovatorfilename == null ? null : innovatorfullPath,
                         IsEmcure = false,
                         PrimaryPackaging=x.PrimaryPackaging,
                         SecondaryPackaging=x.SecondryPackaging,
@@ -1494,7 +1498,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         Color = x.Color,
                         Engraving = x.Engraving,
                         TradeDressProposalId = x.TradeDressProposalId,
-                        PackagingEmcure = (Convert.ToString(emcurefilename) == "") ? "" : emcurefullPath,
+                        PackagingEmcure = emcurefilename == null ? null : emcurefullPath,
                         IsEmcure = true,
                         PrimaryPackaging = x.PrimaryPackaging,
                         SecondaryPackaging = x.SecondryPackaging,

@@ -3977,10 +3977,10 @@ function createTdp(data, actualdata) {
                <td colspan="${data.length}">
     <input type="hidden" name="PbfGeneralTdpEntity[0].PidfproductStrngthId" value="${data[0].pidfProductStrengthId}">
     <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[0].InnovatorData[0].IsEmcure" value="false" />
-    <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].${isPackaging ? "InnovatorImage" : propertyName}" type="${isPackaging ? "file" : "text"}" value="${isPackaging ? (actualdata && actualdata.innovatorData && actualdata.innovatorData[0] ? actualdata.innovatorData[0].packagingInnovator || '' : '') : (actualdata && actualdata.innovatorData && actualdata.innovatorData[0] ? actualdata.innovatorData[0][propertyName] || '':'')}" />
+    <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].${isPackaging ? "InnovatorImage" : propertyName}" type="${isPackaging ? "file" : "text"}" value="${isPackaging ? (actualdata && actualdata.innovatorData && actualdata.innovatorData[0] ? actualdata.innovatorData[0].packagingInnovator || '' : '') : (actualdata && actualdata.innovatorData && actualdata.innovatorData[0] ? actualdata.innovatorData[0][propertyName] || '' : '')}"${isPackaging ? 'accept="image/*"' : ''} />
     ${isPackaging && (actualdata && actualdata.innovatorData && actualdata.innovatorData[0] && actualdata.innovatorData[0].packagingInnovator) ? `
         <span>
-            <a href="${actualdata.innovatorData[0].packagingInnovator}" target="_blank">See Last Uploaded File</a>
+            <a href="${actualdata.innovatorData[0].packagingInnovator}" target="_blank">See Last Uploaded Image</a>
         </span>
     ` : ''}
 </td>
@@ -3991,10 +3991,10 @@ function createTdp(data, actualdata) {
                 <td  colspan="${data.length}">
     <input type="hidden" name="PbfGeneralTdpEntity[0].PidfproductStrngthId" value="${data[0].pidfProductStrengthId}">
     <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[0].EmcureData[0].IsEmcure" value="true" />
-    <input class="form-control clsinput" name="PbfGeneralTdpEntity[1].${isPackaging ? "EmcureImage" : propertyName}" type="${isPackaging ? "file" : "text"}" value="${isPackaging ? (actualdata && actualdata.emcureData && actualdata.emcureData[0] ? actualdata.emcureData[0].packagingEmcure || '' : '') : (actualdata && actualdata.emcureData && actualdata.emcureData[0] ? actualdata.emcureData[0][propertyName] || '' : '')}" />
+    <input class="form-control clsinput" name="PbfGeneralTdpEntity[1].${isPackaging ? "EmcureImage" : propertyName}" type="${isPackaging ? "file" : "text"}" value="${isPackaging ? (actualdata && actualdata.emcureData && actualdata.emcureData[0] ? actualdata.emcureData[0].packagingEmcure || '' : '') : (actualdata && actualdata.emcureData && actualdata.emcureData[0] ? actualdata.emcureData[0][propertyName] || '' : '')}" ${isPackaging ? 'accept="image/*"' : ''} />
     ${isPackaging && (actualdata && actualdata.emcureData && actualdata.emcureData[0] && actualdata.emcureData[0].packagingEmcure) ? `
         <span>
-            <a href="${actualdata.emcureData[0].packagingEmcure}" target="_blank">See Last Uploaded File</a>
+            <a href="${actualdata.emcureData[0].packagingEmcure}" target="_blank">See Last Uploaded Image</a>
         </span>
     ` : ''}
 </td>
@@ -4019,7 +4019,7 @@ function createTdp(data, actualdata) {
                         <td>
                             <input type="hidden" name="PbfGeneralTdpEntity[${j}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}">
                             <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[${j}].InnovatorData[0].IsEmcure" value="false" />
-                            <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].InnovatorImage" type="file" value="${actualdata && actualdata.innovatorData && actualdata.innovatorData[0] ? actualdata.innovatorData[0].packagingInnovator || '' : ''}"/>
+                            <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].InnovatorImage" type="file"  accept="image/*" value="${actualdata && actualdata.innovatorData && actualdata.innovatorData[0] ? actualdata.innovatorData[0].packagingInnovator || '' : ''}"/>
                         </td>
                     `;
                     }
@@ -4042,7 +4042,7 @@ function createTdp(data, actualdata) {
                         <td>
                             <input type="hidden" name="PbfGeneralTdpEntity[${j}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}">
                             <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[${j}].EmcureData[0].IsEmcure" value="true" />
-                            <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].EmcureImage" type="file" value="${actualdata && actualdata.emcureData && actualdata.emcureData[0] ? actualdata.emcureData[0].packagingEmcure || '' : ''}"/>
+                            <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].EmcureImage" type="file"  accept="image/*" value="${actualdata && actualdata.emcureData && actualdata.emcureData[0] ? actualdata.emcureData[0].packagingEmcure || '' : ''}"/>
                         </td>
                     `;
                     }
