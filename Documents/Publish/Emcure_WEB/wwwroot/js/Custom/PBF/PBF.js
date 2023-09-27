@@ -1211,11 +1211,11 @@ function GetPBFTabDetailsSuccess(data) {
             //PidfPbfGeneralPackSizeStability
             //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
             if (data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList!=null) {
-                createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList);
+                createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList, data.GetTDPList);
             }
-            if (data.GetTDPList != null) {
-                GetTdpList(data.GetTDPList)
-            }
+            //if (data.GetTDPList != null) {
+            //    GetTdpList(data.GetTDPList)
+            //}
             //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
@@ -1427,7 +1427,7 @@ function PBFBindMasterCountry(data) {
             if (arrofcountryid.indexOf(item.countryID) == -1) {
                 arrofcountryid.push(item.countryID)
                 html += '<li class="nav-item col-6 p-0 pt-1">\
-    <a class="nav-link" onClick="CountrytabClick('+ item.countryID + ',' + parseInt($("#PIDFId").val()) + ')" id="Countrytab_' + item.countryID + '">' + item.countryName + '</a></li>';
+    <a class="nav-link" onClick="PBFCountrytabClick('+ item.countryID + ',' + parseInt($("#PIDFId").val()) + ')" id="Countrytab_PBF' + item.countryID + '">' + item.countryName + '</a></li>';
             }
         });
         $('#dvPBFContainer').find("#navCountryTabs").append(html);
@@ -1435,15 +1435,15 @@ function PBFBindMasterCountry(data) {
         var _countryId = (_CountryListforSelectedBU[0] == undefined) ? 0 : _CountryListforSelectedBU[0].countryID;
         selectedCountry = _countryId;
         $('#selectedCountryInput').val(selectedCountry);
-        $('#Countrytab_' + _countryId).addClass('active');
+        $('#Countrytab_PBF' + _countryId).addClass('active');
     }
     renderPackSize(selectedCountry,_selectBusinessUnit,_PIDFID);
 }
 
 $(document).ready(function () {
-    $(document).on('click', '[id^="Countrytab_"]', function () {
+    $(document).on('click', '[id^="Countrytab_PBF"]', function () {
         var countryVal = parseInt($(this).attr('id').split('_')[1]);
-        $('[id^="Countrytab_"]').removeClass('active');
+        $('[id^="Countrytab_PBF"]').removeClass('active');
         $(this).addClass('active');
         selectedCountry = countryVal;
         renderPackSize(selectedCountry, _selectBusinessUnit, parseInt($("#PIDFId").val()));
@@ -1567,6 +1567,7 @@ function PBFBindStrength(data) {
 }
 
 function SavePBFForm(_SaveType) {
+
     $('.pbftablesplantCost').show();
     if (_SaveType == 'Draft') {
         $('#AddPBFForm').validate().settings.ignore = "*";
@@ -3916,66 +3917,274 @@ function BussinesUnitInterestedPBFError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
-function createTdp(data) {
-    console.log(data);
-   // $("#TdpDiv").empty();
-    let html = ``;
-    let strngthTdInovator = `<tr id="headerRow"><th style="width: 10%;">Strenght</th>`;
-    
-    if (data !=null && data.length > 0)
-        html += ``;
-    for (let j = 0; j < data.length; j++) {
+//function createTdp(data) {
+//    console.log(data);
+//   // $("#TdpDiv").empty();
+//    let html = ``;
+//    let strngthTdInovator = `<tr id="headerRow"><th style="width: 10%;">Strength</th>`;
 
-      /*for table header*/strngthTdInovator += `<th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName}</th><th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName}</th>`
-      /*for table body*/
-            for (let i = 0; i <=8; i++) {
-                if (i == 0) {
-                    $("#tr1").append(`<td><input type="hidden" name="PbfGeneralTdpEntity[${j.toString()}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}"><input class="form-control clsinput" id="Description${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Description" type="text"/></td><td><input type="hidden" name="PbfGeneralTdpEntity[${parseInt(j + 1).toString()}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}"><input class="form-control clsinput" id="Description${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Description" type="text"/></td>`)
-                }
-                if (i == 1) {
-                    $("#tr2").append(`<td><input type="hidden" id="TradeDressProposalId${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].TradeDressProposalId"><input class="form-control clsinput" id="Shape${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Shape" type="text"/></td><td><input type="hidden" id="TradeDressProposalId${parseInt(j + 1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j + 1).toString()}].TradeDressProposalId"><input class="form-control clsinput" id="Shape${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Shape" type="text"/></td>`)
-                }
-                if (i == 2) {
-                    $("#tr3").append(`<td><input class="form-control clsinput" id="Color${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Color" type="text"/></td><td><input class="form-control clsinput" id="Color${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Color" type="text"/></td>`)
-                }
-                if (i == 3) {
-                    $("#tr4").append(`<td><input class="form-control clsinput" id="Engraving${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Engraving" type="text"/></td><td><input class="form-control clsinput" id="Engraving${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Engraving" type="text"/></td>`)
-                }
-                if (i == 4) {
-                    $("#tr5").append(`<td><input class="form-control clsinput" id="Packaging${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Packaging" type="file"/></td><td><input class="form-control clsinput" id="Packaging${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Packaging" type="file"/></td>`)
-                }
-                if (i == 5) {
-                    $("#tr6").append(`<td><div class="form-check">
-                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsPrimaryPackaging" id="IsPrimaryPackaging">
-                                         </div></td><td><div class="form-check">
-                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsPrimaryPackaging" id="IsPrimaryPackaging">
-                                             <div></td>`)
-                }
-                if (i == 6) {
-                    $("#tr7").append(`<td><div class="form-check">
-                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsSecondryPackaging" id="IsSecondryPackaging">
-                                         </div></td><td><div class="form-check">
-                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsSecondryPackaging" id="IsSecondryPackaging">
-                                             <div></td>`)
-                }
-                if (i == 7) {
-                    $("#tr8").append(`<td><input class="form-control clsinput" id="ShelfLife${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].ShelfLife" type="text"/></td><td><input class="form-control clsinput" id="ShelfLife${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].ShelfLife" type="text"/></td>`)
-                }
-                if (i == 8) {
-                    $("#tr9").append(`<td><input class="form-control clsinput" id="StorageHandling${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].StorageHandling" type="text"/></td><td><input class="form-control clsinput" id="StorageHandling${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].StorageHandling" type="text"/></td>`)
+//    if (data !=null && data.length > 0)
+//        html += ``;
+//    for (let j = 0; j < data.length; j++) {
+
+//      /*for table header*/strngthTdInovator += `<th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName}</th><th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName}</th>`
+//      /*for table body*/
+//            for (let i = 0; i <=8; i++) {
+//                if (i == 0) {
+//                    $("#tr1").append(`<td><input type="hidden" name="PbfGeneralTdpEntity[${j.toString()}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}"><input class="form-control clsinput" id="Description${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Description" type="text"/></td><td><input type="hidden" name="PbfGeneralTdpEntity[${parseInt(j + 1).toString()}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}"><input class="form-control clsinput" id="Description${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Description" type="text"/></td>`)
+//                }
+//                if (i == 1) {
+//                    $("#tr2").append(`<td><input type="hidden" id="TradeDressProposalId${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].TradeDressProposalId"><input class="form-control clsinput" id="Shape${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Shape" type="text"/></td><td><input type="hidden" id="TradeDressProposalId${parseInt(j + 1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j + 1).toString()}].TradeDressProposalId"><input class="form-control clsinput" id="Shape${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Shape" type="text"/></td>`)
+//                }
+//                if (i == 2) {
+//                    $("#tr3").append(`<td><input class="form-control clsinput" id="Color${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Color" type="text"/></td><td><input class="form-control clsinput" id="Color${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Color" type="text"/></td>`)
+//                }
+//                if (i == 3) {
+//                    $("#tr4").append(`<td><input class="form-control clsinput" id="Engraving${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Engraving" type="text"/></td><td><input class="form-control clsinput" id="Engraving${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Engraving" type="text"/></td>`)
+//                }
+//                if (i == 4) {
+//                    $("#tr5").append(`<td><input class="form-control clsinput" id="Packaging${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Packaging" type="file"/></td><td><input class="form-control clsinput" id="Packaging${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Packaging" type="file"/></td>`)
+//                }
+//                if (i == 5) {
+//                    $("#tr6").append(`<td><div class="form-check">
+//                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsPrimaryPackaging" id="IsPrimaryPackaging">
+//                                         </div></td><td><div class="form-check">
+//                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsPrimaryPackaging" id="IsPrimaryPackaging">
+//                                             <div></td>`)
+//                }
+//                if (i == 6) {
+//                    $("#tr7").append(`<td><div class="form-check">
+//                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsSecondryPackaging" id="IsSecondryPackaging">
+//                                         </div></td><td><div class="form-check">
+//                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsSecondryPackaging" id="IsSecondryPackaging">
+//                                             <div></td>`)
+//                }
+//                if (i == 7) {
+//                    $("#tr8").append(`<td><input class="form-control clsinput" id="ShelfLife${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].ShelfLife" type="text"/></td><td><input class="form-control clsinput" id="ShelfLife${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].ShelfLife" type="text"/></td>`)
+//                }
+//                if (i == 8) {
+//                    $("#tr9").append(`<td><input class="form-control clsinput" id="StorageHandling${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].StorageHandling" type="text"/></td><td><input class="form-control clsinput" id="StorageHandling${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].StorageHandling" type="text"/></td>`)
+//                }
+//            }
+//    }
+//    strngthTdInovator+=`</tr>`
+//    $("#tdpThead").append(strngthTdInovator);
+//    $("#HeaderDevision").width($("#headerRow").width())
+
+//    $("#headerDiv").width($("#headerRow").width())
+//    //$(".clsContentUnderBUTab_PBF").show();
+
+//}
+
+//function createTdp(data) {
+//    console.log(data);
+
+//    // Clear existing table content
+//    let strngthTd = '<tr><th style="width: 10%;">Strength</th>';
+
+//    if (data != null && data.length > 0) {
+//        // Create arrays to hold data for Innovator and Emcure sections
+//        const innovatorData = [];
+//        const emcureData = [];
+
+//        for (let j = 0; j < data.length; j++) {
+//            // Append the header cell for Strength
+//            strngthTd += `<th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName} (Innovator)</th>`;
+//            strngthTd += `<th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName} (Emcure)</th>`;
+
+//            // Create objects to hold property values for both sections
+//            const innovatorEntry = {
+//                PidfproductStrngthId: data[j].pidfProductStrengthId,
+//                Description: '',
+//                Shape: '',
+//                Color: '',
+//                Engraving: '',
+//                // Add more properties as needed
+//            };
+
+//            const emcureEntry = {
+//                PidfproductStrngthId: data[j].pidfProductStrengthId,
+//                Description: '',
+//                Shape: '',
+//                Color: '',
+//                Engraving: '',
+//                // Add more properties as needed
+//            };
+
+//            // Push objects into their respective arrays
+//            innovatorData.push(innovatorEntry);
+//            emcureData.push(emcureEntry);
+//        }
+
+//        // Append the combined header row
+//        $("#tdpThead").append(strngthTd);
+
+//        // Create input tags for each property within Innovator and Emcure sections
+//        for (let i = 0; i <= 8; i++) {
+//            for (let j = 0; j < innovatorData.length; j++) {
+//                const innovatorEntry = innovatorData[j];
+//                const emcureEntry = emcureData[j];
+
+//                // Generate input tags for both Innovator and Emcure sections
+//                $(`#tr${i + 1}`).append(`
+//                    <td>
+//                        <input type="hidden" name="PbfGeneralTdpEntity.Innovator[${j}].PidfproductStrngthId" value="${innovatorEntry.PidfproductStrngthId}">
+//                        <input class="form-control clsinput" name="PbfGeneralTdpEntity.Innovator[${j}].Description" type="text" value="${innovatorEntry.Description}"/>
+//                    </td>
+//                    <td>
+//                        <input type="hidden" name="PbfGeneralTdpEntity.Emcure[${j}].PidfproductStrngthId" value="${emcureEntry.PidfproductStrngthId}">
+//                        <input class="form-control clsinput" name="PbfGeneralTdpEntity.Emcure[${j}].Description" type="text" value="${emcureEntry.Description}"/>
+//                    </td>
+//                    <!-- Repeat for other properties -->
+//                `);
+//            }
+//        }
+//    }
+
+//    // Adjust the width of the header and div
+//    $("#HeaderDevision").width($("#headerRow").width());
+//    $("#headerDiv").width($("#tdpThead").width());
+//    //$(".clsContentUnderBUTab_PBF").show();
+//}
+
+function createTdp(data, actualdata) {
+    console.log(data);
+    console.log(actualdata);
+    let strngthTd = `<tr><th style="width: 10%;">Strength</th>`;
+
+    if (data != null && data.length > 0) {
+        const innovatorData = [];
+        const emcureData = [];
+
+        for (let k = 0; k < 2; k++) {
+            for (let j = 0; j < data.length; j++) {
+                strngthTd += `<th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName} (${k === 0 ? 'Innovator' : 'Emcure'})</th>`;
+
+                const TdpSectionModel = {
+                    description: { type: "text" },
+                    shape: { type: "text" },
+                    color: { type: "text" },
+                    engraving: { type: "text" },
+                    Packaging: { type: "file" },
+                    primaryPackaging: { type: "text" },
+                    secondaryPackaging: { type: "text" },
+                    shelfLife: { type: "text" },
+                    storageHandling: { type: "text" },
+                };
+
+                if (k === 0) {
+                    innovatorData.push(TdpSectionModel);
+                } else {
+                    emcureData.push(TdpSectionModel);
                 }
             }
+        }
+
+        $("#tdpThead").append(strngthTd);
+
+        const propertyNames = [
+            "description",
+            "shape",
+            "color",
+            "engraving",
+            "Packaging",
+            "primaryPackaging",
+            "secondaryPackaging",
+            "shelfLife",
+            "storageHandling",
+        ];
+
+        for (let i = 0; i < propertyNames.length; i++) {
+            const propertyName = propertyNames[i];
+            const isPackaging = propertyName.toLowerCase() === "packaging";
+
+            let tr = `<tr><td>${isPackaging ? "Packaging" : propertyName.toUpperCase()}</td>`;
+
+            if (isPackaging || propertyName === "primaryPackaging" || propertyName === "secondaryPackaging" || propertyName === "shelfLife" || propertyName === "storageHandling") {
+                tr += `
+               <td colspan="${data.length}">
+    <input type="hidden" name="PbfGeneralTdpEntity[0].PidfproductStrngthId" value="${data[0].pidfProductStrengthId}">
+    <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[0].InnovatorData[0].IsEmcure" value="false" />
+    <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].${isPackaging ? "InnovatorImage" : propertyName}" type="${isPackaging ? "file" : "text"}" value="${isPackaging ? (actualdata && actualdata.innovatorData && actualdata.innovatorData[0] ? actualdata.innovatorData[0].packagingInnovator || '' : '') : (actualdata && actualdata[propertyName] ? actualdata[propertyName] || '' : '')}" />
+    ${isPackaging && (actualdata && actualdata.innovatorData && actualdata.innovatorData[0] && actualdata.innovatorData[0].packagingInnovator) ? `
+        <span>
+            <a href="${actualdata.innovatorData[0].packagingInnovator}" target="_blank">See Last Uploaded File</a>
+        </span>
+    ` : ''}
+</td>
+
+            `;
+
+                tr += `
+                <td  colspan="${data.length}">
+    <input type="hidden" name="PbfGeneralTdpEntity[0].PidfproductStrngthId" value="${data[0].pidfProductStrengthId}">
+    <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[0].EmcureData[0].IsEmcure" value="true" />
+    <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].${isPackaging ? "EmcureImage" : propertyName}" type="${isPackaging ? "file" : "text"}" value="${isPackaging ? (actualdata && actualdata.emcureData && actualdata.emcureData[0] ? actualdata.emcureData[0].packagingEmcure || '' : '') : (actualdata && actualdata[propertyName] ? actualdata[propertyName] || '' : '')}" />
+    ${isPackaging && (actualdata && actualdata.emcureData && actualdata.emcureData[0] && actualdata.emcureData[0].packagingEmcure) ? `
+        <span>
+            <a href="${actualdata.emcureData[0].packagingEmcure}" target="_blank">See Last Uploaded File</a>
+        </span>
+    ` : ''}
+</td>
+
+            `;
+
+            } else {
+                for (let j = 0; j < innovatorData.length; j++) {
+                    const TdpSectionModel = innovatorData[j];
+
+                    tr += `
+                    <td>
+                        <input type="hidden" name="PbfGeneralTdpEntity[${j}].InnovatorData[0].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}">
+                        <input type="hidden" name="PbfGeneralTdpEntity[${j}].InnovatorData[0].TradeDressProposalId" value="${actualdata && actualdata.innovatorData && actualdata.innovatorData[j] ? actualdata.innovatorData[j].tradeDressProposalId || 0 : 0}">
+                        <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[${j}].InnovatorData[0].IsEmcure" value="false" />
+                        <input class="form-control clsinput" name="PbfGeneralTdpEntity[${j}].InnovatorData[0].${propertyName}" type="${TdpSectionModel[propertyName].type}" value="${actualdata && actualdata.innovatorData && actualdata.innovatorData[j] ? actualdata.innovatorData[j][propertyName] || '' : ''}"/>
+                    </td>
+                `;
+
+                    if (isPackaging) {
+                        tr += `
+                        <td>
+                            <input type="hidden" name="PbfGeneralTdpEntity[${j}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}">
+                            <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[${j}].InnovatorData[0].IsEmcure" value="false" />
+                            <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].InnovatorImage" type="file" value="${actualdata && actualdata.innovatorData && actualdata.innovatorData[0] ? actualdata.innovatorData[0].packagingInnovator || '' : ''}"/>
+                        </td>
+                    `;
+                    }
+                }
+
+                for (let j = 0; j < emcureData.length; j++) {
+                    const TdpSectionModel = emcureData[j];
+
+                    tr += `
+                    <td>
+                       <input type="hidden" name="PbfGeneralTdpEntity[${j}].EmcureData[0].TradeDressProposalId" value="${actualdata && actualdata.emcureData && actualdata.emcureData[j] ? actualdata.emcureData[j].tradeDressProposalId || 0 : 0}">
+                        <input type="hidden" name="PbfGeneralTdpEntity[${j}].EmcureData[0].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}">
+                        <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[${j}].EmcureData[0].IsEmcure" value="true" />
+                        <input class="form-control clsinput" name="PbfGeneralTdpEntity[${j}].EmcureData[0].${propertyName}" type="${TdpSectionModel[propertyName].type}" value="${actualdata && actualdata.emcureData && actualdata.emcureData[j] ? actualdata.emcureData[j][propertyName] || '' : ''}"/>
+                    </td>
+                `;
+
+                    if (isPackaging) {
+                        tr += `
+                        <td>
+                            <input type="hidden" name="PbfGeneralTdpEntity[${j}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}">
+                            <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[${j}].EmcureData[0].IsEmcure" value="true" />
+                            <input class="form-control clsinput" name="PbfGeneralTdpEntity[0].EmcureImage" type="file" value="${actualdata && actualdata.emcureData && actualdata.emcureData[0] ? actualdata.emcureData[0].packagingEmcure || '' : ''}"/>
+                        </td>
+                    `;
+                    }
+                }
+            }
+
+            tr += `</tr>`;
+            $("#tbody").append(tr);
+        }
     }
-    strngthTdInovator+=`</tr>`
-    $("#tdpThead").append(strngthTdInovator);
-    $("#HeaderDevision").width($("#headerRow").width())
-      
-    $("#headerDiv").width($("#headerRow").width())
-    //$(".clsContentUnderBUTab_PBF").show();
-    
+
+    $("#HeaderDevision").width($("#headerRow").width());
+    $("#headerDiv").width($("#tdpThead").width());
 }
-
-
 
 
 
