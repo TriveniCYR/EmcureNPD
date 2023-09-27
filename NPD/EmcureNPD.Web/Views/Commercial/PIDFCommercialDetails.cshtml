@@ -188,11 +188,16 @@
 
                                     <div class="col-12 mb-2 text-end">
                                         <a class="btn btn-primary operationButton" onclick="AddPackStyle()"><i class="fa fa-plus"></i> Add Pack Size</a>
-                                        @if (ViewBag.PIDFID >(Int32)Master_PIDFStatus.FinanceInProgres)
-                                       {
+                                        @*@if (Model.IsView == 1 && ViewBag.StatusId == (Int32)Master_PIDFStatus.Completed)
+                                        {
+                                            
+                                        }else{
+                                            <a class="btn btn-info operationButton ml-2" id="extendCountry" onclick="RedirectToPIDF()"><i class="fa fa-plus"></i> Extend Country</a>
+                                        }*@
+                                        @if (ViewBag.StatusId <= (Int32)Master_PIDFStatus.FinanceInProgres && ViewBag.IsView != 1)
+                                        {
                                             <a class="btn btn-info operationButton ml-2" onclick="RedirectToPIDF()"><i class="fa fa-plus"></i> Extend Country</a>
-                                       }
-                                       @* <a class="btn btn-info operationButton ml-2" onclick="RedirectToPIDF()"><i class="fa fa-plus"></i> Extend Country</a>*@
+                                        }
                                     </div>
 
                                     <div id="dvCommercialPackStyle" class="modal themeModal " role="dialog">

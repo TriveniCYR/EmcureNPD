@@ -80,7 +80,7 @@ namespace EmcureNPD.Web.Controllers
                 {
                     string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
                     var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
-                    ViewBag.PIDFID = retPIDF._object.StatusId;
+                    ViewBag.StatusId = retPIDF._object.StatusId;
                 }
                 return View(oPIDForm);
             }
