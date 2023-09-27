@@ -89,7 +89,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.MarketExclusivityDate, "Market Exclusivity Date", new { @class = "control-label" }) <span class="text-danger">*</span>
+                        @Html.LabelFor(model => model.MarketExclusivityDate, "Market Exclusivity Date", new { @class = "control-label" })
                         @*@Html.EditorFor(model => model.MarketExclusivityDate, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked" } })*@
                         @Html.TextBoxFor(@modal=> modal.MarketExclusivityDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control"})
                         @Html.ValidationMessageFor(model => model.MarketExclusivityDate, "", new { @class = "text-danger" })
