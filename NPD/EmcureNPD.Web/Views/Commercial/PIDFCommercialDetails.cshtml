@@ -314,11 +314,11 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
-                                                                    <div class="form-group required">
+                                                                    <div class="form-group">
                                                                         @Html.LabelFor(model => model.TotalApireq,@MasterLocalizer["TotalAPIReq"], new { @class = "control-label" })
-                                                                        <span class="text-danger">*</span>
+                                                                        @*<span class="text-danger">*</span>*@
                                                                         @Html.TextBoxFor(model => model.TotalApireq, new { @type="number", @min="0", @autocomplete = "off", @class = " decimalTwo positive form-control checkbox-checked", @placeholder = @MasterLocalizer["TotalAPIReq"] })
-                                                                        <label id="valmsgTotalApireq" class="text-danger"></label>
+                                                                        @*<label id="valmsgTotalApireq" class="text-danger"></label>*@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
@@ -363,7 +363,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.PriceErosion,@MasterLocalizer["PriceErosion"], new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.PriceErosion, new { @type="number", @min="0",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceErosion"] })
+                                                                        @Html.TextBoxFor(model => model.PriceErosion, new { @type="number", @min="-100",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceErosion"] })
                                                                         <label id="valmsgPriceErosion" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
@@ -380,7 +380,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.BrandPrice,@MasterLocalizer["Brand Price"], new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.BrandPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalTwo positive form-control", @placeholder = @MasterLocalizer["Brand Price"] })
+                                                                        @Html.TextBoxFor(model => model.BrandPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalThree positive form-control", @placeholder = @MasterLocalizer["Brand Price"] })
                                                                         <label id="valmsgBrandPrice" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
@@ -388,7 +388,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.GenericPrice,@MasterLocalizer["Generic Price"], new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.GenericPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalTwo positive form-control", @placeholder = @MasterLocalizer["Generic Price"] })
+                                                                        @Html.TextBoxFor(model => model.GenericPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalThree positive form-control", @placeholder = @MasterLocalizer["Generic Price"] })
                                                                         <label id="valmsgGenericPrice" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
@@ -396,7 +396,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.TargetCostOfGood,"Target Cost Of Good", new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.TargetCostOfGood, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalTwo positive form-control", @placeholder = @MasterLocalizer["Target Cost Of Good"] })
+                                                                        @Html.TextBoxFor(model => model.TargetCostOfGood, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalThree positive form-control", @placeholder = @MasterLocalizer["Target Cost Of Good"] })
                                                                         <label id="valmsgGenericPrice" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
