@@ -311,9 +311,12 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 strHtml = strHtml.Replace("{Email}", entityUser.EmailAddress);
                 strHtml = strHtml.Replace("{Password}", entityUser.StringPassword);
                  strHtml = strHtml.Replace("{ApplicationLoginURL}", entityUser.WebApplicationUrl);
-                email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - User Created", strHtml, GetSMTPConfiguration());
+                
+                email.SendMail(entityUser.EmailAddress, "Emcure NPD - User Created", strHtml, GetSMTPConfiguration());
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            { 
+            }
         }
 
         public async Task<DBOperation> ChangeProfile(MasterUserEntityChangeProfile entityUser)
@@ -468,7 +471,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             strHtml = strHtml.Replace("ValidateURL", strURL);
             strHtml = strHtml.Replace("ValidDateTime", entityUser.ForgotPasswordDateTime.Value.AddHours(1).ToString());
             strHtml = strHtml.Replace("Name", entityUser.FullName);
-            email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - Forgot Password", strHtml, GetSMTPConfiguration());
+           
+            email.SendMail(entityUser.EmailAddress, "Emcure NPD - Forgot Password", strHtml, GetSMTPConfiguration());
+            
             return DBOperation.Success;
         }
 

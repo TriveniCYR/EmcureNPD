@@ -10,7 +10,7 @@ namespace EmcureNPD.Utility.Helpers
 {
     public class EmailHelper
     {
-        public void SendMail(string toList, string ccList, string subject, string body, SMTPEntityViewModel _smtpEntity)
+        public void SendMail(string toList, string subject, string body, SMTPEntityViewModel _smtpEntity, string? ccList = null)
         {
             try
             {
@@ -20,8 +20,10 @@ namespace EmcureNPD.Utility.Helpers
                 MailAddress fromAddress = new MailAddress(_smtpEntity.FromEmail);
                 message.From = fromAddress;
                 message.To.Add(toList);
+            
                 if (ccList != null && ccList != string.Empty)
                     message.CC.Add(ccList);
+              
                 message.Subject = subject;
                 message.Body = body;
                 message.IsBodyHtml = true;
@@ -35,6 +37,7 @@ namespace EmcureNPD.Utility.Helpers
                     smtpClient.UseDefaultCredentials = true;
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     string fileName = @"C:\Log\logger.txt";
+                   
                     try
                     {
                         smtpClient.Send(message);

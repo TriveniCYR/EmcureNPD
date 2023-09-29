@@ -39,13 +39,13 @@ namespace EmcureNPD.Business.Core.Implementation
         SqlTableDependency<MasterNotification> tableDependency;
         NotificationHub notificationHub;
         private readonly IDatabaseSubscription _databaseSubscription;
-		private readonly IMasterUserService _MasterUserService;
-		private IRepository<MasterUser> _masterUser { get; set; }
-		private IRepository<MasterNotification> _repository { get; set; }
+        private readonly IMasterUserService _MasterUserService;
+        private IRepository<MasterUser> _masterUser { get; set; }
+        private IRepository<MasterNotification> _repository { get; set; }
         private IRepository<MasterNotificationUser> _repositoryNotificationUser { get; set; }
         private IRepository<MasterEmailLog> _masterEmailLog { get; set; }
-		private readonly IHelper _helper;
-		public NotificationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
+        private readonly IHelper _helper;
+        public NotificationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
                                  Microsoft.Extensions.Configuration.IConfiguration _configuration, IHelper helper, IExceptionService exceptionService, IMasterUserService MasterUserService)//, IDatabaseSubscription databaseSubscription
         {
             _unitOfWork = unitOfWork;
@@ -55,14 +55,14 @@ namespace EmcureNPD.Business.Core.Implementation
             configuration = _configuration;
             _helper = helper;
             _ExceptionService = exceptionService;
-            _MasterUserService= MasterUserService;
-			_masterUser = unitOfWork.GetRepository<MasterUser>();
+            _MasterUserService = MasterUserService;
+            _masterUser = unitOfWork.GetRepository<MasterUser>();
             _masterEmailLog = unitOfWork.GetRepository<MasterEmailLog>();
-			// _schedulerService = schedulerService;
-			//_databaseSubscription.Configure(DatabaseConnection.NPDDatabaseConnection);
-			//tableDependency = new SqlTableDependency<MasterNotification>(DatabaseConnection.NPDDatabaseConnection, "Master_Notification", null, null, null, null, DmlTriggerType.Insert);
-			//tableDependency.Start();
-		}
+            // _schedulerService = schedulerService;
+            //_databaseSubscription.Configure(DatabaseConnection.NPDDatabaseConnection);
+            //tableDependency = new SqlTableDependency<MasterNotification>(DatabaseConnection.NPDDatabaseConnection, "Master_Notification", null, null, null, null, DmlTriggerType.Insert);
+            //tableDependency.Start();
+        }
 
         public async Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model)
         {
@@ -134,30 +134,37 @@ namespace EmcureNPD.Business.Core.Implementation
                 await notificationHub.GetNotification(pendingnotification.Count);//
             }
         }
+
         //to be continue..
         public async Task<DBOperation> CreateNotification(long pidfId, int statusid, string notificationTitle, string notificationDescription, int loggedinUserId)
         {
             try
             {
-                MasterNotification objNotification;
-                var notification = new MasterNotificationEntity
-                {
-                    PIDFId = pidfId,
-                    StatusId = statusid,
-                    NotificationTitle = notificationTitle,
-                    NotificationDescription = notificationDescription,
-                    CreatedDate = DateTime.Now,
-                    CreatedBy = loggedinUserId,
-                };
-                
-                objNotification = _mapperFactory.Get<MasterNotificationEntity, MasterNotification>(notification);
-                
-                _repository.AddAsync(objNotification);
+                //Get existing entry -- Added by YReddy on 09/26/2023
+                var mNotification = _repository.GetAll().Where(a => a.StatusId == statusid && a.Pidfid == pidfId).FirstOrDefault();
+              
+                if (mNotification == null)
+                { 
+                    MasterNotification objNotification;
+                    var notification = new MasterNotificationEntity
+                    {
+                        PIDFId = pidfId,
+                        StatusId = statusid,
+                        NotificationTitle = notificationTitle,
+                        NotificationDescription = notificationDescription,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = loggedinUserId,
+                    };
 
-                await _unitOfWork.SaveChangesAsync();
-                
-                if (objNotification.NotificationId == 0)
-                    return DBOperation.Error;
+                    objNotification = _mapperFactory.Get<MasterNotificationEntity, MasterNotification>(notification);
+
+                    _repository.AddAsync(objNotification);
+
+                    await _unitOfWork.SaveChangesAsync();
+
+                    if (objNotification.NotificationId == 0)
+                        return DBOperation.Error; 
+                } 
 
                 //SqlDependency sqlDependency = new SqlDependency();
                 //sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
@@ -167,9 +174,11 @@ namespace EmcureNPD.Business.Core.Implementation
                 //tableDependency.OnChanged += dbChangeNotification;
                 //tableDependency.Start();
                 //_databaseSubscription.Changed += dbChangeNotification;
-				//var task = Task.Run(() => SendNotification(objNotification.NotificationId));
-				//bool result = task.Result;
-				return DBOperation.Success;
+                //var task = Task.Run(() => SendNotification(objNotification.NotificationId));
+                //bool result = task.Result;
+                // DBOperation.Success;
+
+                return DBOperation.Success;
             }
             catch (Exception ex)
             {
@@ -177,113 +186,114 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
-		public async Task<EmailNotificationEntity> SendNotification(long NotificationId)
-		{
-			string _logMessage = string.Empty;
-			EmailNotificationEntity model = new EmailNotificationEntity();
-			string _logMessage_PIDFSubmittted = "\n";
-			SqlParameter[] osqlParameter = {
-				new SqlParameter("@NotificationId",NotificationId),
-			};
-			var dbresult =  _masterUser.GetDataSetBySP("GetEmailNotification", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
-			dynamic UserList = new ExpandoObject();
-			if (dbresult != null)
-			{
+        public async Task<EmailNotificationEntity> SendNotification(long NotificationId)
+        {
+            string _logMessage = string.Empty;
+            EmailNotificationEntity model = new EmailNotificationEntity();
+            string _logMessage_PIDFSubmittted = "\n";
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@NotificationId",NotificationId),
+            };
+            var dbresult = _masterUser.GetDataSetBySP("GetEmailNotification", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
+            dynamic UserList = new ExpandoObject();
+            if (dbresult != null)
+            {
 
-				if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
-				{
-					UserList = dbresult.Tables[0].DataTableToList<EmailNotificationEntity>();
-					
-					string commasepretedUserList = string.Empty;
-					List<EmailNotificationEntity> _UserLIst = UserList;
-					foreach (var u in _UserLIst)
-					{
-						commasepretedUserList += u.SendToName + ",";
-					}
-					_logMessage += "Fetch list of user to send notification { " + commasepretedUserList + "} \n";
-				SendNotificationMail(UserList, NotificationId, ref _logMessage);
-				}
-			}
-			model.LogMessage = _logMessage;
-			model.LogMessage += _logMessage_PIDFSubmittted;
-			return model;
-		}
-		public void SendNotificationMail(List<EmailNotificationEntity> sendNotificationModel_list,long NotificationId, ref string _logMessage)
-		{
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    UserList = dbresult.Tables[0].DataTableToList<EmailNotificationEntity>();
+
+                    string commasepretedUserList = string.Empty;
+                    List<EmailNotificationEntity> _UserLIst = UserList;
+                    foreach (var u in _UserLIst)
+                    {
+                        commasepretedUserList += u.SendToName + ",";
+                    }
+                    _logMessage += "Fetch list of user to send notification { " + commasepretedUserList + "} \n";
+                    SendNotificationMail(UserList, NotificationId, ref _logMessage);
+                }
+            }
+            model.LogMessage = _logMessage;
+            model.LogMessage += _logMessage_PIDFSubmittted;
+            return model;
+        }
+        public void SendNotificationMail(List<EmailNotificationEntity> sendNotificationModel_list, long NotificationId, ref string _logMessage)
+        {
             var landingUrl = configuration.GetSection("AllowedOrigins").Value.ToString(); //+ "/PIDF/PIDFList?ScreenId=" + (int)PIDFScreen.PBF;
-			foreach (var sendNotificationModel in sendNotificationModel_list)
-			{
-				try
-				{
-					EmailHelper email = new EmailHelper();
+            foreach (var sendNotificationModel in sendNotificationModel_list)
+            {
+                try
+                {
+                    EmailHelper email = new EmailHelper();
 
-					string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\EmailNotification.html");
-					strHtml = strHtml.Replace("{PIDFNo}", sendNotificationModel.PidfNo);
-					strHtml = strHtml.Replace("{DateTime}", sendNotificationModel.CreatedDate.ToString());
-					strHtml = strHtml.Replace("{User}", sendNotificationModel.SendToName);
-					strHtml = strHtml.Replace("{PIDFStatus}", sendNotificationModel.PIDFStatus);
-					strHtml = strHtml.Replace("{UpdatedByUser}", sendNotificationModel.CreatedByName);
-					strHtml = strHtml.Replace("{Url}", landingUrl);
-					string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
-					//email.SendMail(sendNotificationModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
-					_logMessage += " Email Sent to { " + sendNotificationModel.EmailAddress + " } on " + DateTime.Now.ToString() + "" + "\n";
-                    MasterEmailLog objEmailslogs= new();
+                    string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\EmailNotification.html");
+                    strHtml = strHtml.Replace("{PIDFNo}", sendNotificationModel.PidfNo);
+                    strHtml = strHtml.Replace("{DateTime}", sendNotificationModel.CreatedDate.ToString());
+                    strHtml = strHtml.Replace("{User}", sendNotificationModel.SendToName);
+                    strHtml = strHtml.Replace("{PIDFStatus}", sendNotificationModel.PIDFStatus);
+                    strHtml = strHtml.Replace("{UpdatedByUser}", sendNotificationModel.CreatedByName);
+                    strHtml = strHtml.Replace("{Url}", landingUrl);
+                    string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
+                    //email.SendMail(sendNotificationModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
+                    _logMessage += " Email Sent to { " + sendNotificationModel.EmailAddress + " } on " + DateTime.Now.ToString() + "" + "\n";
+                    MasterEmailLog objEmailslogs = new();
                     objEmailslogs.ToEmailAddress = sendNotificationModel.EmailAddress;
                     objEmailslogs.Subject = str_subject;
                     objEmailslogs.SentSuccessfully = true;
-                    objEmailslogs.CreatedDate= DateTime.Now;
+                    objEmailslogs.CreatedDate = DateTime.Now;
                     NotificationLog(objEmailslogs);
-				}
-				catch (Exception ex)
-				{
-					_logMessage += "Email failed to sent {" + sendNotificationModel.EmailAddress + "} on " + DateTime.Now.ToString() + ex.InnerException.ToString() + "\n";
-					string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
-					MasterEmailLog objEmailslogs = new();
-					objEmailslogs.ToEmailAddress = sendNotificationModel.EmailAddress;
-					objEmailslogs.Subject = str_subject;
-					objEmailslogs.SentSuccessfully = false;
-					objEmailslogs.CreatedDate = DateTime.Now;
-					NotificationLog(objEmailslogs);
-				}
-				
-			}
-			UpdateSentNotification(NotificationId);
-		}
-		public void  UpdateSentNotification(long NotificationId)
-		{
-			try
-			{
-				
-				SqlParameter[] osqlParameter = {
-				new SqlParameter("@NotificationId",NotificationId),
-				new SqlParameter("@Success", ""),
-			};
-				var dbresult = _masterUser.GetDataSetBySP("ProcUpdateEmailNotificationMaster", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
-			}
-			catch (Exception ex)
-			{
+                }
+                catch (Exception ex)
+                {
+                    _logMessage += "Email failed to sent {" + sendNotificationModel.EmailAddress + "} on " + DateTime.Now.ToString() + ex.InnerException.ToString() + "\n";
+                    string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
+                    MasterEmailLog objEmailslogs = new();
+                    objEmailslogs.ToEmailAddress = sendNotificationModel.EmailAddress;
+                    objEmailslogs.Subject = str_subject;
+                    objEmailslogs.SentSuccessfully = false;
+                    objEmailslogs.CreatedDate = DateTime.Now;
+                    NotificationLog(objEmailslogs);
+                }
 
-			}
-		}
+            }
+            UpdateSentNotification(NotificationId);
+        }
+        public void UpdateSentNotification(long NotificationId)
+        {
+            try
+            {
+
+                SqlParameter[] osqlParameter = {
+                new SqlParameter("@NotificationId",NotificationId),
+                new SqlParameter("@Success", ""),
+            };
+                var dbresult = _masterUser.GetDataSetBySP("ProcUpdateEmailNotificationMaster", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         public void NotificationLog(MasterEmailLog objEmailLog)
         {
-			try{
+            try
+            {
 
-				SqlParameter[] osqlParameter = {
-				new SqlParameter("@EmailLogId",objEmailLog.EmailLogId),
-				new SqlParameter("@ToEmailAddress", objEmailLog.ToEmailAddress),
-				new SqlParameter("@Subject", objEmailLog.Subject),
-				new SqlParameter("@SentSuccessfully", objEmailLog.SentSuccessfully),
-			};
-				var dbresult = _masterUser.GetDataSetBySP("SaveUpdateEmailLogs", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
-			}
-			catch (Exception ex)
-			{
+                SqlParameter[] osqlParameter = {
+                new SqlParameter("@EmailLogId",objEmailLog.EmailLogId),
+                new SqlParameter("@ToEmailAddress", objEmailLog.ToEmailAddress),
+                new SqlParameter("@Subject", objEmailLog.Subject),
+                new SqlParameter("@SentSuccessfully", objEmailLog.SentSuccessfully),
+            };
+                var dbresult = _masterUser.GetDataSetBySP("SaveUpdateEmailLogs", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
+            }
+            catch (Exception ex)
+            {
 
-			}
-			
-		}
-		public async Task<DBOperation> UpdateNotification(long notificationId, string notificationTitle, string notificationDescription, int loggedinUserId)
+            }
+
+        }
+        public async Task<DBOperation> UpdateNotification(long notificationId, string notificationTitle, string notificationDescription, int loggedinUserId)
         {
             var _objExistingNotf = _repository.Get(x => x.NotificationId == notificationId);
             if (_objExistingNotf != null)
