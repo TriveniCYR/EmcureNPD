@@ -322,15 +322,15 @@
                                                                     <div class="form-group">
                                                                         @Html.LabelFor(model => model.TotalApireq,@MasterLocalizer["TotalAPIReq"], new { @class = "control-label" })
                                                                         @*<span class="text-danger">*</span>*@
-                                                                        @Html.TextBoxFor(model => model.TotalApireq, new { @type="number", @min="0", @autocomplete = "off", @class = " decimalTwo positive form-control checkbox-checked", @placeholder = @MasterLocalizer["TotalAPIReq"] })
+                                                                        @Html.TextBoxFor(model => model.TotalApireq, new { @type="number", @min="0", @autocomplete = "off", @class = " decimalTwo positive form-control checkbox-checked",  @placeholder = @MasterLocalizer["TotalAPIReq"] })
                                                                         @*<label id="valmsgTotalApireq" class="text-danger"></label>*@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.Apireq,@MasterLocalizer["APIReq"], new { @class = "control-label" })
-                                                                        <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.Apireq, new { @type="number", @min="0", @autocomplete = "off", @class = " decimalTwo positive form-control checkbox-checked", @placeholder = @MasterLocalizer["APIReq"] })
+                                                                       
+                                                                        @Html.TextBoxFor(model => model.Apireq, new { @type="number", @min="0", @autocomplete = "off", @class = " decimalTwo positive form-control checkbox-checked",@readonly = "readonly", @placeholder = @MasterLocalizer["APIReq"] })
                                                                         <label id="valmsgApireq" class="text-danger"></label>
                                                                     </div>
                                                                 </div>
@@ -345,7 +345,7 @@
                                                                 <div class="col-md-3">
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.FreeOfCost,@MasterLocalizer["FreeOfCost"], new { @class = "control-label" })
-                                                                        <span class="text-danger">*</span>
+                                                                       
                                                                         @Html.TextBoxFor(model => model.FreeOfCost, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["FreeOfCost"] })
                                                                         <label id="valmsgFreeOfCost" class="text-danger"></label>
                                                                     </div>
