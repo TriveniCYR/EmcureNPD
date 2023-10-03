@@ -621,8 +621,32 @@ $(document).ready(function () {
         SetPhaseWiseBudget();
         $('#loading-wrapper').hide();
     });
+    $(document).on("change", ".analyticalTotalAMVCost, .rndanalyticalStrengthIsChecked", function () {
+        var _TotalAMVCost = ($('.analyticalTotalAMVCost').val() == "" ? 0 : $('.analyticalTotalAMVCost').val());
+        $('.analyticalAMVStrengthValue').val("");
+        $.each($('.rndanalyticalStrengthIsChecked:checked'), function () {
+            $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber((_TotalAMVCost / $('.rndanalyticalStrengthIsChecked:checked').length)));
+        });
+        if ($('.rndanalyticalStrengthIsChecked:checked').length > 0) {
+            $('.analyticalTotalAMVCostStrength').val(formatNumber(_TotalAMVCost));
+        } else {
+            $('.analyticalTotalAMVCostStrength').val("");
+        }
+        SetPhaseWiseBudget();
+    });
     /*Analytical Tab*/
-    $(document).on("change", ".AnalyticalTestTypeId, .analyticalRsTest, .analyticalNumberOfTest, .analyticalStrengthValue", function () {
+    $(document).on("change", ".AnalyticalTestTypeId, .analyticalRsTest, .analyticalNumberOfTest, .analyticalStrengthValue,.analyticalTotalAMVCost, .rndanalyticalStrengthIsChecked", function () {
+        var _TotalAMVCost = ($('.analyticalTotalAMVCost').val() == "" ? 0 : $('.analyticalTotalAMVCost').val());
+        $('.analyticalAMVStrengthValue').val("");
+        $.each($('.rndanalyticalStrengthIsChecked:checked'), function () {
+            $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber((_TotalAMVCost / $('.rndanalyticalStrengthIsChecked:checked').length)));
+        });
+        if ($('.rndanalyticalStrengthIsChecked:checked').length > 0) {
+            $('.analyticalTotalAMVCostStrength').val(formatNumber(_TotalAMVCost));
+        } else {
+            $('.analyticalTotalAMVCostStrength').val("");
+        }
+        var _TotalAMVStrengthCost = ConvertToNumber($('.analyticalTotalAMVCostStrength').val() == "" ? 0 : $('.analyticalTotalAMVCostStrength').val());
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
         $('.analyticalActivity' + _ActivityTypeId + 'Total').find('.calcTotalCostForStrengthAnalytical').val("0");
         $('.calcTotalCostAnalyticalRow').find('.calcTotalCostForAnalytical').val("0");
@@ -644,13 +668,18 @@ $(document).ready(function () {
                 _currentStrengthTotalElement.val(formatNumber(_currentStrengthTotal));
             });
             // set total for the row
+            var result = parseFloat(_Sum) + _TotalAMVStrengthCost;
             $(this).find(".TotalStrength").val(formatNumber(_Sum));
+            console.log(result);
         });
 
         $.each($('.calcTotalCostForStrengthAnalytical'), function (index, item) {
             var _StrengthId = $(item).parent().attr("data-strengthid");
             var strengthval = ConvertToNumber($(item).val() == "" ? 0 : $(item).val());
             var _currentStrengthTotalElement = $('.calcTotalCostAnalyticalRow').find('[data-strengthid=' + _StrengthId + ']').find('.calcTotalCostForAnalytical');
+           /* var _currentAMVStrengthTotalElement = $('.calcTotalCostAnalyticalRow').find('[data-strengthid=' + _StrengthId + ']').find('.analyticalAMVStrengthValue');*/
+       
+           /* var _currentAMVStrengthTotal = (_currentAMVStrengthTotalElement.val() == "" ? 0 : ConvertToNumber(_currentAMVStrengthTotalElement.val()));*/
             var _currentStrengthTotal = (_currentStrengthTotalElement.val() == "" ? 0 : ConvertToNumber(_currentStrengthTotalElement.val()));
             _currentStrengthTotal += strengthval;
             _currentStrengthTotalElement.val(formatNumber(_currentStrengthTotal));
@@ -666,19 +695,7 @@ $(document).ready(function () {
         $('.AnalyticalFinalTotal').val(formatNumber(totalanalyticalCost));
         SetPhaseWiseBudget();
     });
-    $(document).on("change", ".analyticalTotalAMVCost, .rndanalyticalStrengthIsChecked", function () {
-        var _TotalAMVCost = ($('.analyticalTotalAMVCost').val() == "" ? 0 : $('.analyticalTotalAMVCost').val());
-        $('.analyticalAMVStrengthValue').val("");
-        $.each($('.rndanalyticalStrengthIsChecked:checked'), function () {
-            $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber((_TotalAMVCost / $('.rndanalyticalStrengthIsChecked:checked').length)));
-        });
-        if ($('.rndanalyticalStrengthIsChecked:checked').length > 0) {
-            $('.analyticalTotalAMVCostStrength').val(formatNumber(_TotalAMVCost));
-        } else {
-            $('.analyticalTotalAMVCostStrength').val("");
-        }
-        SetPhaseWiseBudget();
-    });
+   
     /*Tooling Change Part Cost*/
     $(document).on("change", ".rndToolingChangePartCost, .ToolingChangePartStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
@@ -1738,7 +1755,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
             + '<td><input type="text" class="form-control analyticalTotalAMVTitle" id="AnalyticalAMVCosts.TotalAmvtitle" name="AnalyticalAMVCosts.TotalAmvtitle" placeholder="" value="' + (costData.length > 0 ? (costData[0].totalAMVTitle == null ? "" : costData[0].totalAMVTitle) : "") + '" /></td>'
             + '<td>' + _currencySymbol + '<input type="number" class="form-control analyticalTotalAMVCost" min="0" id="AnalyticalAMVCosts.TotalAmvcost" name="AnalyticalAMVCosts.TotalAmvcost"  placeholder="" value="' + (costData.length > 0 ? costData[0].totalAMVCost : "") + '"  /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="analyticalTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="analyticalStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndanalyticalStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndanalyticalStrengthIsChecked rndanalyticalStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (costData.length > 0 ? getCheckboxCheckedStrength(costData, _strengthArray[i].pidfProductStrengthId, "isChecked") : "") + '> &nbsp; ' + _currencySymbol + '<input type="text" class="form-control analyticalAMVStrengthValue inline-textbox" readonly="readonly" tabindex=-1 disabled="true" /></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="analyticalTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="analyticalStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndanalyticalStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndanalyticalStrengthIsChecked rndanalyticalStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (costData.length > 0 ? getCheckboxCheckedStrength(costData, _strengthArray[i].pidfProductStrengthId, "isChecked") : "") + '> &nbsp; ' + _currencySymbol + '<input type="text" class="form-control analyticalAMVStrengthValue  calcTotalCostForStrengthAnalytical" readonly="readonly" tabindex=-1 disabled="true" /></td>';
         }
         objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control analyticalTotalAMVCostStrength' readonly='readonly' tabindex=-1 /></td><td></td></tr>";
 
