@@ -423,6 +423,17 @@ $('.decimalTwo').on("keypress keyup blur", function (event) {
         event.preventDefault();
     }
 });
+
+$('.decimalThree').on("keypress keyup blur", function (event) {
+    var patt = new RegExp(/[0-9]*[.]{1}[0-9]{3}/i);
+    var matchedString = $(this).val().match(patt);
+    if (matchedString) {
+        $(this).val(matchedString);
+    }
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+    }
+});
 //---preventCharacters--//
 function preventCharacters(evt) {
     if (evt.key == 'a') {
