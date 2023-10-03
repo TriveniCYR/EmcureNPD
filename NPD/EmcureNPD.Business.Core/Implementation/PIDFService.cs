@@ -730,7 +730,12 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
                 if (pidf != 0)
+                {
                     await AddWorkflowtasks(pidf, by);
+
+                    //Do after Approved or Rejection action
+                    await AfterApproveRejectActions(pidf, saveTId);
+                }
 
                 //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
                 //   Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);
@@ -757,6 +762,31 @@ namespace EmcureNPD.Business.Core.Implementation
                 return dbresult;
             }
             catch(Exception ex){
+                return DBOperation.NotFound;
+            }
+        }
+
+        /// <summary>
+        /// Added by YReddy on 10/03/2023 for fixing PDIF after save changes
+        /// </summary>
+        /// <param name="pidfId"></param>
+        /// <param name="statusId"></param>
+        /// <returns></returns>
+        public async Task<dynamic> AfterApproveRejectActions(long pidfId, int statusId)
+        {
+            try
+            {
+                SqlParameter[] osqlParameter =
+                {
+                    new SqlParameter("@PIDFID",   pidfId),
+                    new SqlParameter("@StatusId", statusId)
+                };
+
+                var dbresult = await _repository.GetBySP("stp_npd_AfterApproveRejectActions", System.Data.CommandType.StoredProcedure, osqlParameter);
+                return dbresult;
+            }
+            catch (Exception ex)
+            {
                 return DBOperation.NotFound;
             }
         }
