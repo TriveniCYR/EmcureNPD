@@ -2,6 +2,7 @@
 var objYears = [];
 var objMainForm = {};
 var objdropdownYearControls_array = ['PackagingTypeId', 'CurrencyId', 'FinalSelectionId'];
+var NonMandetoryControls = ['FreeOfCost', 'Apireq'];
 var ColumnObjUpcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];
 var SelectedBUValue = 0;
 var selectedStrength = 0;
@@ -60,28 +61,36 @@ function SetCommercialDivReadonly() {
 function ValidateYearForm() {
     var ArrofInvalid = []
     $.each($('#AddYearForm').serializeArray(), function (_, kv) {
-        if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
-            if (kv.value == 0) {
-                /*                $('#valmsg' + kv.name).text('Required');*/
-                $('#' + kv.name).addClass('InvalidBox');
-                //IsValid = false;
-                ArrofInvalid.push(kv.name);
+        if (NonMandetoryControls.indexOf(kv.name) == -1) {
+
+            if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
+                if (kv.value == 0) {
+                    /*                $('#valmsg' + kv.name).text('Required');*/
+                    $('#' + kv.name).addClass('InvalidBox');
+                    //IsValid = false;
+                    ArrofInvalid.push(kv.name);
+                }
+                else {
+                    /*                $('#valmsg' + kv.name).text('');*/
+                    $('#' + kv.name).removeClass('InvalidBox');
+                }
             }
             else {
-                /*                $('#valmsg' + kv.name).text('');*/
-                $('#' + kv.name).removeClass('InvalidBox');
-            }
-        }
-        else {
-            if (kv.value == '') {
-                /*$('#valmsg' + kv.name).text('Required');*/
-                $('#' + kv.name).addClass('InvalidBox');
-                //IsValid = false;
-                ArrofInvalid.push(kv.name);
-            }
-            else {
-                $('#valmsg' + kv.name).text('').hide();
-                $('#' + kv.name).removeClass('InvalidBox');
+                if (kv.value == '') {
+                    ///*$('#valmsg' + kv.name).text('Required');*/
+                    //$('#' + kv.name).addClass('InvalidBox');
+                    ////IsValid = false;
+                    //ArrofInvalid.push(kv.name);
+                    if (!(kv.name == "TotalApireq")) {
+                        $('#' + kv.name).addClass('InvalidBox');
+                        ArrofInvalid.push(kv.name);
+                    }
+
+                }
+                else {
+                    $('#valmsg' + kv.name).text('').hide();
+                    $('#' + kv.name).removeClass('InvalidBox');
+                }
             }
         }
     });
@@ -470,7 +479,30 @@ function EstimatedMarketShareUnits(variable) {
 //---------NSP------------------------------------
 $('input[type="number"]').focusout(function () {
     NSP('Low');
+    CalculateAPIRequirment();
 });
+function CalculateAPIRequirment() {
+    var strength_val = 0;
+    var marketShareUnitMedium_val = ($('#MarketShareUnitMedium').val() == '') ? 0 : $('#MarketShareUnitMedium').val();
+    var packSize_val = 0;
+    var _strenthid = 0;
+    if (!(ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined)) {
+         packSize_val = ArrMainCommercial[MainRowEditIndex].packSize;
+        _strenthid = ArrMainCommercial[MainRowEditIndex].pidfProductStrengthId;
+
+        var CurrentSelectedStrengthValList = $.grep(MainArrCountryList, function (n, i) {
+            return n.pidfProductStrengthId == _strenthid;
+        });
+
+        if (CurrentSelectedStrengthValList != null || CurrentSelectedStrengthValList.length > 0)
+            strength_val = parseInt(CurrentSelectedStrengthValList[0].strength);
+    }
+    
+    var result = marketShareUnitMedium_val * packSize_val * strength_val/1000000;
+
+    result = isNaN(result) ? 0 : result;
+    $('#Apireq').val(result.toFixed(6));
+}
 $('input[type="number"]').focusout(function () {
     NSP('Medium');
 });
@@ -484,12 +516,14 @@ function NSP(variable) {
     var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
 
     var currentIndex = (EditIndex == -1) ? (_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length) : EditIndex;
-    if (currentIndex == 0) {
-        Nspunits = $('#Nspunits' + variable).val();
-    }
-    if (currentIndex > 0) {
-        Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['nsp' + variable];
-    }
+    //if (currentIndex == 0) {
+    //    Nspunits = $('#Nspunits' + variable).val();
+    //}
+    //if (currentIndex > 0) {
+    //    Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['nsp' + variable];
+    //}
+
+    Nspunits = $('#Nspunits' + variable).val();
     result = Nspunits * (1 + (PriceErosion / 100))
     $('#Nsp' + variable).val(result.toFixed(5));
 }
@@ -549,9 +583,15 @@ function AddYearClick() { //SaveYearClick
         //var IsValid = true;;
         $.each($('#AddYearForm').serializeArray(), function (_, kv) {
             if (kv.value == '') {
-                $('#valmsg' + kv.name).text('Required').show();
-                //IsValid = false;
-                ArrofInvalid.push(kv.name);
+                //$('#valmsg' + kv.name).text('Required').show();
+                ////IsValid = false;
+                //ArrofInvalid.push(kv.name);
+
+                if (!(kv.name == "TotalApireq")) {
+                    $('#valmsg' + kv.name).text('Required').show();
+                    //IsValid = false;
+                    ArrofInvalid.push(kv.name);
+                }
             }
             entityYear[getPropertyName(kv.name)] = kv.value;
         });
@@ -605,6 +645,7 @@ function BUstregthPack_AddButtonClick() {
         });
         ent_BuStrPack["packSizeName"] = $("#PackSizeId option:selected").text();
         ent_BuStrPack["packSizeId"] = $("#PackSizeId option:selected").val();
+        ent_BuStrPack["packSize"] = $("#PackSizeId option:selected").attr('data-val');
         //var IndexofMaintable = ArrMainCommercial.length;
         //ent_BuStrPack['IndexofMaintable'] = IndexofMaintable;
         ent_BuStrPack['PidfCommercialYears'] = [];
@@ -740,7 +781,22 @@ function OpenYearForm(packSizeId, yearIndex) {
     if (ArrMainCommercial[MainRowEditIndex].PidfCommercialYears != null && ArrMainCommercial[MainRowEditIndex].PidfCommercialYears != undefined) {
         var _years = (yearIndex == null || yearIndex == undefined ? ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length : yearIndex);
         $("#btnSaveYear").text("Save Year" + (_years + 1));
+        if (_years == 0) {
+            $("#MarketSize").removeAttr('readonly');
+            
+        } 
+        else {
+            $("#MarketSize").attr("readonly", true);
+            UpdateNSPasperlasteYear(MainRowEditIndex, _years, 'Low');
+            UpdateNSPasperlasteYear(MainRowEditIndex, _years, 'Medium');
+            UpdateNSPasperlasteYear(MainRowEditIndex, _years, 'High');
+        }
     }
+}
+
+function UpdateNSPasperlasteYear(mainind, yearind, variable) {
+    var nspval = ArrMainCommercial[mainind].PidfCommercialYears[yearind-1]['nsp' + variable];
+    $('#Nspunits' + variable).val(nspval);
 }
 
 function UpdateChildTableDetail(_cObject) {
@@ -915,7 +971,7 @@ function GetPackSize(data) {
     try {
         $('#PackSizeId').append($('<option>').text('--Select--').attr('value', ''));
         $.each(data, function (index, object) {
-            $('#PackSizeId').append($('<option>').text(object.packSizeName).attr('value', object.packSizeId));
+            $('#PackSizeId').append($('<option>').text(object.packSizeName).attr('value', object.packSizeId).attr('data-val', object.packSize));
         });
     } catch (e) {
         console.log('Get Final Selection Error:' + e.message);
