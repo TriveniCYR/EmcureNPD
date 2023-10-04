@@ -315,6 +315,7 @@ function CountrytabClick(countryVal, pidfidval) {
     selectedCountry = countryVal;
 
     renderPIDFStrength(MainArrCountryList);
+    SetCommercialDisableForOtherUserBU();
 }
 function StrengthtabClick(strengthVal, pidfidval) {
     $('[id^="Strengthtab_"]').removeClass('active');
