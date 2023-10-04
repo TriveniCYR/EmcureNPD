@@ -2706,26 +2706,40 @@ function CreateRNDManPowerCostTable(data) {
     objectname += "<td><input type='text' class='form-control' id='id_GrandTotalDuration_years' readonly='readonly' tabindex=-1  />";
     objectname += "<label class='control-label'></label> </td> ";
     objectname += "</tr>";
-
-  
-
     return objectname;
 }
-function GranTotal_RND_ManPowerCost(){
+function GranTotal_RND_ManPowerCost() {
     //rndMPCDurationInDays2
-    var _id_GrandTotalDuration_days = 0;
+    var highestValueFirstTwo = 0;
+    var highestValueNextTwo = 0;
+
+    for (let i = 1; i < 3; i++) {
+        var inputValueFirstTwo = parseInt($('.rndMPCDurationInDays' + i).val()) || 0;
+        if (inputValueFirstTwo > highestValueFirstTwo) {
+            highestValueFirstTwo = inputValueFirstTwo;
+        }
+    }
+    for (let i = 3; i < 5; i++) {
+        var inputValueNextTwo = parseInt($('.rndMPCDurationInDays' + i).val()) || 0;
+        if (inputValueNextTwo > highestValueNextTwo) {
+            highestValueNextTwo = inputValueNextTwo;
+        }
+    }
     var _id_GrandTotalDuration_years = 0;
     var _id_GrandTotalManHours = 0;
-    for (let i = 1; i < 12; i++) {
-        _id_GrandTotalDuration_days += ($('.rndMPCDurationInDays' + i).val() == '') ? 0 : parseInt($('.rndMPCDurationInDays' + i).val());        
-    }
+    var _id_GrandTotalDuration_days = 0;
+    for (let i = 5; i < 12; i++) {
+        if (i !== 5 && i !== 9) {
+            _id_GrandTotalDuration_days += ($('.rndMPCDurationInDays' + i).val() == '') ? 0 : parseInt($('.rndMPCDurationInDays' + i).val());
+        }
+    };
     $('.TotalStrength_manpowerProjection').each(function () {
         _id_GrandTotalManHours += ($(this).val() == '') ? 0 : parseInt($(this).val());
     });
+    var TotalDurationDays = _id_GrandTotalDuration_days + highestValueFirstTwo + highestValueNextTwo;
+    _id_GrandTotalDuration_years = (TotalDurationDays == 0) ? 0 : TotalDurationDays / 365;
 
-    _id_GrandTotalDuration_years = (_id_GrandTotalDuration_days == 0) ? 0 : _id_GrandTotalDuration_days / 365;
-
-    $('#id_GrandTotalDuration_days').val(_id_GrandTotalDuration_days);
+    $('#id_GrandTotalDuration_days').val(TotalDurationDays);
     $('#id_GrandTotalDuration_years').val(_id_GrandTotalDuration_years.toFixed(2));
     $('#id_GrandTotalManHours').val(_id_GrandTotalManHours);
 }
