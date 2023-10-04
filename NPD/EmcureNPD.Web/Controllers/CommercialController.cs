@@ -26,6 +26,7 @@ namespace EmcureNPD.Web.Controllers
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private readonly IStringLocalizer<Master> _stringLocalizerMaster;
         private readonly IHelper _helper;
+        private bool IsCommercialController;
 
         #endregion Properties
 
