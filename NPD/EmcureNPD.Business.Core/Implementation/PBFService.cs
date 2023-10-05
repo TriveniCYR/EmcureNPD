@@ -1280,7 +1280,7 @@ namespace EmcureNPD.Business.Core.Implementation
             try
             {
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-
+             
                 foreach (var pbfentity in pbfentities)
                 {
                     var FinalpbfGeneralid = pbfentity.PbfgeneralId == 0 ? pbfgeneralid : pbfentity.PbfgeneralId;
@@ -1325,6 +1325,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
                 await _unitOfWork.SaveChangesAsync();
+                
             }
             catch (Exception ex)
             {
@@ -1382,7 +1383,7 @@ namespace EmcureNPD.Business.Core.Implementation
             return pbfentity.Pidfpbfid;
         }
 
-        private async Task SaveTDTSection(TdpSectionModel section, long pbfgeneralid, int loggedInUserId, long pidfid, string approch, bool isEmcure, long? PidfproductStrngthId,string FormulaterResponsiblePerson , string PrimaryPackaging, string SecondaryPackaging, string ShelfLife, string StorageHandling,IFormFile file,string filename, string path)
+        private async Task SaveTDTSection(TdpSectionModel section, long pbfgeneralid, int loggedInUserId, long pidfid, string approch, bool isEmcure, long? PidfproductStrngthId,string FormulaterResponsiblePerson , string SecondaryPackaging, string PrimaryPackaging,  string ShelfLife, string StorageHandling,IFormFile file,string filename, string path)
         {
             var objPbfGeneralTdp =  _PbfGeneralTdp.GetAllQuery()
                 .Where(x => x.TradeDressProposalId == section.TradeDressProposalId)
@@ -2830,20 +2831,20 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
                 }
-                await SavePackSizeStability(pbfentity.PidfPbfRnDPackSizeStability, pbfentity.PBFGeneralId,pbfentity.Pidfid, pbfentity.selectedCountry);
                 #endregion Section PBF General Add Update
                 #region Update PBF genegral R&D Details
 
                 var Pidfpbfid = await SaveGeneralRandDDetails(pbfentity);
                 #endregion
-
-
                 #region RA Add Update
                 await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, Pidfpbfid, pbfentity.BusinessUnitId);
                 #endregion
 
                 #region Update PBF genegral PackSizeStability Details
-                //await SavePackSizeStability(pbfentity, pbfgeneralid);
+                if (pbfentity.PidfPbfRnDPackSizeStability != null)
+                {
+                    await SavePackSizeStability(pbfentity.PidfPbfRnDPackSizeStability, pbfentity.PBFGeneralId, pbfentity.Pidfid, pbfentity.selectedCountry);
+                }
                 #endregion
                 #region TDT
                 await SaveTDT(pbfentity, pbfgeneralid,files,_webrootPath);
