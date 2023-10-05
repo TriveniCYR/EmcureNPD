@@ -577,6 +577,7 @@ function ReEditingNSP(variable, currentEditingYearIndex) {
 
 
 function AddYearClick() { //SaveYearClick
+    var ArrofInvalid = [];
     //var year = $('#AddYearForm').serializeArray();
     var valBUStrength = ValidateBU_Strength();
     if (ValidateYearForm() && valBUStrength) {
@@ -589,10 +590,15 @@ function AddYearClick() { //SaveYearClick
                 //ArrofInvalid.push(kv.name);
 
                 if (!(kv.name == "TotalApireq")) {
-                    $('#valmsg' + kv.name).text('Required').show();
-                    //IsValid = false;
-                    ArrofInvalid.push(kv.name);
+                $('#valmsg' + kv.name).text('Required').show();
+                //IsValid = false;
+                ArrofInvalid.push(kv.name);
                 }
+                //if (!(kv.name == "TotalApireq")) {
+                //    $('#valmsg' + kv.name).text('Required').show();
+                //    //IsValid = false;
+                //    ArrofInvalid.push(kv.name);
+                //}
             }
             entityYear[getPropertyName(kv.name)] = kv.value;
         });

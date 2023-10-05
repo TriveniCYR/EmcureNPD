@@ -194,9 +194,11 @@
                                         }else{
                                             <a class="btn btn-info operationButton ml-2" id="extendCountry" onclick="RedirectToPIDF()"><i class="fa fa-plus"></i> Extend Country</a>
                                         }*@
+                                        @if(Convert.ToBoolean(Context.Request.Query["Commercial"]) == true){
                                         @if (ViewBag.StatusId <= (Int32)Master_PIDFStatus.FinanceInProgres && ViewBag.IsView != 1)
                                         {
                                             <a class="btn btn-info operationButton ml-2" onclick="RedirectToPIDF()"><i class="fa fa-plus"></i> Extend Country</a>
+                                        }
                                         }
                                     </div>
 
