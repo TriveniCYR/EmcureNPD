@@ -2733,12 +2733,12 @@ function GranTotal_RND_ManPowerCost() {
             _id_GrandTotalDuration_days += ($('.rndMPCDurationInDays' + i).val() == '') ? 0 : parseInt($('.rndMPCDurationInDays' + i).val());
         }
     };
-    $('.TotalStrength_manpowerProjection').each(function () {
-        _id_GrandTotalManHours += ($(this).val() == '') ? 0 : parseInt($(this).val());
-    });
     var TotalDurationDays = _id_GrandTotalDuration_days + highestValueFirstTwo + highestValueNextTwo;
     _id_GrandTotalDuration_years = (TotalDurationDays == 0) ? 0 : TotalDurationDays / 365;
-
+    $('.TotalStrength_manpowerProjection').each(function () {
+        var inputValue = $(this).val();
+        _id_GrandTotalManHours+= inputValue ? parseInt(inputValue.replace(',', ''), 10) : 0;
+    });
     $('#id_GrandTotalDuration_days').val(TotalDurationDays);
     $('#id_GrandTotalDuration_years').val(_id_GrandTotalDuration_years.toFixed(2));
     $('#id_GrandTotalManHours').val(_id_GrandTotalManHours);
@@ -3370,10 +3370,10 @@ function SetHeadWiseBudget() {
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBScaleUp').val(ConvertToNumber(_referenceProductDetailsCostScaleUp)/100000);
 
         var analyticalCostScaleUp = $('#tableanalytical').find('.analyticalActivity2Total').find('.calcTotalCostForAnalytical2').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBScaleUp').val(analyticalCostScaleUp/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBScaleUp').val(ConvertToNumber(analyticalCostScaleUp)/100000);
 
         var bioStudyCostScaleUp = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBScaleUp').val(bioStudyCostScaleUp/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBScaleUp').val(ConvertToNumber(bioStudyCostScaleUp)/100000);
 
         var toolingchangepartScaleUp = $('#tablerndtoolingchangepart').find('.ToolingChangePartActivity2Total').find('.calcTotalCostForTooling2').val();
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBScaleUp').val(ConvertToNumber(toolingchangepartScaleUp)/100000);
@@ -3401,6 +3401,7 @@ function SetHeadWiseBudget() {
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBExhibit').val((ConvertToNumber(_plantSupportCostExhibit) * _plantsupportcost)/100000);
 
         var _referenceProductDetailsCost = $('#tablerndreferenceproductdetail').find('.RPDcal_1Total').find('.calcTotalCostForStrengthTotalRPD').val();
+
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBExhibit').val(ConvertToNumber(_referenceProductDetailsCost)/100000);
 
         var analyticalCostExhibit = $('#tableanalytical').find('.analyticalActivity3Total').find('.calcTotalCostForAnalytical3').val();
@@ -4092,25 +4093,6 @@ function createTdp(data, actualdata) {
 
 
 
-
-function GetTdpList(data) {
-    //console.log(data);
-    //let result = data.sort(function (a, b) {
-    //    return a - b;
-    //});
-    console.log(data);
-    for (let i = 0; i < data.length; i++) {
-        $(`#TradeDressProposalId${i}`).val(data[i].tradeDressProposalId)
-        $("#FormulaterResponsiblePerson").val(data[0].formulaterResponsiblePerson)
-        $("#Approch").val(data[0].approch)
-        $(`#Description${i}`).val(data[i].description);
-        $(`#Shape${i}`).val(data[i].shape);
-        $(`#Color${i}`).val(data[i].color);
-        $(`#Engraving${i}`).val(data[i].engraving);
-        $(`#ShelfLife${i}`).val(data[i].shelfLife);
-        $(`#StorageHandling${i}`).val(data[i].storageHandling);
-    }
-}
 
 
 

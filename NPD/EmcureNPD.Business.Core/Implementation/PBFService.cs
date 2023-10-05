@@ -1365,12 +1365,12 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     foreach (var innovator in item.InnovatorData)
                     {
-                        await SaveTDTSection(innovator, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, item.Approch, false , innovator.PidfproductStrngthId, item.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[0].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[0].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[0].ShelfLife, pbfentity.PbfGeneralTdpEntity[0].StorageHandling,innovatorFile, innovatoruniqueFileName,path);
+                        await SaveTDTSection(innovator, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, pbfentity.Approch, false , innovator.PidfproductStrngthId, pbfentity.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[0].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[0].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[0].ShelfLife, pbfentity.PbfGeneralTdpEntity[0].StorageHandling,innovatorFile, innovatoruniqueFileName,path);
                     }
 
                     foreach (var emcure in item.EmcureData)
                     {
-                        await SaveTDTSection(emcure, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, item.Approch, true, emcure.PidfproductStrngthId, item.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[1].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[1].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[1].ShelfLife, pbfentity.PbfGeneralTdpEntity[1].StorageHandling, emcureFile, emcureuniqueFileName, path);
+                        await SaveTDTSection(emcure, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, pbfentity.Approch, true, emcure.PidfproductStrngthId, pbfentity.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[1].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[1].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[1].ShelfLife, pbfentity.PbfGeneralTdpEntity[1].StorageHandling, emcureFile, emcureuniqueFileName, path);
                     }
                 }
 
@@ -1512,7 +1512,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     PidfproductStrngthId = dbObj.FirstOrDefault().PidfproductStrngthId,
                     FormulaterResponsiblePerson = dbObj.FirstOrDefault().FormulaterResponsiblePerson,
-                    Approch = dbObj.FirstOrDefault().FormulaterResponsiblePerson,
+                    Approch = dbObj.FirstOrDefault().Approch,
                     InnovatorData = innovatorData,
                     EmcureData = emcureData
                 };
