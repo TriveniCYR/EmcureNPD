@@ -237,16 +237,16 @@
                                     <tr>
                                         <th>       @MasterLocalizer["Business Unit"]                 </th>
                                         <th>       @MasterLocalizer["ProjectName"]         </th>
-                                        <th>       @MasterLocalizer["MarketName"]                        </th>
+                                        <th>       Brand Name                        </th>
                                         <th>       @MasterLocalizer["DataExclusivity"]         </th>
-                                        <th>       @MasterLocalizer["FillingType"]                 </th>
-                                        <th>       @MasterLocalizer["ApprovedGenetics"]                  </th>
+                                        @*<th>       @MasterLocalizer["FillingType"]                 </th>*@
+                                        <th>       Approved Generics                  </th>
                                         <th>       @MasterLocalizer["LaunchedGenetics"]                  </th>
-                                        <th>       @MasterLocalizer["Countrys"]                  </th>
-                                        <th>       @MasterLocalizer["LegalStatus"]                  </th>
+                                        @* <th>       @MasterLocalizer["Countrys"]                  </th>*@
+                                        <th>      Litigation Possibility                 </th>
                                         <th>       @MasterLocalizer["CostOfLitication"]                  </th>
                                         <th>       @MasterLocalizer["Comments"]                  </th>
-                                        <th>       @MasterLocalizer["Innovators"]                  </th>
+                                        <th>       Innovator                  </th>
                                         <th>       @MasterLocalizer["PatentStatus"]                  </th>
                                     </tr>
                                 </thead>
@@ -258,10 +258,10 @@
                                             <td> @item.ProjectName                      </td>
                                             <td> @item.MarketName                            </td>
                                             <td> @item.DataExclusivity                      </td>
-                                            <td> @item.FillingType                      </td>
+                                            @*<td> @item.FillingType                      </td>*@
                                             <td> @item.ApprovedGenetics                      </td>
                                             <td> @item.LaunchedGenetics                    </td>
-                                            <td> @item.Country</td>
+                                            @* <td> @item.Country</td>*@
                                             <td> @item.LegalStatus                    </td>
                                             <td> @item.CostOfLitication                    </td>
                                             <td> @item.Comments                    </td>
@@ -280,7 +280,7 @@
                 @* ----------Start -Patent Details Formulation-------------*@
                 <div class="card card-outline card-primary">
                     <div class="card-header bg-primary">
-                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details for Formulation</button></h3>
+                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details</button></h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                 <i class="fas fa-minus"></i>
@@ -298,17 +298,17 @@
                                         <th>       @MasterLocalizer["OriginalExpiraDate"]         </th>
                                         <th>       @MasterLocalizer["ExtensionExpiryDate"]         </th>
                                         <th>       @MasterLocalizer["CommentsPatentSpecific"]      </th>
-                                        <th>       @MasterLocalizer["Strategy"]                  </th>
-                                        <th>Country </th>
+                                        @* <th>       @MasterLocalizer["Strategy"]                  </th>
+                                        <th>Country </th>*@
                                         <th>Patent Strategy</th>
-                                        <th>Basic Patent Expiry </th>
-                                        <th>Other Lmiting Patent Date 1</th>
-                                        <th>Other Lmiting Patent Date 2 </th>
+                                        @* <th>Basic Patent Expiry </th>*@
+                                        @* <th>Other Lmiting Patent Date 1</th>
+                                        <th>Other Lmiting Patent Date 2 </th>*@
                                         <th>Earliest Launch Date </th>
-                                        <th>Any Patents to be Filed </th>
+                                        @*<th>Any Patents to be Filed </th>*@
                                         <th>Earliest Market Entry</th>
-                                        <th>Estimated Number of generics in the market </th>
-                                        <th>Law firm being used </th>
+                                        @* <th>Estimated Number of generics in the market </th>
+                                        <th>Law firm being used </th>*@
 
                                     </tr>
                                 </thead>
@@ -323,22 +323,22 @@
                                             <td> @((item.ExtensionExpiryDate == null) ? "" : item.ExtensionExpiryDate.Value.ToString("MM/dd/yyyy"))   </td>
 
                                             <td> @item.Comments                  </td>
-                                            <td> @item.Strategy                  </td>
+                                            @*<td> @item.Strategy                  </td>*@
 
-                                            <td> @item.CountryName				                  </td>
+                                            @*<td> @item.CountryName				                  </td>*@
                                             <td> @item.PatentStrategyName		                  </td>
-                                            <td> @((item.BasicPatentExpiry == null) ? "" : item.BasicPatentExpiry.Value.ToString("MM/dd/yyyy"))   </td>
-                                            <td> @((item.OtherLmitingPatentDate1 == null) ? "" : item.OtherLmitingPatentDate1.Value.ToString("MM/dd/yyyy"))   </td>
-                                            <td> @((item.OtherLmitingPatentDate2 == null) ? "" : item.OtherLmitingPatentDate2.Value.ToString("MM/dd/yyyy"))   </td>
+                                            @* <td> @((item.BasicPatentExpiry == null) ? ""        : item.BasicPatentExpiry.Value.ToString("MM/dd/yyyy"))   </td>*@
+                                            @*<td> @((item.OtherLmitingPatentDate1 == null) ? "" : item.OtherLmitingPatentDate1.Value.ToString("MM/dd/yyyy"))   </td>*@
+                                            @*<td> @((item.OtherLmitingPatentDate2 == null) ? "" : item.OtherLmitingPatentDate2.Value.ToString("MM/dd/yyyy"))   </td>*@
 
 
                                             <td> @((item.EarliestLaunchDate == null) ? "" : item.EarliestLaunchDate.Value.ToString("MM/dd/yyyy"))   </td>
-                                            <td> @item.AnyPatentstobeFiled			                  </td>
+                                            @*<td> @item.AnyPatentstobeFiled			                  </td>*@
                                             <td> @((item.EarliestMarketEntry == null) ? "" : item.EarliestMarketEntry.Value.ToString("MM/dd/yyyy"))   </td>
 
-                                            <td> @item.StimatedNumberofgenericsinthe	                  </td>
-                                            <td> @item.Lawfirmbeingused				                  </td>
-
+                                            @* <td> @item.StimatedNumberofgenericsinthe	                  </td>
+                                        <td> @item.Lawfirmbeingused				                  </td>
+                                        *@
 
                                         </tr>
                                         @* <tr>
@@ -354,78 +354,7 @@
                 </div>
                 @* ----------End -Patent Details  Formulation-------------*@
                 @* ----------Start -Patent Details-API------------*@
-                <div class="card card-outline card-primary">
-                    <div class="card-header bg-primary">
-                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details for API </button></h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body table-overflow" style="display: block;">
-                        <div style="overflow-x:auto;">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>       @MasterLocalizer["Business Unit"]                 </th>
-                                        <th>       @MasterLocalizer["PatentNumber"]                 </th>
-                                        <th>        @MasterLocalizer["Type"]                        </th>
-                                        <th>       @MasterLocalizer["OriginalExpiraDate"]         </th>
-                                        <th>       @MasterLocalizer["ExtensionExpiryDate"]         </th>
-                                        <th>       @MasterLocalizer["CommentsPatentSpecific"]      </th>
-                                        <th>       @MasterLocalizer["Strategy"]                  </th>
-                                        <th>Country </th>
-                                        <th>Patent Strategy</th>
-                                        <th>Basic Patent Expiry </th>
-                                        <th>Other Lmiting Patent Date 1</th>
-                                        <th>Other Lmiting Patent Date 2 </th>
-                                        <th>Earliest Launch Date </th>
-                                        <th>Any Patents to be Filed </th>
-                                        <th>Earliest Market Entry</th>
-                                        <th>Estimated Number of generics in the market </th>
-                                        <th>Law firm being used </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.IPD_PatentDetailsList.Where(x => x.PatentType == (short)IPDPatenDetailsType.PatientDetailsForAPI))
-                                    {
-                                        <tr>
-                                            <td> @item.BusinessUnitName              </td>
-                                            <td> @item.PatentNumber              </td>
-                                            <td> @item.Type                      </td>
-                                            <td> @((item.OriginalExpiryDate == null) ? "" : item.OriginalExpiryDate.Value.ToString("MM/dd/yyyy"))   </td>
-                                            <td> @((item.ExtensionExpiryDate == null) ? "" : item.ExtensionExpiryDate.Value.ToString("MM/dd/yyyy"))   </td>
-
-                                            <td> @item.Comments                  </td>
-                                            <td> @item.Strategy                  </td>
-                                            <td> @item.CountryName				                  </td>
-                                            <td> @item.PatentStrategyName		                  </td>
-                                            <td> @((item.BasicPatentExpiry == null) ? "" : item.BasicPatentExpiry.Value.ToString("MM/dd/yyyy"))   </td>
-                                            <td> @((item.OtherLmitingPatentDate1 == null) ? "" : item.OtherLmitingPatentDate1.Value.ToString("MM/dd/yyyy"))   </td>
-                                            <td> @((item.OtherLmitingPatentDate2 == null) ? "" : item.OtherLmitingPatentDate2.Value.ToString("MM/dd/yyyy"))   </td>
-
-
-                                            <td> @((item.EarliestLaunchDate == null) ? "" : item.EarliestLaunchDate.Value.ToString("MM/dd/yyyy"))   </td>
-                                            <td> @item.AnyPatentstobeFiled			                  </td>
-                                            <td> @((item.EarliestMarketEntry == null) ? "" : item.EarliestMarketEntry.Value.ToString("MM/dd/yyyy"))   </td>
-
-                                            <td> @item.StimatedNumberofgenericsinthe	                  </td>
-                                            <td> @item.Lawfirmbeingused				                  </td>
-
-                                        </tr>
-                                        @* <tr>
-                                    <td>
-                                    @Html.TextBox(item.PatentNumber, new { @readonly = "readonly",@class = "form-control "})
-                                    </td>
-                                    </tr>*@
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+             
                 @* ----------End -Patent Details-API------------*@
 
                 @* ----------Start -Save buttons-------------*@
