@@ -303,7 +303,7 @@ $(document).ready(function () {
         }
 
         $.each(_strengthArray, function (ind, val) {
-            var strength = parseInt(val.strength);
+            var strength = val.strength;
 
 
             var id_batchcontrol_proto = '.BatchSize_Excipient_PrototypeFormulation_' + val.pidfProductStrengthId;
@@ -337,7 +337,7 @@ $(document).ready(function () {
         });
     }
     function GetIntfromControlValue(cntrlVal) {
-       return (cntrlVal == '') ? 0 : parseInt(cntrlVal);
+       return (cntrlVal == '') ? 0 : (cntrlVal);
     }
     $(document).on("change", "#RNDMasterEntities_ApirequirementMarketPrice", function () {
         $("input[class~='calcRNDApirequirementsPrototype']").trigger('change');
@@ -3410,13 +3410,13 @@ function SetHeadWiseBudget() {
         var _clinicalTotalPivotalFasting = $('#tableclinical').find('.clinicalcal_3Total').find('.calcTotalCostForStrengthClinicalTotal').val();
         var _clinicalTotalPivotalFed = $('#tableclinical').find('.clinicalcal_4Total').find('.calcTotalCostForStrengthClinicalTotal').val();
         var bioStudyCostExhibit = ((ConvertToNumber(_clinicalTotalPivotalFasting) + ConvertToNumber(_clinicalTotalPivotalFed)));
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBExhibit').val(formatNumber(bioStudyCostExhibit)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBExhibit').val(ConvertToNumber(bioStudyCostExhibit)/100000);
 
         var toolingchangepartExhibit = $('#tablerndtoolingchangepart').find('.ToolingChangePartActivity3Total').find('.calcTotalCostForTooling3').val();
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBExhibit').val(ConvertToNumber(toolingchangepartExhibit)/100000);
 
         var OtherExpensesExhibit = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBExhibit').val(OtherExpensesExhibit/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBExhibit').val(ConvertToNumber(OtherExpensesExhibit)/100000);
 
         var FilingExpensesExhibit = $('#tablerndfilingexpenses').find('.FillingExpensesActivity1Total').find('.calcTotalCostForStrengthTotalFilling').val();
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBExhibit').val(ConvertToNumber(FilingExpensesExhibit)/100000);
