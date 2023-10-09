@@ -983,6 +983,7 @@ function GetBatchSizeCostingTRValues() {
             hdnNSPHigh: $(this).find("#hdnNSPHigh").val(),
 
             emcureCOGs_pack: $(this).find(".EmcureCOGs_pack").val(),
+            //netRealisation: $(this).find(".NetRealisation").val()
 
         }
 
