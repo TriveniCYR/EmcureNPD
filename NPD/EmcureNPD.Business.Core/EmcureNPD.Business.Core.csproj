@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmcureNPD.Business.Models\EmcureNPD.Business.Models.csproj" />
+    <ProjectReference Include="..\EmcureNPD.CurrencyConverter\EmcureNPD.CurrencyConverter.csproj" />
     <ProjectReference Include="..\EmcureNPD.Data.DataAccess\EmcureNPD.Data.DataAccess.csproj" />
   </ItemGroup>
 

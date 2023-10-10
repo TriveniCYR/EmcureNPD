@@ -77,6 +77,7 @@ namespace EmcureNPD.API
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(typeof(IResponseHandler<>), typeof(ResponseHandler<>));
+            
 
             services.Configure<CookiePolicyOptions>(options =>
             {
