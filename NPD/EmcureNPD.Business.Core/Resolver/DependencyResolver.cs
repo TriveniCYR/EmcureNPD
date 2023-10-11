@@ -81,6 +81,7 @@ namespace EmcureNPD.Business.Core.Resolver
             services.AddTransient<IMasterPlantLine, MasterPlantLineService>();
             services.AddTransient<ISessionManager, SessionManagerService>();
             services.AddTransient<IWishList, WishListService>();
+            services.AddTransient<ICurrencyConverter,EmcureNPD.Business.Core.Implementation.CurrencyConverter>();
             return services;
         }
     }
