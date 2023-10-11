@@ -84,7 +84,7 @@
                 var trRevenueMonths = formatToNumber($('#tblCommercialPerPack').find('.trRevenueMonths:eq(' + i + ')').text());
                 let _units = ((marketInPacks * (marketSharePercentage / 100)) * (Math.pow((1 - (msErosion / 100)), trYearIndex))) * (trRevenueMonths / 12);
                 _units = isNaN(_units) ? 0 : _units;
-                html += "<td>" + _units.toFixed(3) + "</td>";
+                html += "<td>" + _units.toFixed() + "</td>";
                 MS_td_data.push(_units);
             }
             html += "</tr>";
@@ -248,7 +248,7 @@ function RenderFinanceProjection() {
             const diffTime = Math.abs(_projectionDate - _ProjectLaunchDate);
             const diffMonths = Math.round(diffTime / (1000 * 60 * 60 * 24 * 30));
             let result = ((_projectionDate < _ProjectLaunchDate) ? "0" : (diffMonths > 12 ? 12 : diffMonths));
-            Operating_Months_Projection_data.push(result);
+            Operating_Months_Projection_data.push(parseInt(result));
             html += "<td class='trRevenueMonths'>" + result + "</td>";
         }
         html += "</tr>";
@@ -749,7 +749,8 @@ function RenderFinanceProjection() {
             }
 
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result + "</td>";
+            result = isNaN(result) ? 0 : result;
+            html += "<td>" + result.toFixed(0) + "</td>";
             Simple_payback_Projection.push(result);
         }
         html += "</tr>";
@@ -772,7 +773,7 @@ function RenderFinanceProjection() {
                 }
             }
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(0) + "</td>";
             Discounted_payback_Projection.push(result);
         }
         html += "</tr>";
