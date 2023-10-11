@@ -55,6 +55,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterPbfworkFlow> _masterPbfworkFlow { get; set; }
         private IRepository<PidfPbfOutsource> _repositoryPidfPbfOutsource { get; set; }
         private IRepository<PidfPbfOutsourceTask> _repositoryPidfPbfOutsourceTask { get; set; }
+        private IRepository<MasterUnitofMeasurement> _repositoryMasterUnitofMeasurement { get; set; }
 
         public CommercialFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService,
@@ -90,6 +91,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _masterPbfworkFlow = _unitOfWork.GetRepository<MasterPbfworkFlow>();
             _repositoryPidfPbfOutsourceTask = _unitOfWork.GetRepository<PidfPbfOutsourceTask>();
             _repositoryPidfPbfOutsource = _unitOfWork.GetRepository<PidfPbfOutsource>();
+            _repositoryMasterUnitofMeasurement = _unitOfWork.GetRepository<MasterUnitofMeasurement>();
         }
 
         //public async Task<IPDEntity> FillDropdown()
@@ -104,8 +106,8 @@ namespace EmcureNPD.Business.Core.Implementation
         private async Task<DBOperation> AddUpdate_PIDF_Commercial_Master(PIDFCommercialViewModel entitycommPIDF)
         {
             var loggedInUserID = _helper.GetLoggedInUser().UserId;
-           
-            var dbObj = await _PidfCommercialMasterRepository.GetAsync(x => x.BusinessUnitId == entitycommPIDF.MainBusinessUnitId && x.Pidfid == entitycommPIDF.Pidfid && x.CountryId== entitycommPIDF.MainCountryId);
+
+            var dbObj = await _PidfCommercialMasterRepository.GetAsync(x => x.BusinessUnitId == entitycommPIDF.MainBusinessUnitId && x.Pidfid == entitycommPIDF.Pidfid && x.CountryId == entitycommPIDF.MainCountryId);
             if (dbObj != null)
             {
                 dbObj.Interested = entitycommPIDF.Interested;
@@ -134,7 +136,7 @@ namespace EmcureNPD.Business.Core.Implementation
             await AddUpdate_PIDF_Commercial_Master(entitycommPIDF);
 
             var AllObjofPidfId = _commercialrepository.GetAllQuery().Where(x => x.Pidfid == entitycommPIDF.Pidfid && x.IsDeleted == false).ToList();
-            if (AllObjofPidfId != null && AllObjofPidfId.Count>0)
+            if (AllObjofPidfId != null && AllObjofPidfId.Count > 0)
             {
                 foreach (var _obj in AllObjofPidfId)
                 {
@@ -162,73 +164,73 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     entitycommPIDF.SaveType = "SvDrf";
                 }
-            }  
-             
+            }
+
             foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
+            {
+                var listYear = new List<PidfCommercialYear>();
+                int i = 1;
+
+                foreach (var year in item.PidfCommercialYears.OrderBy(x => x.YearIndex))
                 {
-                    var listYear = new List<PidfCommercialYear>();
-                    int i = 1;
-
-                    foreach (var year in item.PidfCommercialYears.OrderBy(x => x.YearIndex))
-                    {
-                        var Yeardata = _mapperFactory.Get<PidfCommercialYearEntity, PidfCommercialYear>(year);
-                        //Yeardata.PackagingTypeId = year.CommercialPackagingTypeId;
-                        Yeardata.PidfcommercialYearId = 0;
-                        Yeardata.PidfcommercialId = 0;
-                        // Yeardata.YearIndex = year.YearIndex;
-                        listYear.Add(Yeardata);
-                        i++;
-                    }
-
-                    Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == item.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid
-                    && u.PidfproductStrengthId == item.PidfproductStrengthId && u.CountryId==item.CountryId &&  // Country Added
-                    u.PackSizeId == item.PackSizeId && u.IsDeleted == false;
-                    var objFetchData = await _commercialrepository.GetAsync(expr);
-
-                    if (objFetchData == null)
-                    {
-                        var NewCommPIDF = new PidfCommercial();
-                        NewCommPIDF.Pidfid = item.Pidfid;
-                        NewCommPIDF.BusinessUnitId = item.BusinessUnitId;
-                        NewCommPIDF.CountryId = item.CountryId;   // Country Added
-                        NewCommPIDF.PidfproductStrengthId = item.PidfproductStrengthId;
-                        NewCommPIDF.PackSizeId = item.PackSizeId;
-                        NewCommPIDF.MarketSizeInUnit = item.MarketSizeInUnit;
-                        NewCommPIDF.ShelfLife = item.ShelfLife;
-                        NewCommPIDF.CreatedDate = DateTime.Now;
-                        NewCommPIDF.CreatedBy = loggedInUserID;
-                        NewCommPIDF.IsDeleted = false;
-                        NewCommPIDF.PidfCommercialYears = listYear;
-                        _commercialrepository.AddAsync(NewCommPIDF);
-                        await _unitOfWork.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        var OldObjpidfCommercial = _mapperFactory.Get<PidfCommercial, PIDFCommercialEntity>(objFetchData);
-
-                        //OldObjpidfCommercial.PidfCommercialYears = item.PidfCommercialYears;
-                        //Remove all Already mapped Years data
-                        var CommercialYears = await _commercialYearrepository.GetAllAsync(x => x.PidfcommercialId == objFetchData.PidfcommercialId);
-
-                        foreach (var it in CommercialYears.OrderBy(x => x.YearIndex))
-                        {
-                            OldObjpidfCommercial.PidfCommercialYears.Add(_mapperFactory.Get<PidfCommercialYear, PidfCommercialYearEntity>(it));
-                            _commercialYearrepository.Remove(it);
-                        }
-
-                        objFetchData.PidfCommercialYears = listYear;
-                        objFetchData.MarketSizeInUnit = item.MarketSizeInUnit;
-                        objFetchData.ShelfLife = item.ShelfLife;
-                        objFetchData.ModifyBy = loggedInUserID;
-                        objFetchData.ModifyDate = DateTime.Now;
-
-                        _commercialrepository.UpdateAsync(objFetchData);
-                        await _unitOfWork.SaveChangesAsync();
-
-                        var isSuccess = await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
-                        ModuleEnum.CommercialManagement, OldObjpidfCommercial, item, loggedInUserID);
-                    }
+                    var Yeardata = _mapperFactory.Get<PidfCommercialYearEntity, PidfCommercialYear>(year);
+                    //Yeardata.PackagingTypeId = year.CommercialPackagingTypeId;
+                    Yeardata.PidfcommercialYearId = 0;
+                    Yeardata.PidfcommercialId = 0;
+                    // Yeardata.YearIndex = year.YearIndex;
+                    listYear.Add(Yeardata);
+                    i++;
                 }
+
+                Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == item.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid
+                && u.PidfproductStrengthId == item.PidfproductStrengthId && u.CountryId == item.CountryId &&  // Country Added
+                u.PackSizeId == item.PackSizeId && u.IsDeleted == false;
+                var objFetchData = await _commercialrepository.GetAsync(expr);
+
+                if (objFetchData == null)
+                {
+                    var NewCommPIDF = new PidfCommercial();
+                    NewCommPIDF.Pidfid = item.Pidfid;
+                    NewCommPIDF.BusinessUnitId = item.BusinessUnitId;
+                    NewCommPIDF.CountryId = item.CountryId;   // Country Added
+                    NewCommPIDF.PidfproductStrengthId = item.PidfproductStrengthId;
+                    NewCommPIDF.PackSizeId = item.PackSizeId;
+                    NewCommPIDF.MarketSizeInUnit = item.MarketSizeInUnit;
+                    NewCommPIDF.ShelfLife = item.ShelfLife;
+                    NewCommPIDF.CreatedDate = DateTime.Now;
+                    NewCommPIDF.CreatedBy = loggedInUserID;
+                    NewCommPIDF.IsDeleted = false;
+                    NewCommPIDF.PidfCommercialYears = listYear;
+                    _commercialrepository.AddAsync(NewCommPIDF);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    var OldObjpidfCommercial = _mapperFactory.Get<PidfCommercial, PIDFCommercialEntity>(objFetchData);
+
+                    //OldObjpidfCommercial.PidfCommercialYears = item.PidfCommercialYears;
+                    //Remove all Already mapped Years data
+                    var CommercialYears = await _commercialYearrepository.GetAllAsync(x => x.PidfcommercialId == objFetchData.PidfcommercialId);
+
+                    foreach (var it in CommercialYears.OrderBy(x => x.YearIndex))
+                    {
+                        OldObjpidfCommercial.PidfCommercialYears.Add(_mapperFactory.Get<PidfCommercialYear, PidfCommercialYearEntity>(it));
+                        _commercialYearrepository.Remove(it);
+                    }
+
+                    objFetchData.PidfCommercialYears = listYear;
+                    objFetchData.MarketSizeInUnit = item.MarketSizeInUnit;
+                    objFetchData.ShelfLife = item.ShelfLife;
+                    objFetchData.ModifyBy = loggedInUserID;
+                    objFetchData.ModifyDate = DateTime.Now;
+
+                    _commercialrepository.UpdateAsync(objFetchData);
+                    await _unitOfWork.SaveChangesAsync();
+
+                    var isSuccess = await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
+                    ModuleEnum.CommercialManagement, OldObjpidfCommercial, item, loggedInUserID);
+                }
+            }
 
             if (entitycommPIDF.SaveType != "TabClick")
             {
@@ -341,7 +343,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<dynamic> GetPBFOutsourcingTabDropDownData()
         {
             var objlistWorkFlow = await _masterWorkflowService.GetAll();
-           var  listWorkFlow = objlistWorkFlow.Where(x => x.IsActive == true).ToList();
+            var listWorkFlow = objlistWorkFlow.Where(x => x.IsActive == true).ToList();
             var _objPBFList = await _masterPbfworkFlow.GetAllAsync();
             var pbflistWorkFlow = _mapperFactory.GetList<MasterPbfworkFlow, MasterPbfworkFlowEntity>(_objPBFList);
             ArrayList arr = new ArrayList();
@@ -367,7 +369,7 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var CreatedByUser = _helper.GetLoggedInUser().UserId;
             var existingfPBFOutsourceData = _repositoryPidfPbfOutsource.Get(x => x.Pidfid == entityPBFOutsource.Pidfid);
-            if(existingfPBFOutsourceData == null)
+            if (existingfPBFOutsourceData == null)
             {
                 // Add new
                 if (entityPBFOutsource.SaveType == "TabClick")
@@ -378,12 +380,12 @@ namespace EmcureNPD.Business.Core.Implementation
                 pbfoutsoucedata.CreatedBy = CreatedByUser;
                 pbfoutsoucedata.CreatedDate = DateTime.Now;
 
-              _repositoryPidfPbfOutsource.AddAsync(pbfoutsoucedata);
+                _repositoryPidfPbfOutsource.AddAsync(pbfoutsoucedata);
                 await _unitOfWork.SaveChangesAsync();
 
-                if(entityPBFOutsource.pidfpbfoutsourceTaskEntityList != null  && entityPBFOutsource.pidfpbfoutsourceTaskEntityList.Count > 0)
+                if (entityPBFOutsource.pidfpbfoutsourceTaskEntityList != null && entityPBFOutsource.pidfpbfoutsourceTaskEntityList.Count > 0)
                 {
-                    foreach(var item in entityPBFOutsource.pidfpbfoutsourceTaskEntityList)
+                    foreach (var item in entityPBFOutsource.pidfpbfoutsourceTaskEntityList)
                     {
                         var pbfoutsoucetaskdata = _mapperFactory.Get<PidfpbfoutsourceTaskEntity, PidfPbfOutsourceTask>(item);
                         pbfoutsoucetaskdata.CreatedBy = CreatedByUser;
@@ -393,7 +395,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-              
+
             }
             else
             {
@@ -408,8 +410,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 if (entityPBFOutsource.pidfpbfoutsourceTaskEntityList != null && entityPBFOutsource.pidfpbfoutsourceTaskEntityList.Count > 0)
                 {
                     var removechilddata = _repositoryPidfPbfOutsourceTask.GetAll().Where(x => x.PidfpbfoutsourceId == existingfPBFOutsourceData.PidfpbfoutsourceId);
-                    foreach(var remitem in removechilddata)
-                    _repositoryPidfPbfOutsourceTask.Remove(remitem);
+                    foreach (var remitem in removechilddata)
+                        _repositoryPidfPbfOutsourceTask.Remove(remitem);
 
                     await _unitOfWork.SaveChangesAsync();
 
@@ -432,5 +434,116 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return DBOperation.Success;
         }
+
+        public async Task<List<CommercialSummary>> GetCommercialSummary(long Pidfid = 0)
+        {
+            try
+            {
+                var commercialdbObj = await _commercialrepository.GetAllAsync();
+                var businessunitdbObj = await _businessUnitrepository.GetAllAsync();
+                var commercialyeardbObj = await _commercialYearrepository.GetAllAsync();
+                var finalselectiondbObj = await _finalSelectionrepository.GetAllAsync();
+                var pidfproductstrengthdbObj = await _pidfProductStrengthrepository.GetAllAsync();
+                var masterpacksizedbObj = await _masterPackSizeEepository.GetAllAsync();
+                var countrydbObj = await _countryrepository.GetAllAsync();
+                var masterunitofmeasurementdbObj = await _repositoryMasterUnitofMeasurement.GetAllAsync();
+
+                var query = from commercial in commercialdbObj
+                            join businessunit in businessunitdbObj
+                                on commercial.BusinessUnitId equals businessunit.BusinessUnitId
+                            join commercialyear in commercialyeardbObj
+                                on commercial.PidfcommercialId equals commercialyear.PidfcommercialId
+                            join finalselection in finalselectiondbObj
+                               on commercialyear.FinalSelectionId equals finalselection.FinalSelectionId
+                            join pidfproductstrength in pidfproductstrengthdbObj
+                            on commercial.PidfproductStrengthId equals pidfproductstrength.PidfproductStrengthId
+                            join masterpacksize in masterpacksizedbObj
+                          on commercial.PackSizeId equals masterpacksize.PackSizeId
+                            join country in countrydbObj
+                            on commercial.CountryId equals country.CountryId
+                            join measurementunit in masterunitofmeasurementdbObj
+                          on pidfproductstrength.UnitofMeasurementId equals measurementunit.UnitofMeasurementId
+                            where commercial.Pidfid == Pidfid
+                            orderby commercial.BusinessUnitId
+                            select new
+                            {
+                                commercial.PidfcommercialId,
+                                commercial.BusinessUnitId,
+                                businessunit.BusinessUnitName,
+                                country.CountryId,
+                                country.CountryName,
+                                commercialyear.YearIndex,
+                                commercialyear.MarketShareUnitHigh,
+                                commercialyear.MarketShareUnitMedium,
+                                commercialyear.MarketShareUnitLow,
+                                masterpacksize.PackSizeName,
+                                finalselection.FinalSelectionName,
+                                pidfproductstrength.Strength,
+                                measurementunit.UnitofMeasurementName,
+                                commercialyear.Nsphigh,
+                                commercialyear.Nspmedium,
+                                commercialyear.Nsplow
+                            };
+
+                var summaries = new List<CommercialSummary>();
+
+                foreach (var group in query.GroupBy(item => new { item.PidfcommercialId }))
+                {
+                    var summary = new CommercialSummary
+                    {
+                        BusinessUnitName = group.First().BusinessUnitName,
+                        PidfStrengthPackSize = $"{group.First().Strength}{group.First().UnitofMeasurementName} - {group.First().PackSizeName}"
+                    };
+
+                    foreach (var item in group)
+                    {
+                        switch (item.FinalSelectionName)
+                        {
+                            case "Low/Low":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitLow, item.Nsplow);
+                                break;
+                            case "Low/Medium":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitLow, item.Nspmedium);
+                                break;
+                            case "Low/High":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitLow, item.Nsphigh);
+                                break;
+                            case "Medium/Low":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitMedium, item.Nsplow);
+                                break;
+                            case "Medium/Medium":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitMedium, item.Nspmedium);
+                                break;
+                            case "Medium/High":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitMedium, item.Nsphigh);
+                                break;
+                            case "High/Low":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitHigh, item.Nsplow);
+                                break;
+                            case "High/Medium":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitHigh, item.Nspmedium);
+                                break;
+                            case "High/High":
+                                summary.AddYearDetails(item.YearIndex, item.CountryId, item.CountryName, item.MarketShareUnitHigh, item.Nsphigh);
+                                break;
+                            default:
+
+                                break;
+                        }
+
+                    }
+
+                    summaries.Add(summary);
+                }
+
+                return summaries;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+        }
+
     }
 }

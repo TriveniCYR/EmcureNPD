@@ -27,5 +27,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<dynamic> GetPBFOutsourcingTabDropDownData();
         Task<dynamic> GetPBFWorkFlowTaskNames(int pbfWorkFlowid);
         Task<DBOperation> AddUpdatePBFoutsourceData(PidfpbfoutsourceEntity entityPBFOutsource);
+        Task<List<CommercialSummary>>GetCommercialSummary(long pidfId);
     }
 }

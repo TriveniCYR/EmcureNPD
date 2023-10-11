@@ -2,6 +2,7 @@
 using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
+using EmcureNPD.Data.DataAccess.Entity;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Data;
@@ -17,7 +18,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IConfiguration _configuration;
         private readonly IMasterAuditLogService _auditLogService;
         private readonly IExceptionService _ExceptionService;
-
+        private IRepository<PidfPbfRnDMaster> _pidfPbfRnDMasterRepository { get; set; }
         public ManagementApproval(IUnitOfWork unitOfWork, IConfiguration configuration, IMasterAuditLogService auditLogService, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
@@ -45,20 +46,6 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        //public async Task<dynamic> GetProjectNameAndStrength(int Pidfid = 0)
-        //{
-        //    try
-        //    {
-        //        SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
-        //        DynamicParameters param = new DynamicParameters();
-        //        param.Add("@PIDFID", Pidfid);
-        //        var projects = await con.QueryAsync<ProjectsModel>("ProcGetProjectNameAndStrength", param, commandType: CommandType.StoredProcedure);
-        //        return projects;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return null;
-        //    }
-        //}
+       
     }
 }
