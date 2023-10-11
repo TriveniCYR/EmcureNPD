@@ -193,7 +193,6 @@
     }
     $('#tblCommercialPerPack').html(html);
 }
-
 function RenderFinanceProjection() {
     $('#tblFinanceProjection').html('');
 
@@ -802,10 +801,6 @@ function RenderFinanceProjection() {
     $('#tblFinanceProjection').html(html);
 
 }
-
-
-
-
 function UpdateDynamicTextBoxValues(table) {
     if (table.length == 10) {
         for (var i = 0; i < 10; i++) {
@@ -875,7 +870,6 @@ function formatToNumber(input, isFloat) {
         return 0;
     }
 }
-
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveEncryptedBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
 }
@@ -915,6 +909,50 @@ function BussinesUnitInterestedFinanceSuccess(data) {
 
 }
 function BussinesUnitInterestedFinanceError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
+function GetCommercialSummaryBudgetData() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetCommercialSummaryBudget + '/' + _selectedPidfId, 'GET', GetCommercialSummaryBudgetSuccess, GetCommercialSummaryBudgetError);
+}
+function GetCommercialSummaryBudgetSuccess(data) {
+    console.log(data);
+    var tableBody = document.querySelector("#tblcommercialsummary tbody");
+
+    data._object.forEach(function (item) {
+        var row = document.createElement("tr");
+
+        var cells = [
+            item.businessUnitName,
+            item.pidfStrengthPackSize
+        ];
+
+        for (var i = 1; i <= 5; i++) {
+            if (item.yearDetails[i]) {
+                cells.push(item.yearDetails[i].countryName);
+                cells.push(item.yearDetails[i].price);
+                cells.push(item.yearDetails[i].units);
+                cells.push(item.yearDetails[i].value);
+            } else {
+                cells.push("-");
+                cells.push("-");
+                cells.push("-");
+            }
+        }
+
+        cells.forEach(function (cellData) {
+            var cell = document.createElement("td");
+            cell.textContent = cellData;
+            row.appendChild(cell);
+        });
+
+        tableBody.appendChild(row);
+    });
+}
+
+
+
+function GetCommercialSummaryBudgetError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 

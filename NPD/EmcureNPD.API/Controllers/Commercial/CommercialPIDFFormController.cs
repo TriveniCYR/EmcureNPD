@@ -307,5 +307,24 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
+        [HttpGet, Route("GetCommercialSummary/{pidfId}")]
+        public async Task<IActionResult> GetCommercialSummary([FromRoute] long pidfId)
+        {
+            try
+            {
+                //pidfId = int.Parse(UtilityHelper.Decreypt(strpidfId));
+                var oPIDFEntity = await _pidfCommercialFormService.GetCommercialSummary(pidfId);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (int)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
     }
 }

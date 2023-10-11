@@ -9,15 +9,15 @@ namespace EmcureNPD.Business.Models
     public class ProjectsModel
     {
         public List<ProjectNameModel> lsProjectName { get; set; }
-         public List<ProjectStrength> lsProjectStrength { get; set; }
+        public List<ProjectStrength> lsProjectStrength { get; set; }
         public List<Manager> lsManager { get; set; }
-        public List<HeadWiseBudget> lsHeadWiseBudget { get; set; } 
+        public List<HeadWiseBudget> lsHeadWiseBudget { get; set; }
         public List<ProjectDetails> lsProjectDetails { get; set; }
         public List<CumulativePhaseWiseBudget> lsCumulativePhaseWiseBudget { get; set; }
         public List<AdditionalCost> lsAdditionalCost { get; set; }
         public List<PBFDetails> lsPBFDetails { get; set; }
         public FinanceModel financeModel { get; set; }
-        
+
     }
     public class ProjectNameModel
     {
@@ -35,7 +35,7 @@ namespace EmcureNPD.Business.Models
     {
         public long UserId { get; set; }
         public string ManagerName { get; set; }
-        public string DesignationName { get; set; } 
+        public string DesignationName { get; set; }
         public int StatusId { get; set; }
         public DateTime CreatedDate { get; set; }
     }
@@ -101,5 +101,33 @@ namespace EmcureNPD.Business.Models
         public string pbfworkflowtaskname { get; set; }
         public string workflowname { get; set; }
         public string pbfworkflowname { get; set; }
+    }
+    public class CommercialSummary
+    {
+        public string BusinessUnitName { get; set; }
+        public string PidfStrengthPackSize { get; set; }
+        public Dictionary<int, YearWiseDetails> YearDetails { get; } = new Dictionary<int, YearWiseDetails>();
+
+        public void AddYearDetails(int yearIndex, int countryId, string countryName, string price, string units)
+        {
+            if (!YearDetails.ContainsKey(yearIndex))
+            {
+                YearDetails[yearIndex] = new YearWiseDetails
+                {
+                    CountryName = countryName,
+                    Price = int.Parse(price),
+                    Units = float.Parse(units),
+                    Value = int.Parse(price) * float.Parse(units)
+                };
+            }
+        }
+
+    }
+    public class YearWiseDetails
+    {
+        public string CountryName { get; set; }
+        public int Price { get; set; }
+        public float Units { get; set; }
+        public float Value { get; set; }
     }
 }

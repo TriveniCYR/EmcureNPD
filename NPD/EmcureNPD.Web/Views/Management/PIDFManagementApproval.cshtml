@@ -83,6 +83,14 @@
                    aria-controls="custom-tabs-PBF"
                    aria-selected="false">PBF Charter</a>
             </li>
+            <li class="nav-item p-0">
+                <a class="nav-link px-2"
+                   id="custom-tabs-BudgetApproval-commercialsummary-tab"
+                   data-toggle="pill"
+                   href="#custom-tabs-commercialsummary" role="tab"
+                   aria-controls="custom-tabs-commercialsummary"
+                   aria-selected="false">Market Summary</a>
+            </li>
         </ul>
     </div>
 
@@ -944,7 +952,71 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane fade show"
+                 id="custom-tabs-commercialsummary" role="tabpanel"
+                 aria-labelledby="custom-tabs-BudgetApproval-commercialsummary-tab">
+                <div class="container-fluid">
+                    <div class="" style="background-color:white;overflow-x:auto;">
+                        <div class="row">
+                            <div class="col-12 table-overflow">
+                                <div class="card card-primary card-outline card-outline-tabs">
+                                    <div class="card-header p-0 border-bottom-0">
+                                        <ul class="nav nav-tabs" id="custom-tabs-commercialsummary-tab" role="tablist">
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content clsContentUnderBUTab_commercialsummary" id="custom-tabs-business-tabContent">
+                                            <div class="tab-pane fade show active" id="custom-tabs-usa" style="background-color:white;overflow-x:auto;"
+                                                 role="tabpanel" aria-labelledby="custom-tabs-business-usa-tab">
+                                                <div class="col-12 table-overflow">
+                                                    <table id="tblcommercialsummary" class="table table-bordered text-center mb-4">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="bg-primary">BusinessUnit</th>
+                                                                 <th class="bg-primary">MoleculeStrength</th>
+                                                                <th class="bg-primary">CountryName</th>
+                                                                <th class="bg-primary" colspan="3">Year1</th>
+                                                                <th class="bg-primary" colspan="3">Year2</th>
+                                                                <th class="bg-primary" colspan="3">Year3</th>
+                                                                <th class="bg-primary" colspan="3">Year4</th>
+                                                                <th class="bg-primary" colspan="3">Year5</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="bg-primary"></th>
+                                                                <th class="bg-primary"></th>
+                                                                <th class="bg-primary"></th>
+                                                                <th class="bg-primary">Price</th>
+                                                                <th class="bg-primary">Units</th>
+                                                                <th class="bg-primary">Value</th>
+                                                                <th class="bg-primary">Price</th>
+                                                                <th class="bg-primary">Units</th>
+                                                                <th class="bg-primary">Value</th>
+                                                                <th class="bg-primary">Price</th>
+                                                                <th class="bg-primary">Units</th>
+                                                                <th class="bg-primary">Value</th>
+                                                                <th class="bg-primary">Price</th>
+                                                                <th class="bg-primary">Units</th>
+                                                                <th class="bg-primary">Value</th>
+                                                                <th class="bg-primary">Price</th>
+                                                                <th class="bg-primary">Units</th>
+                                                                <th class="bg-primary">Value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                         
+                                                        </tbody>
+                                                    </table>
+                                                </div>
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -999,6 +1071,7 @@
         const GetManagmentApprovalBatchSizeCoatingURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetManagmentApprovalBatchSizeCoating";
         const GetActiveEncryptedBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveEncryptedBusinessUnit";
         var GetIsInterestedByPIDFandBUurlFinance = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIsInterestedByPIDFandBU";
+        var GetCommercialSummaryBudget = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCommercialSummary";
         const isView = "@Context.Request.Query["IsView"]";
         const ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
         var PidafId = "@Context.Request.Query["pidfid"]";
