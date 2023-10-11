@@ -918,7 +918,9 @@ function GetCommercialSummaryBudgetData() {
 function GetCommercialSummaryBudgetSuccess(data) {
     console.log(data);
     var tableBody = document.querySelector("#tblcommercialsummary tbody");
+    var previousItem = null;  // To keep track of the previous item
 
+    // Iterate through the data and create rows
     data._object.forEach(function (item) {
         var row = document.createElement("tr");
 
@@ -928,15 +930,21 @@ function GetCommercialSummaryBudgetSuccess(data) {
         ];
 
         for (var i = 1; i <= 5; i++) {
-            if (item.yearDetails[i]) {
-                cells.push(item.yearDetails[i].countryName);
-                cells.push(item.yearDetails[i].price);
-                cells.push(item.yearDetails[i].units);
-                cells.push(item.yearDetails[i].value);
+            var yearData = item.yearDetails[i];
+            if (yearData) {
+                if (previousItem && previousItem.countryName === yearData.countryName) {
+                } else {
+                    cells.push(yearData.countryName);
+                    previousItem = yearData;  
+                }
+
+                cells.push(yearData.price);
+                cells.push(yearData.units);
+                cells.push(yearData.value);
             } else {
-                cells.push("-");
-                cells.push("-");
-                cells.push("-");
+                cells.push("-"); 
+                cells.push("-"); 
+                cells.push("-"); 
             }
         }
 
