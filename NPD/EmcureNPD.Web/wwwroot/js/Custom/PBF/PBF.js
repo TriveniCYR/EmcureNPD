@@ -308,29 +308,29 @@ $(document).ready(function () {
 
             var id_batchcontrol_proto = '.BatchSize_Excipient_PrototypeFormulation_' + val.pidfProductStrengthId;
             var id_APIReqcontrol_proto = "[name='RNDApirequirements["+ind+"].Prototype']";
-            var result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength );
+            var result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength/multFatcor );
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
             
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ScaleUpbatch']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ScaleUp']";
-             result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength);
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength/multFatcor);
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch1']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch1']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength);
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength/multFatcor);
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch2']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch2']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength);
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength/multFatcor);
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch3']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch3']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength);
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength/multFatcor);
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
 

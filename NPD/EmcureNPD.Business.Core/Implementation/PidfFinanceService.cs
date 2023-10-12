@@ -62,11 +62,31 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             try
             {
-                SqlParameter[] osqlParameter = {
-                new SqlParameter("@PIDFId", Pidfid)
-            };
+                SqlParameter[] osqlParameter = 
+                {
+                    new SqlParameter("@PIDFId", Pidfid)
+                };
 
                 DataSet dsPidfFinance = await _repository.GetDataSetBySP("ProcGetPidfFinance", System.Data.CommandType.StoredProcedure, osqlParameter);
+                return dsPidfFinance;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+        }
+
+        public async Task<dynamic> GetPidfFinancePhasewisebudget(int Pidfid = 0)
+        {
+            try
+            {
+                SqlParameter[] osqlParameter =
+                {
+                    new SqlParameter("@PIDFId", Pidfid)
+                };
+
+                DataSet dsPidfFinance = await _repository.GetDataSetBySP("stp_PBF_PhasewiseBudgetData", System.Data.CommandType.StoredProcedure, osqlParameter);
                 return dsPidfFinance;
             }
             catch (Exception ex)

@@ -99,6 +99,33 @@ namespace EmcureNPD.API.Controllers.PIDF
         }
 
         /// <summary>
+        /// Description - To Get PidfFinance
+        /// </summary>
+        /// <param name="oGetPidfFinance"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response> 
+        [HttpGet]
+        [Route("GetPidfFinancePhaseWiseBudget/{Pidfid}")]
+        public async Task<IActionResult> GetPidfFinancePhaseWiseBudget(string Pidfid)
+        {
+            try
+            {
+                Pidfid = UtilityHelper.Decreypt(Convert.ToString(Pidfid));
+                return _ObjectResponse.CreateData(await _pidfFinanceService.GetPidfFinancePhasewisebudget(Convert.ToInt32(Pidfid)), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
+
+        /// <summary>
         /// Description - To Get GetFinanceBatchSizeCoating
         /// </summary>
         /// <param name="oGetFinanceBatchSizeCoating"></param>
