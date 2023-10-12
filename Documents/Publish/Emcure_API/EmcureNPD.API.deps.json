@@ -10,6 +10,7 @@
         "dependencies": {
           "EmcureNPD.Business.Core": "1.0.0",
           "EmcureNPD.Business.Models": "1.0.0",
+          "EmcureNPD.CurrencyConverter": "1.0.0",
           "EmcureNPD.Resource": "1.0.0",
           "EmcureNPD.Utility": "1.0.0",
           "Microsoft.AspNet.WebApi.Core": "5.2.9",
@@ -58,7 +59,7 @@
       "jQuery/1.6.4": {},
       "JsonDiffPatch.Net/2.3.0": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "lib/netstandard2.0/JsonDiffPatchDotNet.dll": {
@@ -76,7 +77,7 @@
       "Microsoft.AspNet.SignalR.Core/2.4.3": {
         "dependencies": {
           "Microsoft.Owin.Security": "2.1.0",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {
@@ -104,7 +105,7 @@
       },
       "Microsoft.AspNet.WebApi.Client/5.2.9": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1",
+          "Newtonsoft.Json": "13.0.3",
           "Newtonsoft.Json.Bson": "1.0.2"
         },
         "runtime": {
@@ -251,7 +252,7 @@
       "Microsoft.AspNetCore.JsonPatch/6.0.13": {
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "lib/net6.0/Microsoft.AspNetCore.JsonPatch.dll": {
@@ -346,7 +347,7 @@
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson/6.0.13": {
         "dependencies": {
           "Microsoft.AspNetCore.JsonPatch": "6.0.13",
-          "Newtonsoft.Json": "13.0.1",
+          "Newtonsoft.Json": "13.0.3",
           "Newtonsoft.Json.Bson": "1.0.2"
         },
         "runtime": {
@@ -449,7 +450,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Connections.Abstractions": "2.2.0",
           "Microsoft.Extensions.Options": "5.0.0",
-          "Newtonsoft.Json": "13.0.1",
+          "Newtonsoft.Json": "13.0.3",
           "System.Buffers": "4.5.0"
         }
       },
@@ -467,7 +468,7 @@
       "Microsoft.AspNetCore.SignalR.Protocols.Json/1.1.0": {
         "dependencies": {
           "Microsoft.AspNetCore.SignalR.Common": "1.1.0",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.3"
         }
       },
       "Microsoft.AspNetCore.WebUtilities/2.2.0": {
@@ -938,17 +939,17 @@
           }
         }
       },
-      "Newtonsoft.Json/13.0.1": {
+      "Newtonsoft.Json/13.0.3": {
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
             "assemblyVersion": "13.0.0.0",
-            "fileVersion": "13.0.1.25517"
+            "fileVersion": "13.0.3.27908"
           }
         }
       },
       "Newtonsoft.Json.Bson/1.0.2": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {
@@ -2144,6 +2145,7 @@
           "AutoMapper": "9.0.0",
           "Dapper.SqlBuilder": "2.0.78",
           "EmcureNPD.Business.Models": "1.0.0",
+          "EmcureNPD.CurrencyConverter": "1.0.0",
           "EmcureNPD.Data.DataAccess": "1.0.0",
           "Microsoft.AspNet.SignalR": "2.4.3",
           "SqlTableDependency": "8.5.8"
@@ -2158,6 +2160,14 @@
         },
         "runtime": {
           "EmcureNPD.Business.Models.dll": {}
+        }
+      },
+      "EmcureNPD.CurrencyConverter/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "runtime": {
+          "EmcureNPD.CurrencyConverter.dll": {}
         }
       },
       "EmcureNPD.Data.DataAccess/1.0.0": {
@@ -2188,7 +2198,7 @@
         "dependencies": {
           "JsonDiffPatch.Net": "2.3.0",
           "Microsoft.AspNetCore.SignalR.Core": "1.1.0",
-          "Newtonsoft.Json": "13.0.1",
+          "Newtonsoft.Json": "13.0.3",
           "ObjectsComparer": "1.4.1",
           "SqlTableDependency": "8.5.8"
         },
@@ -2953,12 +2963,12 @@
       "path": "microsoft.win32.systemevents/4.7.0",
       "hashPath": "microsoft.win32.systemevents.4.7.0.nupkg.sha512"
     },
-    "Newtonsoft.Json/13.0.1": {
+    "Newtonsoft.Json/13.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
-      "path": "newtonsoft.json/13.0.1",
-      "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
+      "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "path": "newtonsoft.json/13.0.3",
+      "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
     },
     "Newtonsoft.Json.Bson/1.0.2": {
       "type": "package",
@@ -3862,6 +3872,11 @@
       "sha512": ""
     },
     "EmcureNPD.Business.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EmcureNPD.CurrencyConverter/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

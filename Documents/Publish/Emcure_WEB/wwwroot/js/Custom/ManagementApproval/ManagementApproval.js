@@ -53,6 +53,7 @@ $(document).ready(function () {
     });
     PBFtabClick();
     fnGetActiveBusinessUnit();
+    GetCommercialSummaryBudgetData();
     UpdateProjectionCommercial();
     // GetSUIMSVolumeYearWiseByPackSize();
 });
