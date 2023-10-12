@@ -232,56 +232,56 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="form-group required">
-                                <label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
-                                @Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                                <div class="invalid-feedback">
-                                    Please enter Batch Manufacturing.
-                                </div>
-                                <div class="valid-feedback">
-                                    Batch Manufacturing Looks good!
-                                </div>
-                            </div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+						                 <div class="invalid-feedback">
+                                            Please enter Batch Manufacturing.
+                                           </div>
+                                           <div class="valid-feedback"> 
+                                           Batch Manufacturing Looks good!
+                                           </div> 
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group required">
-                                <label class="control-label">Expected Filling<span style="color:red;">*</span></label>
-                                @Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                                <div class="invalid-feedback">
-                                    Please enter Expected Filling.
-                                </div>
-                                <div class="valid-feedback">
-                                    Expected Filling Looks good!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group required">
-                                <label class="control-label">Approval Period in Days<span style="color:red;">*</span></label>
-                                @Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
-                                <div class="invalid-feedback">
-                                    Please enter Approval Period in Days.
-                                </div>
-                                <div class="valid-feedback">
-                                    Approval Period in Days Looks good!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group required">
-                                <label class="control-label">Approval Date<span style="color:red;">*</span></label>
-                                @Html.TextBoxFor(@modal=>modal.ApprovalDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                                <div class="invalid-feedback">
-                                    Please enter Approval Date.
-                                </div>
-                                <div class="valid-feedback">
-                                    Approval Date Looks good!
-                                </div>
-                            </div>
-                        </div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+                                          <div class="invalid-feedback">
+                                            Please enter Expected Filling.
+                                           </div>
+                                           <div class="valid-feedback"> 
+                                           Expected Filling Looks good!
+                                           </div> 
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Approval Period in Days<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate clsProjectTimeline",@required="required",@type="number"})
+                                          <div class="invalid-feedback">
+                                            Please enter Approval Period in Days.
+                                           </div>
+                                           <div class="valid-feedback"> 
+                                           Approval Period in Days Looks good!
+                                           </div> 
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Approval Date<span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.ApprovalDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+                                         <div class="invalid-feedback">
+                                            Please enter Approval Date.
+                                           </div>
+                                           <div class="valid-feedback"> 
+                                           Approval Date Looks good!
+                                           </div> 
+						</div>
+					</div>
 
                         <div class="col-md-3">
                             <div class="form-group required">

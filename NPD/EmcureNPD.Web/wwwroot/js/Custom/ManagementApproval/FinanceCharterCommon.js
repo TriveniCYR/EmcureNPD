@@ -918,33 +918,34 @@ function GetCommercialSummaryBudgetData() {
 function GetCommercialSummaryBudgetSuccess(data) {
     console.log(data);
     var tableBody = document.querySelector("#tblcommercialsummary tbody");
-    var previousItem = null;  // To keep track of the previous item
 
-    // Iterate through the data and create rows
     data._object.forEach(function (item) {
         var row = document.createElement("tr");
-
         var cells = [
             item.businessUnitName,
-            item.pidfStrengthPackSize
+            item.pidfStrengthPackSize,
+            "", 
         ];
+
+        var countryNameAdded = false;
 
         for (var i = 1; i <= 5; i++) {
             var yearData = item.yearDetails[i];
             if (yearData) {
-                if (previousItem && previousItem.countryName === yearData.countryName) {
+                if (!countryNameAdded) {
+                    cells[2] = yearData.countryName;
+                    countryNameAdded = true;
                 } else {
-                    cells.push(yearData.countryName);
-                    previousItem = yearData;  
+                   
                 }
 
                 cells.push(yearData.price);
                 cells.push(yearData.units);
                 cells.push(yearData.value);
             } else {
-                cells.push("-"); 
-                cells.push("-"); 
-                cells.push("-"); 
+                cells.push("-");
+                cells.push("-");
+                cells.push("-");
             }
         }
 
@@ -957,6 +958,8 @@ function GetCommercialSummaryBudgetSuccess(data) {
         tableBody.appendChild(row);
     });
 }
+
+
 
 
 

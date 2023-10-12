@@ -8,7 +8,7 @@
     var encBuid = Context.Request.Query["bui"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
-    bool IsAddAllow = (objPermssion.Add) ;
+    bool IsAddAllow = (objPermssion.Add);
     bool IsEditAllow = (objPermssion.Edit);
     bool IsDeleteAllow = (objPermssion.Delete);
 }
@@ -61,9 +61,9 @@
                                         <td width="30%"><strong>Plant Name</strong></td>
                                         <td><div class="col-sm-9" id="pidf_PlantName"></div></td>
                                     </tr>
-                                   @* <tr>
-                                        <td width="30%"><label>Formulation</label></td>
-                                        <td><div class="col-sm-9" id="pidf_FormulationName"></div></td>
+                                    @* <tr>
+                                    <td width="30%"><label>Formulation</label></td>
+                                    <td><div class="col-sm-9" id="pidf_FormulationName"></div></td>
                                     </tr>*@
                                     <tr>
                                         <td width="30%"><label>Work Flow</label></td>
@@ -127,7 +127,7 @@
                                                                     <th>Market Growth</th>
                                                                     <th>SU (IMS Volume)</th>
                                                                     <th>Total API Req (IMS KG)</th>
-                                                                    
+
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -199,22 +199,22 @@
 
                                 <div class="card-body">
                                     <div class="row shorting_btns" style="margin-bottom:10px;">
-                                                <div class="mybtn-group taskTabs col-8">
+                                        <div class="mybtn-group taskTabs col-8">
                                             <a class="btn btn-primary status_filter active" id="btnAll" href="Javascript:void(0)" onclick="GetProjectDetails(0)"><i class="far fa-list-alt mr-1"></i>All</a>
-                                                        
-                                                        <a class="btn btn-primary status_filter" id="btnMonthly" href="Javascript:void(0)" onclick="GetProjectDetails(1)"><i class="far fa-list-alt mr-1"></i>Monthly</a>
-                                                   
-                                                        <a class="btn btn-primary status_filter"  id="btnQuarterly" href="Javascript:void(0)" onclick="GetProjectDetails(2)"><i class="far fa-list-alt mr-1"></i>Quarterly</a>
-                                                    
-                                                        <a class="btn btn-primary status_filter" id="btnHalfYearly"  href="Javascript:void(0)" onclick="GetProjectDetails(3)"><i class="far fa-list-alt mr-1"></i>Half Yearly</a>
+
+                                            <a class="btn btn-primary status_filter" id="btnMonthly" href="Javascript:void(0)" onclick="GetProjectDetails(1)"><i class="far fa-list-alt mr-1"></i>Monthly</a>
+
+                                            <a class="btn btn-primary status_filter" id="btnQuarterly" href="Javascript:void(0)" onclick="GetProjectDetails(2)"><i class="far fa-list-alt mr-1"></i>Quarterly</a>
+
+                                            <a class="btn btn-primary status_filter" id="btnHalfYearly" href="Javascript:void(0)" onclick="GetProjectDetails(3)"><i class="far fa-list-alt mr-1"></i>Half Yearly</a>
 
                                             <a class="btn btn-primary status_filter " id="btnAnnualy" href="Javascript:void(0)" onclick="GetProjectDetails(4)"><i class="far fa-list-alt mr-1"></i>Annualy</a>
-                                                    
-                                                </div>
-                                                <div class="col-4 text-right">
-                                                    <button id="addTaskButton" IsAddAllow type="button" onclick="ShowAddTaskForm()" class="btn btn-primary">@SharedLocalizer["Add Task"].Value</button>
-                                                </div>
-                                            </div>
+
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <button id="addTaskButton" IsAddAllow type="button" onclick="ShowAddTaskForm()" class="btn btn-primary">@SharedLocalizer["Add Task"].Value</button>
+                                        </div>
+                                    </div>
                                     <div class="table-responsive">
                                         <table id="Milestones" class="table tree" style="width:100%;">
                                             <thead>
@@ -233,7 +233,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -254,7 +253,7 @@
             </div>
         </div>
     </div>
- 
+
     @*UpdateModel*@
     <div id="UpdateModel" class="modal themeModal " role="dialog">
         <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-buid="@ViewBag.uencbid">
@@ -275,12 +274,11 @@
                                     @Html.ValidationMessageFor(o => o.TaskName, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.StartDate, new { @class = "control-label" })<span style="color:red;">*</span>
-                                    <div class="input-group date" id="startDate" data-target-input="nearest">
+                                    @Html.LabelFor(o => o.StartDate,"Start Date", new { @class = "control-label" })<span style="color:red;">*</span>
+                                    <div class="input-group date" id="updateTaskStartDate" data-target-input="nearest">
 
-                                        @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off"})
-                                        <div class="input-group-append" data-target="#DRFEditStartDate" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker",type = "date",onchange = "calculateSubTaskDuration()", autocomplete = "off"})
+                                        <div class="input-group-append" data-toggle="datetimepicker">
                                         </div><br>
 
                                     </div>
@@ -304,12 +302,11 @@
                                     @Html.ValidationMessageFor(o => o.TaskOwnerId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.EndDate, new { @class = "control-label" })<span style="color:red;">*</span>
-                                    <div class="input-group date" id="endDate" data-target-input="nearest">
+                                    @Html.LabelFor(o => o.EndDate,"End Date", new { @class = "control-label" })<span style="color:red;">*</span>
+                                    <div class="input-group date" id="updateTaskEndDate" data-target-input="nearest">
 
-                                        @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off"})
-                                        <div class="input-group-append" data-target="#DRFEditEndDate" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker", type = "date",onchange = "calculateTaskDuration()", autocomplete = "off"})
+                                        <div class="input-group-append" data-toggle="datetimepicker">
                                         </div><br>
 
                                     </div>
@@ -498,7 +495,7 @@
                                     </div>
                                     @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
                                 </div>
-                              
+
                                 <div class="form-group required">
                                     @Html.LabelFor(t => t.PriorityId,"Priority", new { @class = "control-label" })<span style="color:red;">*</span>
                                     @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
