@@ -308,29 +308,29 @@ $(document).ready(function () {
 
             var id_batchcontrol_proto = '.BatchSize_Excipient_PrototypeFormulation_' + val.pidfProductStrengthId;
             var id_APIReqcontrol_proto = "[name='RNDApirequirements["+ind+"].Prototype']";
-            var result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength )/multFatcor;
+            var result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength );
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
             
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ScaleUpbatch']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ScaleUp']";
-             result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+             result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength);
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch1']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch1']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength);
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch2']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch2']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength);
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch3']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch3']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength);
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
 
@@ -520,6 +520,7 @@ $(document).ready(function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
 
         $.each($('.packagingActivity' + _ActivityTypeId), function (index, item) {
+            var _TotalForStrength = 0;
             var _TotalForStrength = 0;
             $.each(_strengthArray, function (i, t) {
                 var _StrengthId = t.pidfProductStrengthId;
@@ -3318,108 +3319,108 @@ function SetHeadWiseBudget() {
         /*Protoype Development*/
         var _totalManpowerCostPrototype = $('#tablerrndmanpowercostprojectduration').find('.manpowercost_1Total').find('.calcTotalPrototypeCostForStrengthTotal').val();
 
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBPrototype').val(ConvertToNumber(_totalManpowerCostPrototype)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBPrototype').val(ConvertToNumber(_totalManpowerCostPrototype));
 
         var _APIReqCostPrototype = $('#tablerndapirequirement').find('.ApiRequirement_1').find('.APIReqPrototypeCostTotalCost').val();
         var _exicipientPrototype = $('#tablerndexicipientrequirement').find('.exicipientActivity1Total').find('.calcTotalCostForexicipient1').val();
         var _packagingPrototype = $('#tablerndpackagingmaterialrequirement').find('.packagingActivity1Total').find('.calcTotalCostForPackaging1').val();
 
-        var TotalMaterialCostPrototype = (ConvertToNumber(_APIReqCostPrototype) + ConvertToNumber(_exicipientPrototype) + ConvertToNumber(_packagingPrototype))/100000;
+        var TotalMaterialCostPrototype = (ConvertToNumber(_APIReqCostPrototype) + ConvertToNumber(_exicipientPrototype) + ConvertToNumber(_packagingPrototype));
 
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBPrototype').val(ConvertToNumber(TotalMaterialCostPrototype));
         var _plantSupportCostPrototype = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBPrototype').val(ConvertToNumber(_plantSupportCostPrototype)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBPrototype').val(ConvertToNumber(_plantSupportCostPrototype));
 
         var _referenceProductFormulationCost = $('#tablerndreferenceproductdetail').find('.RPDcal_1').find('.TotalFormulation').val();
         var _referenceProductPilotBeCost = $('#tablerndreferenceproductdetail').find('.RPDcal_1').find('.TotalPilotBe').val();
         var _referenceProductDetailsCostPrototype = (ConvertToNumber(_referenceProductFormulationCost) + ConvertToNumber(_referenceProductPilotBeCost));
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBPrototype').val(ConvertToNumber(_referenceProductDetailsCostPrototype)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBPrototype').val(ConvertToNumber(_referenceProductDetailsCostPrototype));
 
         var analyticalCostPrototype = $('#tableanalytical').find('.analyticalActivity1Total').find('.calcTotalCostForAnalytical1').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBPrototype').val(ConvertToNumber(analyticalCostPrototype)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBPrototype').val(ConvertToNumber(analyticalCostPrototype));
 
         var _clinicalTotalPilotFasting = $('#tableclinical').find('.clinicalcal_1Total').find('.calcTotalCostForStrengthClinicalTotal').val();
         var _clinicalTotalPilotFed = $('#tableclinical').find('.clinicalcal_2Total').find('.calcTotalCostForStrengthClinicalTotal').val();
         var bioStudyCostprototype = ((ConvertToNumber(_clinicalTotalPilotFasting) + ConvertToNumber(_clinicalTotalPilotFed)));
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBPrototype').val(ConvertToNumber(bioStudyCostprototype)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBPrototype').val(ConvertToNumber(bioStudyCostprototype));
 
         var toolingchangepartprototype = $('#tablerndtoolingchangepart').find('.ToolingChangePartActivity1Total').find('.calcTotalCostForTooling1').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBPrototype').val(ConvertToNumber(toolingchangepartprototype) / 100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBPrototype').val(ConvertToNumber(toolingchangepartprototype));
 
         var OtherExpensesprototype = $('#tablerndcapexmiscellaneousexpenses').find('.CapexMiscActivity1Total').find('.calcTotalCostForMisc1').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBPrototype').val(ConvertToNumber(OtherExpensesprototype)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBPrototype').val(ConvertToNumber(OtherExpensesprototype));
 
         var FilingExpensesprototype = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBPrototype').val(FilingExpensesprototype/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBPrototype').val(FilingExpensesprototype);
         /*end of Protoype Development*/
 
         /*ScaleUp Development*/
         var _totalManpowerCostScaleUp = $('#tablerrndmanpowercostprojectduration').find('.manpowercost_1Total').find('.calcTotalScaleupCostForStrengthTotal').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBScaleUp').val(ConvertToNumber(_totalManpowerCostScaleUp)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBScaleUp').val(ConvertToNumber(_totalManpowerCostScaleUp));
 
         var _APIReqCostScaleUp = $('#tablerndapirequirement').find('.ApiRequirement_1').find('.APIReqScaleupCostTotalCost').val();
         var _exicipientScaleUp = $('#tablerndexicipientrequirement').find('.exicipientActivity2Total').find('.calcTotalCostForexicipient2').val();
         var _packagingScaleUp = $('#tablerndpackagingmaterialrequirement').find('.packagingActivity2Total').find('.calcTotalCostForPackaging2').val();
         var TotalMaterialCostScaleUp = (ConvertToNumber(_APIReqCostScaleUp) + ConvertToNumber(_exicipientScaleUp) + ConvertToNumber(_packagingScaleUp));
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBScaleUp').val(ConvertToNumber(TotalMaterialCostScaleUp)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBScaleUp').val(ConvertToNumber(TotalMaterialCostScaleUp));
 
         var _plantSupportCostScaleUp = $('#tablerndplantsupportcost').find('.PlantSupportCost_1').find('.TotalPSCScaleUp').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBScaleUp').val((ConvertToNumber(_plantSupportCostScaleUp) * _plantsupportcost)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBScaleUp').val((ConvertToNumber(_plantSupportCostScaleUp) * _plantsupportcost));
 
         var _referenceProductDetailsCostScaleUp = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBScaleUp').val(ConvertToNumber(_referenceProductDetailsCostScaleUp)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBScaleUp').val(ConvertToNumber(_referenceProductDetailsCostScaleUp));
 
         var analyticalCostScaleUp = $('#tableanalytical').find('.analyticalActivity2Total').find('.calcTotalCostForAnalytical2').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBScaleUp').val(ConvertToNumber(analyticalCostScaleUp)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBScaleUp').val(ConvertToNumber(analyticalCostScaleUp));
 
         var bioStudyCostScaleUp = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBScaleUp').val(ConvertToNumber(bioStudyCostScaleUp)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBScaleUp').val(ConvertToNumber(bioStudyCostScaleUp));
 
         var toolingchangepartScaleUp = $('#tablerndtoolingchangepart').find('.ToolingChangePartActivity2Total').find('.calcTotalCostForTooling2').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBScaleUp').val(ConvertToNumber(toolingchangepartScaleUp)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBScaleUp').val(ConvertToNumber(toolingchangepartScaleUp));
 
         var OtherExpensesScaleUp = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBScaleUp').val(OtherExpensesScaleUp/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBScaleUp').val(OtherExpensesScaleUp);
 
         var FilingExpensesScaleUp = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBScaleUp').val(FilingExpensesScaleUp/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBScaleUp').val(FilingExpensesScaleUp);
 
         /*end of ScaleUp Development*/
 
         /*Exhibit Development*/
         var _totalManpowerCostExhibit = $('#tablerrndmanpowercostprojectduration').find('.manpowercost_1Total').find('.calcTotalExhibitCostForStrengthTotal').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBExhibit').val(ConvertToNumber(_totalManpowerCostExhibit)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBExhibit').val(ConvertToNumber(_totalManpowerCostExhibit));
 
         var _APIReqCostExhibit = $('#tablerndapirequirement').find('.ApiRequirement_1').find('.APIReqExhibitBatchTotalCost').val();
         var _exicipientExhibit = $('#tablerndexicipientrequirement').find('.exicipientActivity3Total').find('.calcTotalCostForexicipient3').val();
         var _packagingExhibit = $('#tablerndpackagingmaterialrequirement').find('.packagingActivity3Total').find('.calcTotalCostForPackaging3').val();
 
         var TotalMaterialCostExhibit = (ConvertToNumber(_APIReqCostExhibit) + ConvertToNumber(_exicipientExhibit) + ConvertToNumber(_packagingExhibit));
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBExhibit').val(ConvertToNumber(TotalMaterialCostExhibit)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBExhibit').val(ConvertToNumber(TotalMaterialCostExhibit));
 
         var _plantSupportCostExhibit = $('#tablerndplantsupportcost').find('.PlantSupportCost_1').find('.TotalPSCExhibit').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBExhibit').val((ConvertToNumber(_plantSupportCostExhibit) * _plantsupportcost)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBExhibit').val((ConvertToNumber(_plantSupportCostExhibit) * _plantsupportcost));
 
         var _referenceProductDetailsCost = $('#tablerndreferenceproductdetail').find('.RPDcal_1Total').find('.calcTotalCostForStrengthTotalRPD').val();
 
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBExhibit').val(ConvertToNumber(_referenceProductDetailsCost)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBExhibit').val(ConvertToNumber(_referenceProductDetailsCost));
 
         var analyticalCostExhibit = $('#tableanalytical').find('.analyticalActivity3Total').find('.calcTotalCostForAnalytical3').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBExhibit').val(ConvertToNumber(analyticalCostExhibit)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBExhibit').val(ConvertToNumber(analyticalCostExhibit));
 
         var _clinicalTotalPivotalFasting = $('#tableclinical').find('.clinicalcal_3Total').find('.calcTotalCostForStrengthClinicalTotal').val();
         var _clinicalTotalPivotalFed = $('#tableclinical').find('.clinicalcal_4Total').find('.calcTotalCostForStrengthClinicalTotal').val();
         var bioStudyCostExhibit = ((ConvertToNumber(_clinicalTotalPivotalFasting) + ConvertToNumber(_clinicalTotalPivotalFed)));
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBExhibit').val(ConvertToNumber(bioStudyCostExhibit)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBExhibit').val(ConvertToNumber(bioStudyCostExhibit));
 
         var toolingchangepartExhibit = $('#tablerndtoolingchangepart').find('.ToolingChangePartActivity3Total').find('.calcTotalCostForTooling3').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBExhibit').val(ConvertToNumber(toolingchangepartExhibit)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBExhibit').val(ConvertToNumber(toolingchangepartExhibit));
 
         var OtherExpensesExhibit = 0;
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBExhibit').val(ConvertToNumber(OtherExpensesExhibit)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBExhibit').val(ConvertToNumber(OtherExpensesExhibit));
 
         var FilingExpensesExhibit = $('#tablerndfilingexpenses').find('.FillingExpensesActivity1Total').find('.calcTotalCostForStrengthTotalFilling').val();
-        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBExhibit').val(ConvertToNumber(FilingExpensesExhibit)/100000);
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBExhibit').val(ConvertToNumber(FilingExpensesExhibit));
 
         /*end of Exhibit Development*/
 
