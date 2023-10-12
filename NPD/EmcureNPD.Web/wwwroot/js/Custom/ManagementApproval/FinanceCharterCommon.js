@@ -157,7 +157,7 @@
             for (var i = 0; i < 10; i++) {
                 let result = GC_data[i] / Sales_data[i];
                 result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-                result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+                result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(0) + "</td>";
 
             }
             html += "</tr>";
