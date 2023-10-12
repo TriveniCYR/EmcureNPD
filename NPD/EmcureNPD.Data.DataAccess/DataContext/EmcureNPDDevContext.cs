@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -106,6 +105,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfApiCharterTimelineInMonth> PidfApiCharterTimelineInMonths { get; set; }
         public virtual DbSet<PidfApiInhouse> PidfApiInhouses { get; set; }
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual DbSet<PidfApiIpdExcel> PidfApiIpdExcels { get; set; }
         public virtual DbSet<PidfApiMaster> PidfApiMasters { get; set; }
         public virtual DbSet<PidfApiOutsourceDatum> PidfApiOutsourceData { get; set; }
         public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
@@ -120,9 +120,14 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfFinanceProjection> PidfFinanceProjections { get; set; }
         public virtual DbSet<PidfIpd> PidfIpds { get; set; }
         public virtual DbSet<PidfIpdCountry> PidfIpdCountries { get; set; }
+        public virtual DbSet<PidfIpdCountryExcel> PidfIpdCountryExcels { get; set; }
+        public virtual DbSet<PidfIpdExcel> PidfIpdExcels { get; set; }
         public virtual DbSet<PidfIpdGeneral> PidfIpdGenerals { get; set; }
+        public virtual DbSet<PidfIpdGeneralExcel> PidfIpdGeneralExcels { get; set; }
         public virtual DbSet<PidfIpdPatentDetail> PidfIpdPatentDetails { get; set; }
+        public virtual DbSet<PidfIpdPatentDetailsExcel> PidfIpdPatentDetailsExcels { get; set; }
         public virtual DbSet<PidfIpdRegion> PidfIpdRegions { get; set; }
+        public virtual DbSet<PidfIpdRegionExcel> PidfIpdRegionExcels { get; set; }
         public virtual DbSet<PidfManagementApprovalStatusHistory> PidfManagementApprovalStatusHistories { get; set; }
         public virtual DbSet<PidfMedical> PidfMedicals { get; set; }
         public virtual DbSet<PidfMedicalFile> PidfMedicalFiles { get; set; }
@@ -173,7 +178,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -1448,9 +1453,9 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.IsEmcure).HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.PrimaryPackaging).HasMaxLength(100); 
+                entity.Property(e => e.IsPrimaryPackaging).HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.SecondryPackaging).HasMaxLength(100);
+                entity.Property(e => e.IsSecondryPackaging).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Packaging).IsUnicode(false);
 
@@ -1459,6 +1464,14 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.PidfpbfGeneralId).HasColumnName("PIDFPbfGeneralId");
 
                 entity.Property(e => e.PidfproductStrngthId).HasColumnName("PIDFProductStrngthId");
+
+                entity.Property(e => e.PrimaryPackaging)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SecondryPackaging)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Shape)
                     .HasMaxLength(200)
@@ -1815,6 +1828,78 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfApiIpds)
                     .HasForeignKey(d => d.ProductTypeId)
                     .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
+            });
+
+            modelBuilder.Entity<PidfApiIpdExcel>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_API_IPD_Excel", "dbo");
+
+                entity.Property(e => e.BusinessUnitId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"BusinessUnitId\"");
+
+                entity.Property(e => e.Column11)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 11");
+
+                entity.Property(e => e.Column12)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 12");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CreatedBy\"");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CreatedDate\"");
+
+                entity.Property(e => e.DrugsCategory)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"DrugsCategory\"");
+
+                entity.Property(e => e.MarketDetailsFileName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"MarketDetailsFileName\"");
+
+                entity.Property(e => e.ModifyBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ModifyBy\"");
+
+                entity.Property(e => e.ModifyDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ModifyDate\"");
+
+                entity.Property(e => e.PidfApiIpdId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PIDF_API_IPD_ID\"");
+
+                entity.Property(e => e.Pidfid)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PIDFID\"");
+
+                entity.Property(e => e.ProductStrength)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ProductStrength\"");
+
+                entity.Property(e => e.ProductTypeId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ProductTypeId\"");
             });
 
             modelBuilder.Entity<PidfApiMaster>(entity =>
@@ -2446,6 +2531,125 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_IPD_Country_PIDF_IPD");
             });
 
+            modelBuilder.Entity<PidfIpdCountryExcel>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_IPD_Country_Excel", "dbo");
+
+                entity.Property(e => e.Column4)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 4");
+
+                entity.Property(e => e.Column5)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 5");
+
+                entity.Property(e => e.CountryId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CountryId\"");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CreatedDate\"");
+
+                entity.Property(e => e.IpdcountryId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IPDCountryID\"");
+
+                entity.Property(e => e.Ipdid)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IPDID\"");
+            });
+
+            modelBuilder.Entity<PidfIpdExcel>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_IPD_Excel", "dbo");
+
+                entity.Property(e => e.ApprovedGenetics)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ApprovedGenetics\"");
+
+                entity.Property(e => e.BusinessUnitId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"BusinessUnitId\"");
+
+                entity.Property(e => e.Comments)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"Comments\"");
+
+                entity.Property(e => e.CostOfLitication)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CostOfLitication\"");
+
+                entity.Property(e => e.DataExclusivity)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"DataExclusivity\"");
+
+                entity.Property(e => e.FillingType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"FillingType\"");
+
+                entity.Property(e => e.Innovators)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"Innovators\"");
+
+                entity.Property(e => e.Ipdid)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IPDID\"");
+
+                entity.Property(e => e.IsActive)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IsActive\"");
+
+                entity.Property(e => e.IsComment)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IsComment\"");
+
+                entity.Property(e => e.LaunchedGenetics)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"LaunchedGenetics\"");
+
+                entity.Property(e => e.LegalStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"LegalStatus\"");
+
+                entity.Property(e => e.MarketName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"MarketName\"");
+
+                entity.Property(e => e.PatentStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PatentStatus\"");
+
+                entity.Property(e => e.Pidfid)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PIDFID\"");
+            });
+
             modelBuilder.Entity<PidfIpdGeneral>(entity =>
             {
                 entity.ToTable("PIDF_IPD_General", "dbo");
@@ -2479,6 +2683,118 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.Ipdid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_IPD_General_IPDID");
+            });
+
+            modelBuilder.Entity<PidfIpdGeneralExcel>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_IPD_General_Excel", "dbo");
+
+                entity.Property(e => e.ApprovedGenetics)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ApprovedGenetics\"");
+
+                entity.Property(e => e.BusinessUnitId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"BusinessUnitId\"");
+
+                entity.Property(e => e.Column19)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 19");
+
+                entity.Property(e => e.Column20)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 20");
+
+                entity.Property(e => e.Comments)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"Comments\"");
+
+                entity.Property(e => e.CostOfLitication)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CostOfLitication\"");
+
+                entity.Property(e => e.CountryId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CountryId\"");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CreatedBy\"");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CreatedDate\"");
+
+                entity.Property(e => e.DataExclusivity)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"DataExclusivity\"");
+
+                entity.Property(e => e.ExpectedFilingDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ExpectedFilingDate\"");
+
+                entity.Property(e => e.ExpectedLaunchDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ExpectedLaunchDate\"");
+
+                entity.Property(e => e.Ipdid)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IPDID\"");
+
+                entity.Property(e => e.IsComment)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IsComment\"");
+
+                entity.Property(e => e.LaunchedGenetics)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"LaunchedGenetics\"");
+
+                entity.Property(e => e.LegalStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"LegalStatus\"");
+
+                entity.Property(e => e.MarketExclusivityDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"MarketExclusivityDate\"");
+
+                entity.Property(e => e.MarketName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"MarketName\"");
+
+                entity.Property(e => e.ModifyBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ModifyBy\"");
+
+                entity.Property(e => e.ModifyDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ModifyDate\"");
+
+                entity.Property(e => e.PidfIpdGeneralId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PIDF_IPD_General_Id\"");
             });
 
             modelBuilder.Entity<PidfIpdPatentDetail>(entity =>
@@ -2534,6 +2850,128 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_IPD_PatentDetails_IPDID");
             });
 
+            modelBuilder.Entity<PidfIpdPatentDetailsExcel>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_IPD_PatentDetails_Excel", "dbo");
+
+                entity.Property(e => e.AnyPatentstobeFiled)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"AnyPatentstobeFiled\"");
+
+                entity.Property(e => e.BasicPatentExpiry)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"BasicPatentExpiry\"");
+
+                entity.Property(e => e.Column21)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 21");
+
+                entity.Property(e => e.Column22)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 22");
+
+                entity.Property(e => e.Comments)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"Comments\"");
+
+                entity.Property(e => e.CountryId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CountryId\"");
+
+                entity.Property(e => e.EarliestLaunchDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"EarliestLaunchDate\"");
+
+                entity.Property(e => e.EarliestMarketEntry)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"EarliestMarketEntry\"");
+
+                entity.Property(e => e.ExtensionExpiryDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"ExtensionExpiryDate\"");
+
+                entity.Property(e => e.Ipdid)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IPDID\"");
+
+                entity.Property(e => e.Lawfirmbeingused)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"Lawfirmbeingused\"");
+
+                entity.Property(e => e.OriginalExpiryDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"OriginalExpiryDate\"");
+
+                entity.Property(e => e.OtherLmitingPatentDate1)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"OtherLmitingPatentDate1\"");
+
+                entity.Property(e => e.OtherLmitingPatentDate2)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"OtherLmitingPatentDate2\"");
+
+                entity.Property(e => e.PatentDetailsId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PatentDetailsID\"");
+
+                entity.Property(e => e.PatentNumber)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PatentNumber\"");
+
+                entity.Property(e => e.PatentStrategy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PatentStrategy\"");
+
+                entity.Property(e => e.PatentStrategyOther)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PatentStrategyOther\"");
+
+                entity.Property(e => e.PatentType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PatentType\"");
+
+                entity.Property(e => e.PidfIpdGeneralId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"PIDF_IPD_General_Id\"");
+
+                entity.Property(e => e.StimatedNumberofgenericsinthe)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"stimatedNumberofgenericsinthe\"");
+
+                entity.Property(e => e.Strategy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"Strategy\"");
+
+                entity.Property(e => e.Type)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"Type\"");
+            });
+
             modelBuilder.Entity<PidfIpdRegion>(entity =>
             {
                 entity.HasKey(e => e.IpdregionId);
@@ -2556,6 +2994,43 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfIpdRegions)
                     .HasForeignKey(d => d.RegionId)
                     .HasConstraintName("FK_PIDF_IPD_Region_Master_Region");
+            });
+
+            modelBuilder.Entity<PidfIpdRegionExcel>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_IPD_Region_Excel", "dbo");
+
+                entity.Property(e => e.Column4)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 4");
+
+                entity.Property(e => e.Column5)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Column 5");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"CreatedDate\"");
+
+                entity.Property(e => e.Ipdid)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IPDID\"");
+
+                entity.Property(e => e.IpdregionId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"IPDRegionID\"");
+
+                entity.Property(e => e.RegionId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("\"RegionId\"");
             });
 
             modelBuilder.Entity<PidfManagementApprovalStatusHistory>(entity =>
@@ -2621,11 +3096,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Pidfpbfid).HasColumnName("PIDFPBFId");
 
+                entity.Property(e => e.BatchManifacturingDate).HasColumnType("datetime");
+
                 entity.Property(e => e.BerequirementId).HasColumnName("BERequirementId");
 
                 entity.Property(e => e.BusinessRelationable).HasMaxLength(100);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FillingDateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.FormRnDdivisionId).HasColumnName("FormRnDDivisionId");
 
@@ -3424,7 +3903,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
 
                 entity.Property(e => e.Value).HasMaxLength(100);
-                entity.Property(e => e.CountryId).HasColumnName("CountryId");
+
                 entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfRnDPackSizeStabilities)
                     .HasForeignKey(d => d.PbfgeneralId)

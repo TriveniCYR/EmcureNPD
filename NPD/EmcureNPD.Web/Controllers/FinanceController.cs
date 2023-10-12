@@ -81,9 +81,9 @@ namespace EmcureNPD.Web.Controllers
                         model.Skus = data.table[0].skus;
                         model.Mspersentage = data.table[0].mspersentage;
                         model.TargetPriceScenario = data.table[0].targetPriceScenario;
-                        model.ProjectStartDate = data.table[0].projectStartDate;
-                        model.BatchManufacturing = (data.table[0].batchManufacturing);
-                        model.ExpectedFilling = (data.table[0].expectedFilling);
+                        model.ProjectStartDate = data.table[0].projectInitiationDate;
+                        model.BatchManufacturing = (data.table[0].batchManifacturingDate);
+                        model.ExpectedFilling = (data.table[0].fillingDateDate);
                         model.ApprovalPeriodinDays = data.table[0].approvalPeriodinDays;
                         model.ApprovalDate = data.table[0].approvalDate;
                         model.ProductLaunchDate = data.table[0].productLaunchDate;

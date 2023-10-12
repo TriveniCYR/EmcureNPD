@@ -110,6 +110,14 @@ namespace EmcureNPD.Web.Models
         public DateTime ?projectStartDate { get; set; }
         public DateTime ?batchManufacturing { get; set; }
         public DateTime ?expectedFilling { get; set; }
+        //---------------------------------------------------------
+
+        public DateTime? projectInitiationDate { get; set; }
+        public DateTime? batchManifacturingDate { get; set; }
+        public DateTime? fillingDateDate { get; set; }
+
+        //---------------------------
+
         public string approvalPeriodinDays { get; set; }
         public DateTime ?approvalDate { get; set; }
         public DateTime ?productLaunchDate { get; set; }

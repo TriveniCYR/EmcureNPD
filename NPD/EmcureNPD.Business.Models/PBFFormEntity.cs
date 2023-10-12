@@ -50,6 +50,8 @@ namespace EmcureNPD.Business.Models
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public DateTime? ProjectInitiationDate { get; set; }
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        public DateTime? BatchManifacturingDate { get; set; }
+        public DateTime? FillingDateDate { get; set; }
         public string RnDhead { get; set; }
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string ProjectManager { get; set; }

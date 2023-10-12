@@ -244,8 +244,8 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
-								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Expected Filling</label>
+								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate"})
                                           <div class="invalid-feedback">
                                             Please enter Expected Filling.
                                            </div>
