@@ -257,7 +257,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Approval Period in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+								@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate clsProjectTimeline",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Approval Period in Days.
                                            </div>
