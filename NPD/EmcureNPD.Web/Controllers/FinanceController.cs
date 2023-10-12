@@ -62,13 +62,15 @@ namespace EmcureNPD.Web.Controllers
 
                 responseMessage = objapi.APICommunication(APIURLHelper.GetPidfFinance + "/" + pidfid, HttpMethod.Get, token).Result;
 
+
+
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<Root>(jsonResponse);
                     if (data.table.Count > 0)
                     {
-                        model.BussinessUnitId = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(bui))); 
+                        model.BussinessUnitId = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(bui)));
                         model.PidffinaceId = data.table[0].pidffinaceId;
                         model.Pidfid = UtilityHelper.Encrypt(Convert.ToString(data.table[0].pidfid));
                         model.dycrPidfid = data.table[0].pidfid;
@@ -149,17 +151,17 @@ namespace EmcureNPD.Web.Controllers
                                     EmcureCogsPack = item.emcureCOGs_pack,
                                     CreatedDate = item.createdDate,
                                     CreatedBy = item.createdBy,
-                                    Skus=item.Skus,
-                                    PakeSize=item.PakeSize,
-									PackSizeValue= item.PackSizeValue,
-									BrandPrice =item.BrandPrice,
-                                    NetRealisation=item.NetRealisation,
-                                    GenericListprice =item.GenericListprice,
-                                    EstMat2016By12units=item.EstMat2016By12units,
-                                    EstMat2020By12units=item.EstMat2020By12units,
-                                    Cagrover2016By12estMatunits=item.Cagrover2016By12estMatunits,
-                                    Marketinpacks=item.Marketinpacks,
-                                    BatchsizeinLtrTabs=item.BatchsizeinLtrTabs
+                                    Skus = item.Skus,
+                                    PakeSize = item.PakeSize,
+                                    PackSizeValue = item.PackSizeValue,
+                                    BrandPrice = item.BrandPrice,
+                                    NetRealisation = item.NetRealisation,
+                                    GenericListprice = item.GenericListprice,
+                                    EstMat2016By12units = item.EstMat2016By12units,
+                                    EstMat2020By12units = item.EstMat2020By12units,
+                                    Cagrover2016By12estMatunits = item.Cagrover2016By12estMatunits,
+                                    Marketinpacks = item.Marketinpacks,
+                                    BatchsizeinLtrTabs = item.BatchsizeinLtrTabs
                                 });
                             }
                             catch (Exception ex)
@@ -167,28 +169,33 @@ namespace EmcureNPD.Web.Controllers
                             }
                         }
                         model.lsPidfFinanceBatchSizeCoating = ls;
-                        //**Start:get Financial Projection Years**//
-                        //try
-                        //{
-                        //    var lsPrjectionYear = GetFinaceProjectionYear(3);
-                        //    List<FinaceProjectionYear> lsProjYear = new List<FinaceProjectionYear>();
-                        //    foreach (var item in lsPrjectionYear)
-                        //    {
-                        //        lsProjYear.Add(new FinaceProjectionYear
-                        //        {
-                        //            Years = item.years
-                        //        });
-                        //    }
-                        //    model.lsFinaceProjectionYear = lsProjYear;
-                        //}
-                        //catch (Exception ex)
-                        //{
-
-                            
-                        //}
-                        
-                        //**End:get Financial Projection Years**//
                     }
+
+
+                    //Read Phasewise budget
+                    HttpResponseMessage res = new HttpResponseMessage();
+                    HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token1);
+                    APIRepository objapi1 = new(_cofiguration);
+
+                    res = objapi1.APICommunication(APIURLHelper.GetPidfFinancePhasewisebudget + "/" + pidfid, HttpMethod.Get, token1).Result;
+                    var mdls = new List<PWB>();
+
+                    if (res.IsSuccessStatusCode)
+                    {
+                        string jsonResponse1 = res.Content.ReadAsStringAsync().Result;
+                        var data1 = JsonConvert.DeserializeObject<RootPWB>(jsonResponse1);  
+
+                        if (data1.table.Count > 0)
+                        { 
+                            foreach (var item in data1.table)
+                            { 
+                                mdls.Add(item);
+                            } 
+                        }
+                    }
+
+                    ViewBag.PhaseWiseBudget = mdls;
+
                     int rolId = _helper.GetLoggedInRoleId();
                     RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, rolId);
                     ViewBag.Access = objPermssion;
