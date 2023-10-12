@@ -110,14 +110,19 @@ namespace EmcureNPD.Business.Models
 
         public void AddYearDetails(int yearIndex, int countryId, string countryName, string price, string units)
         {
+            double priceValue = double.Parse(price);
+            double unitsValue = double.Parse(units);
+            double calculatedValue = priceValue * unitsValue;
+
+            double roundedValue = Math.Round(calculatedValue, MidpointRounding.AwayFromZero);
             if (!YearDetails.ContainsKey(yearIndex))
             {
                 YearDetails[yearIndex] = new YearWiseDetails
                 {
                     CountryName = countryName,
-                    Price = int.Parse(price),
-                    Units = float.Parse(units),
-                    Value = int.Parse(price) * float.Parse(units)
+                    Price = priceValue,
+                    Units = unitsValue,
+                    Value = (int)roundedValue
                 };
             }
         }
@@ -126,8 +131,8 @@ namespace EmcureNPD.Business.Models
     public class YearWiseDetails
     {
         public string CountryName { get; set; }
-        public int Price { get; set; }
-        public float Units { get; set; }
-        public float Value { get; set; }
+        public double Price { get; set; }
+        public double Units { get; set; }
+        public int Value { get; set; }
     }
 }
