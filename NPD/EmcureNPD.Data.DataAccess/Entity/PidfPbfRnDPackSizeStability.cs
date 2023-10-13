@@ -15,6 +15,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Value { get; set; }
         public DateTime CreatedOn { get; set; }
         public int? CreatedBy { get; set; }
+        public int? CountryId { get; set; }
 
         public virtual PidfPbfGeneral Pbfgeneral { get; set; }
         public virtual Pidf Pidf { get; set; }

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
 
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -3575,9 +3574,23 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.AmvcumTotal).HasColumnName("AMVCumTotal");
 
+                entity.Property(e => e.AmvcumTotalDate)
+                    .HasColumnType("date")
+                    .HasColumnName("AMVCumTotalDate");
+
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.ExhibitCumTotalDate).HasColumnType("date");
+
+                entity.Property(e => e.FeasabilityCumTotalDate).HasColumnType("date");
+
+                entity.Property(e => e.FilingCumTotalDate).HasColumnType("date");
+
                 entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
+
+                entity.Property(e => e.PrototypeCumTotalDate).HasColumnType("date");
+
+                entity.Property(e => e.ScaleUpCumTotalDate).HasColumnType("date");
 
                 entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfPhaseWiseBudgets)
