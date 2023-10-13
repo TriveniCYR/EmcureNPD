@@ -103,8 +103,9 @@ namespace EmcureNPD.Web.Models
     { 
         public DateTime? endDate { get; set; }
         public double? cost { get; set; }
-        public string? terms { get; set; } 
-    }
+        public string? terms { get; set; }
+		public bool? include { get; set; }
+	}
 
     public class Table
     {
