@@ -100,7 +100,7 @@ namespace EmcureNPD.Web.Controllers
 						model.MarketingAllowance = Convert.ToDecimal(data.table[0].marketingAllowance);
 						model.RegulatoryMaintenanceCost = Convert.ToDecimal(data.table[0].regulatoryMaintenanceCost);
 						model.GrosstoNet = Convert.ToDecimal(data.table[0].grosstoNet);
-						model.Noofbatchestobemanufactured = Convert.ToInt32(data.table[0].noofbatchestobemanufactured);
+						model.Noofbatchestobemanufactured = Convert.ToDouble(data.table[0].noofbatchestobemanufactured);
 						model.NoofbatchestobemanufacturedPhaseEndDate = data.table[0].noofbatchestobemanufacturedPhaseEndDate;
 						model.NoSkus = Convert.ToInt32(data.table[0].noSkus);
 						model.NoSkusPhaseEndDate = data.table[0].noSkusPhaseEndDate;
