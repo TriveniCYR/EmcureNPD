@@ -220,38 +220,23 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
-								@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required",@onchange="SetExpectedFillingBatchManufacturingDate(this.value);"})
-						                    <div class="invalid-feedback">
-                                            Please select Project Start Date.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Project Start Date Looks good!
-                                           </div> 
+								@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control",@readonly ="readonly", @onchange="SetExpectedFillingBatchManufacturingDate(this.value);"})
+						                   
                         </div>
 					</div>
 
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
-								@Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-						                 <div class="invalid-feedback">
-                                            Please enter Batch Manufacturing.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Batch Manufacturing Looks good!
-                                           </div> 
+								@Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date",@readonly ="readonly",@class="form-control"})
+						               
                         </div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
-								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                                          <div class="invalid-feedback">
-                                            Please enter Expected Filling.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Expected Filling Looks good!
-                                           </div> 
+							<label class="control-label">Expected Filling</label>
+								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@readonly ="readonly",@class="form-control"})
+                                        
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -528,6 +513,32 @@
 						</tr>
 					</thead>
 					<tbody>
+						@foreach (var pwb in ViewBag.PhaseWiseBudget)
+						{
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">@pwb.terms</label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label" pattern="\d{1,5}">@pwb.cost</label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">@pwb.endDate</label>
+										</div>
+									</div>
+								</td>
+							</tr>
+						}
 						<tr>
 							<td>
 							<div class="">

@@ -214,6 +214,26 @@
 
                                     </div>
                                 </div>
+                                @*------------------*@
+                                 <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.BatchManifacturingDate,"Batch Manifacturing Date", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.TextBoxFor(@modal=> modal.BatchManifacturingDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate customvalidateformcontrol", @placeholder = "Batch Manifacturing Date",@required="required"})
+                                        @Html.ValidationMessageFor(model => model.BatchManifacturingDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.FillingDateDate,"Filling Date", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.TextBoxFor(@modal=> modal.FillingDateDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate customvalidateformcontrol", @placeholder = "Filling Date",@required="required"})
+                                        @Html.ValidationMessageFor(model => model.FillingDateDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+                                @*-------------*@
                                 <div class="col-md-3">
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.RnDhead,"R&D Head", new { @class = "control-label" })<span class="text-danger">*</span>

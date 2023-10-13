@@ -993,5 +993,28 @@ function GetBatchSizeCostingTRValues() {
     return Arr_FinanceTable_tr;
 }
 
+$('.clsProjectTimeline').change(function () {
+
+    
+    let _appPeriodDays = isNaN($('#ApprovalPeriodinDays').val()) ? 0 : parseInt($('#ApprovalPeriodinDays').val());
+
+    let _expDate = $('#ExpectedFilling').val();
+    let _ExpectedFillingDate = new Date(_expDate);
+    _expDate = _ExpectedFillingDate;
+    _expDate.setDate(_ExpectedFillingDate.getDate() + _appPeriodDays);
+
+    var resultDate = _expDate.toISOString().split('T')[0];
+    $('#ApprovalDate').val(resultDate);
+
+
+    _expDate.setDate(_ExpectedFillingDate.getDate() + _appPeriodDays+60);
+
+    resultDate = _expDate.toISOString().split('T')[0];
+    $('#ProductLaunchDate').val(resultDate);
+    
+
+
+});
+
 
 

@@ -1288,7 +1288,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     foreach (var item in pbfentity.PackSizes)
                     {
                         var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
-               Where(x => x.Pidfid == pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId==item.PackSizeStabilityId && x.CountryId==countryId).FirstOrDefault();
+               Where(x => x.Pidfid == pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId==item.PackSizeStabilityId && x.CountryId == countryId).FirstOrDefault();
 
                         if (objPackSizeStabilityDetails != null && item.Value != null)
                         {
@@ -1300,7 +1300,8 @@ namespace EmcureNPD.Business.Core.Implementation
                             objPackSizeStabilityDetails.Value = item.Value;
                             objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
                             objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
-                            objPackSizeStabilityDetails.CountryId = countryId;                            objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
+                            objPackSizeStabilityDetails.CountryId = countryId;                          
+                            objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
                             objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
                             _repositoryPidfPbfRnDPackSizeStability.UpdateAsync(objPackSizeStabilityDetails);
                         }

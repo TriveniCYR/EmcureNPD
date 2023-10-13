@@ -39,6 +39,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int? ModifyBy { get; set; }
+        public DateTime? BatchManifacturingDate { get; set; }
+        public DateTime? FillingDateDate { get; set; }
 
         public virtual MasterBerequirement Berequirement { get; set; }
         public virtual MasterDosage Dosage { get; set; }

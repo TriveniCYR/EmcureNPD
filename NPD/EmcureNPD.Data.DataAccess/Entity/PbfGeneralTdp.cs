@@ -18,13 +18,15 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Color { get; set; }
         public string Engraving { get; set; }
         public string Packaging { get; set; }
-        public string PrimaryPackaging { get; set; }
-        public string SecondryPackaging { get; set; }
+        public bool? IsPrimaryPackaging { get; set; }
+        public bool? IsSecondryPackaging { get; set; }
         public string ShelfLife { get; set; }
         public string StorageHandling { get; set; }
         public bool? IsEmcure { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public string FormulaterResponsiblePerson { get; set; }
+        public string PrimaryPackaging { get; set; }
+        public string SecondryPackaging { get; set; }
     }
 }

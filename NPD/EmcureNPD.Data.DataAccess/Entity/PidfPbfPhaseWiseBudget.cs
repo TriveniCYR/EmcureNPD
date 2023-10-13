@@ -17,6 +17,12 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public double? FilingCumTotal { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+        public DateTime? FeasabilityCumTotalDate { get; set; }
+        public DateTime? PrototypeCumTotalDate { get; set; }
+        public DateTime? ScaleUpCumTotalDate { get; set; }
+        public DateTime? AmvcumTotalDate { get; set; }
+        public DateTime? ExhibitCumTotalDate { get; set; }
+        public DateTime? FilingCumTotalDate { get; set; }
 
         public virtual PidfPbfGeneral Pbfgeneral { get; set; }
     }

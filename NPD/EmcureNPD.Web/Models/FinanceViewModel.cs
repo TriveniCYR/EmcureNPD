@@ -94,6 +94,19 @@ namespace EmcureNPD.Web.Models
         public List<Table> table { get; set; }
     }
 
+    public class RootPWB
+    {
+        public List<PWB> table { get; set; }
+    }
+
+    public class PWB
+    { 
+        public DateTime? endDate { get; set; }
+        public double? cost { get; set; }
+        public string? terms { get; set; }
+		public bool? include { get; set; }
+	}
+
     public class Table
     {
         public int pidffinaceId { get; set; }
@@ -110,6 +123,14 @@ namespace EmcureNPD.Web.Models
         public DateTime ?projectStartDate { get; set; }
         public DateTime ?batchManufacturing { get; set; }
         public DateTime ?expectedFilling { get; set; }
+        //---------------------------------------------------------
+
+        public DateTime? projectInitiationDate { get; set; }
+        public DateTime? batchManifacturingDate { get; set; }
+        public DateTime? fillingDateDate { get; set; }
+
+        //---------------------------
+
         public string approvalPeriodinDays { get; set; }
         public DateTime ?approvalDate { get; set; }
         public DateTime ?productLaunchDate { get; set; }
@@ -155,7 +176,7 @@ namespace EmcureNPD.Web.Models
         public int PIDFStatusId { get; set; }
 
         public DateTime? createdDate { get; set; }
-        public int createdBy { get; set; }
+        public int createdBy { get; set; } 
     }
 
     public class ChildRoot
