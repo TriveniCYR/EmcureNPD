@@ -513,6 +513,32 @@
 						</tr>
 					</thead>
 					<tbody>
+						@foreach (var pwb in ViewBag.PhaseWiseBudget)
+						{
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">@pwb.terms</label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label" pattern="\d{1,5}">@pwb.cost</label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">@pwb.endDate</label>
+										</div>
+									</div>
+								</td>
+							</tr>
+						}
 						<tr>
 							<td>
 							<div class="">
