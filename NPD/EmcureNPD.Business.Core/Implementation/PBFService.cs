@@ -428,6 +428,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.HeadWiseBudget = dsDropdownOptions.Tables[20];
             DropdownObjects.PBFReferenceProductDetail = dsDropdownOptions.Tables[21];
             DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
+            DropdownObjects.PhaseWiseBudget = dsDropdownOptions.Tables[23];
             DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId, BUId);
             DropdownObjects.PidfPbfGeneralPackSizeStability = await GetGeneralPackSizeStability(PIDFId, BUId);
             DropdownObjects.GetStrengthForPBFTDP = await GetStrengthForPBFTDP(PIDFId, BUId);
