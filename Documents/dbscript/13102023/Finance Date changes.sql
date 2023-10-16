@@ -177,3 +177,43 @@ SELECT
   END  
 
   GO
+
+--exec  PRocGetFinanceBatchSizeCoating  24 
+CREATE or alter PROC [dbo].[PRocGetFinanceBatchSizeCoating] --4          
+@PIDFFinaceId int=0          
+AS          
+BEGIN          
+SELECT  [PIDFFinaceBatchSizeCoatingId]          
+      ,[PIDFFinaceId]          
+      ,[Batchsize]          
+      ,[Yield]          
+      , IsNULL([Batchoutput],0 )  as [Batchoutput]             
+      , IsNULL([API_CAD],0 )  as [API_CAD]       
+      ,    IsNULL([Excipients_CAD],0 )  as [Excipients_CAD]             
+      ,				IsNULL([PM_CAD],0 )  as [PM_CAD] 
+      ,           IsNULL([CCPC_CAD],0 )  as [CCPC_CAD] 
+      ,        IsNULL([Freight_CAD],0 )  as [Freight_CAD]    
+      ,[EmcureCOGs_pack]          
+      ,[CreatedDate]          
+      ,[CreatedBy]          
+   ,Skus          
+   ,(select top 1 Strength from PIDFProductStrength where PIDFProductStrengthId=Skus)  [SkusName]        
+   ,PakeSize          
+   ,(select PackSize from Master_PackSize where PackSizeId = PakeSize) [PackSizeValue]     
+   ,(PakeSize) [PakeSizeName]        
+   ,BrandPrice          
+   ,GenericListprice          
+   , NetRealisation--Isnull(NetRealisation,(GenericListprice*40)/100) as NetRealisation          
+   ,EstMAT2016_BY_12Units as EstMat2016By12units          
+   ,EstMAT2020_BY_12Units as EstMat2020By12units          
+   ,CAGRover2016_By_12EstMATunits as Cagrover2016By12estMatunits          
+   ,Marketinpacks          
+   ,Batchsizein_ltr_tabs as BatchsizeinLtrTabs                      
+  FROM PIDF_Finance_BatchSizeCoating          
+  WHERE PIDFFinaceId=@PIDFFinaceId or @PIDFFinaceId=0          
+        
+  select Expiries,AnnualConfirmatoryRelease,[Year] from PIDF_Finance_Projection  where PIDFFinaceId=@PIDFFinaceId order by [Year]         
+        
+        
+        
+  END 
