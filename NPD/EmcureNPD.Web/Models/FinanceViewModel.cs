@@ -199,11 +199,11 @@ namespace EmcureNPD.Web.Models
         public double batchsize { get; set; }
         public double Yield { get; set; }
         public double batchoutput { get; set; }
-        public double apI_CAD { get; set; }
-        public double excipients_CAD { get; set; }
-        public double pM_CAD { get; set; }
-        public double ccpC_CAD { get; set; }
-        public double freight_CAD { get; set; }
+        public double? apI_CAD { get; set; }
+        public double? excipients_CAD { get; set; }
+        public double? pM_CAD { get; set; }
+        public double? ccpC_CAD { get; set; }
+        public double? freight_CAD { get; set; }
         public double? emcureCOGs_pack { get; set; }
         public DateTime createdDate { get; set; }
         public int createdBy { get; set; }

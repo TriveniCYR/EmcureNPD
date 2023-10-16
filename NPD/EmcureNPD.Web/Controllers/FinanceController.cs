@@ -248,8 +248,15 @@ namespace EmcureNPD.Web.Controllers
 				if (responseMessage.IsSuccessStatusCode)
 				{
 					string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-					var data = JsonConvert.DeserializeObject<ChildRoot>(jsonResponse);
-					return data.table;
+					if (jsonResponse != null)
+					{
+						var data = JsonConvert.DeserializeObject<ChildRoot>(jsonResponse);
+						return data.table;
+					}
+					else
+					{
+						return null;
+					}
 				}
 				else
 				{
