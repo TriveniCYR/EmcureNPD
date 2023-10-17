@@ -560,7 +560,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     dbObj.Interested = _oAPIAssignedUser.IsAPIIntrested;
                     dbObj.Remark = _oAPIAssignedUser.ApiRemark;
-                    _pidf_API_Master_repository.UpdateAsync(dbObj);
+					dbObj.UserId = _oAPIAssignedUser.AssignedAPIUser;
+					_pidf_API_Master_repository.UpdateAsync(dbObj);
                 }
                 else
                 {
