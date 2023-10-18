@@ -671,7 +671,7 @@ $(document).ready(function () {
             // set total for the row
             var result = parseFloat(_Sum) + _TotalAMVStrengthCost;
             $(this).find(".TotalStrength").val(formatNumber(_Sum));
-            console.log(result);
+         
         });
 
         $.each($('.calcTotalCostForStrengthAnalytical'), function (index, item) {
@@ -1179,7 +1179,6 @@ function GetPBFTabDetailsSuccess(data) {
         if (data != null) {
             //_currencySymbol = (data.IPDCostOfLitigation.length > 0 ? data.IPDCostOfLitigation[0].currencySymbol : "$");
             _CostOfLitigationArray = data.IPDCostOfLitigation;
-            CreatePhaseWiseBudgetTable();
             CreateTotalExpensesTable();
             var _emptyOption = '<option value="">-- Select --</option>';
             // PBFBindStrength(data.PIDFPBFGeneralStrength);
@@ -1210,6 +1209,7 @@ function GetPBFTabDetailsSuccess(data) {
             BindRNDFillingExpenses(data.PBFRNDFillingExpenses, data.MasterBusinessUnit);
             BindRNDManPowerCost(data.PBFRNDManPowerCost)
             BindHeadWiseBudget(data.HeadWiseBudget)
+            CreatePhaseWiseBudgetTable(data.PhaseWiseBudget);
             BindReferenceProductDetails(data.PBFReferenceProductDetail)
             $(data.MasterTestType).each(function (index, item) {
                 $('.AnalyticalTestTypeId').append('<option value="' + item.testTypeId + '" data-TestTypeCode="' + item.testTypeCode + '" data-TestTypePrice="' + item.testTypePrice + '">' + item.testTypeCode + ": " + item.testTypeName + '</option>');
@@ -2761,49 +2761,63 @@ function BindRNDManPowerCost(data) {
 }
 //MPC table end
 //Phase Wise Budget table Start
-function CreatePhaseWiseBudgetTable() {
+function CreatePhaseWiseBudgetTable(data) {
+    var originalData = data[0];
+    var formattedData = {};
+
+    for (var key in originalData) {
+        if (originalData.hasOwnProperty(key) && originalData[key] !== null && originalData[key] !== undefined) {
+            var originalDate = new Date(originalData[key]);
+            originalDate.setDate(originalDate.getDate() + 1);
+            var year = originalDate.getUTCFullYear();
+            var month = originalDate.getUTCMonth() + 1; // Months are 0-based, so add 1
+            var day = originalDate.getUTCDate();
+            var formattedDate = year + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day;
+            formattedData[key] = formattedDate;
+        }
+    }
     var bioStudyTypeId = 1;
     var PWBHTML = '<thead class="bg-primary text-bold"><tr><td>Activities</td>'
     $.each(_strengthArray, function (index, item) {
         PWBHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + ' (Cost)</td>';
     });
-    PWBHTML += '<td>Total</td><td>CUM. Total</td><td>% Of Total</td></tr></thead><tbody>';
+    PWBHTML += '<td>Total</td><td>CUM. Total</td><td>% Of Total</td><td>Dates</td></tr></thead><tbody>';
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Feasability</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcPWBRNDFeasability"  readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBFeasability CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBFeasability CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td><td><input type='date' class='form-control FeasabilityCumTotalDate' tabindex=-1 value='" + (formattedData.feasabilityCumTotalDate || "") + "' /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Prototype development</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBPrototypedevelopment" readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBPrototype CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBPrototype CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td><td><input type='date' class='form-control PrototypeCumTotalDate' tabindex=-1 value='" + (formattedData.prototypeCumTotalDate || "") + "' /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>R&D Scale Up</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBScaleUp"  readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBScaleUp CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBScaleUp CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td><td><input type='date' class='form-control ScaleUpCumTotalDate' tabindex=-1 value='" + (formattedData.scaleUpCumTotalDate || "") + "' /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>AMV / AMT</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBAMV"  readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBPWBAMV CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBPWBAMV CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td><td><input type='date' class='form-control AmvcumTotalDate' tabindex=-1 value='" + (formattedData.amvCumTotalDate || "") + "' /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit and Scalability</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBExhibitScalability" readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBExhibitScalability CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBExhibitScalability CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td><td><input type='date' class='form-control ExhibitCumTotalDate' tabindex=-1 value='" + (formattedData.exhibitCumTotalDate || "") + "' /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Filing</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBFiling" readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBFiling CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBFiling CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td><td><input type='date' class='form-control FilingCumTotalDate' tabindex=-1 value='" + (formattedData.filingCumTotalDate || "") + "' /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td class='text-bold'>Total Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
@@ -3063,6 +3077,12 @@ function SetRNDChildRows() {
             var AMVCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBPWBAMV").val();
             var ExhibitCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBExhibitScalability").val();
             var FilingCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBFiling").val();
+            var FeasabilityCumTotalDate = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".FeasabilityCumTotalDate").val();
+            var PrototypeCumTotalDate = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".PrototypeCumTotalDate").val();
+            var ScaleUpCumTotalDate = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".ScaleUpCumTotalDate").val();
+            var AmvcumTotalDate = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".AmvcumTotalDate").val();
+            var ExhibitCumTotalDate = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".ExhibitCumTotalDate").val();
+            var FilingCumTotalDate = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".FilingCumTotalDate").val();
             var _rndPWBObject = new Object();
             _rndPWBObject.FeasabilityCumTotal = ConvertToNumber(FeasabilityCumTotal == "" ? 0 : FeasabilityCumTotal);
             _rndPWBObject.PrototypeCumTotal = ConvertToNumber(PrototypeCumTotal == "" ? 0 : PrototypeCumTotal);
@@ -3070,6 +3090,12 @@ function SetRNDChildRows() {
             _rndPWBObject.AMVCumTotal = ConvertToNumber(AMVCumTotal == "" ? 0 : AMVCumTotal);
             _rndPWBObject.ExhibitCumTotal = ConvertToNumber(ExhibitCumTotal == "" ? 0 : ExhibitCumTotal);
             _rndPWBObject.FilingCumTotal = ConvertToNumber(FilingCumTotal == "" ? 0 : FilingCumTotal);
+            _rndPWBObject.FeasabilityCumTotalDate = FeasabilityCumTotalDate;
+            _rndPWBObject.PrototypeCumTotalDate = PrototypeCumTotalDate;
+            _rndPWBObject.ScaleUpCumTotalDate = ScaleUpCumTotalDate;
+            _rndPWBObject.AmvcumTotalDate = AmvcumTotalDate;
+            _rndPWBObject.ExhibitCumTotalDate = ExhibitCumTotalDate;
+            _rndPWBObject.FilingCumTotalDate = FilingCumTotalDate;
             _RNDPhaseWiseBudgetArray.push(_rndPWBObject);
 
             //$.each($('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i), function () {
@@ -3541,8 +3567,6 @@ function GetCountyByBussinessUnitId() {
 }
 function GetCountryByBusinessUnitSuccess_PBF(data) {
     try {
-        console.log('GetCountryByBusinessUnitSuccess_PBF');
-        console.log(data);
         var element = $('#tableRA').find('.clsCountry');
         element.find("option").remove();
         var _emptyOption = '<option value="">-- Select --</option>';
@@ -3640,7 +3664,7 @@ function BindRA(data, IsEdit = false) {
                                </td>
                                </tr>`;
                     } catch (e) {
-                        //console.log(e);
+                      
                     }
                 }
             }
@@ -3685,7 +3709,6 @@ function BindNewRA(data, IsEdit = false) {
         var element = $('#tableRA').find('.clsCountry');
         element.find("option").remove();
         var _emptyOption = '<option value="">-- Select --</option>';
-        console.log(data);
         element.append(_emptyOption);
         for (var i = 0; i < data.length; i++) {
             element.append('<option  value="' + data[i].countryId + '">' + data[i].countryName + '</option>');
@@ -3710,7 +3733,6 @@ function GetRa(PidfId, PifdPbfId) {
 function GetRaSuccess(response) {
     try {
         if (response.length > 0) {
-            console.log(response);
             IsRaEditable = true;
             BindRA(response, true);
         }
@@ -3825,8 +3847,7 @@ function checkDuplicateRaCountry(id) {
             countryId.push($(this).find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val());
             var $current = $(this).find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val();
             var $next = $(this).next().find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val() == undefined ? '0' : $(this).next().find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val();
-            console.log($current);
-            console.log($next);
+         
             if (countryId.includes($next)) {
                 duplicate = true;
                 $(`select#raCountryId${id}`).val("");
@@ -3910,7 +3931,7 @@ function GetPBFRACalculatedDate(index) {
             StabilityResultsSixMonth: $(`#PidfPbfGeneralRnd_StabilityResultsSixMonth`).val()
             
     }
-    console.log($(`#LastDataFromRnD${index}`).val())
+  
         selectedRaIndex = index;
         ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFRACalculatedDateUrl, 'POST', GetPBFRACalculatedDateSuccess, GetPBFRACalculatedDateError, JSON.stringify(param));
     //}
@@ -3919,7 +3940,7 @@ function GetPBFRACalculatedDate(index) {
     //}
 }
 function GetPBFRACalculatedDateSuccess(data) {
-    console.log(data.table);
+   
     //$(`#EarliestSubmissionDExcl${selectedRaIndex}`).val(data.table[0].earliestSubmissionDate == null ? '' : data.table[0].earliestSubmissionDate.split('T')[0])
     //$(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? '' : data.table[0].earliestLaunchDate.split('T')[0])
     //$(`#LasDateToRegulatory${selectedRaIndex}`).val($(`#LastdatafromRnD${selectedRaIndex}`).val())//data.table[0].lastDateToRegulatory == null ? '' : data.table[0].lastDateToRegulatory.split('T')[0])

@@ -175,6 +175,13 @@ function GetProjectDetailsSuccess(data) {
             var startDate =start.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
             var end = new Date(object.endDate);
             var endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+            var plannedstart = object.plannedStartDate ? new Date(object.plannedStartDate) : null;
+            var plannedend = object.plannedEndDate ? new Date(object.plannedEndDate) : null;
+            var plannedStartDate = plannedstart ? plannedstart.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }) : '';
+            var plannedEndDate = plannedend ? plannedend.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }) : '';
+
+
             if (object.modifyDate != null) {
                var updated = new Date(object.modifyDate);
                 var updatedDate =updated.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -203,14 +210,13 @@ function GetProjectDetailsSuccess(data) {
                    
                     let bgColor = "#000" + colorCode + "00d;"
                     if (i == 0) {
-                        //tableRow += '<tr title="Sub Task Level:' + object.taskLevel + '" style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? "" : displaySubTaskListButton) + '</td><td><b>Sub Task Level:' + object.taskLevel + ':-</b>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
-                        tableRow += '<tr style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + mainTaskRowIndex + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? "" : displaySubTaskListButton) + '</td><td class="task-level-' + object.taskLevel +'">' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
+                        tableRow += '<tr style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + mainTaskRowIndex + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? "" : displaySubTaskListButton) + '</td><td class="task-level-' + object.taskLevel + '">' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + plannedStartDate + '</td><td>' + plannedEndDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
                     }
                     colorCode++;
                  }
             }
             else {
-                tableRow += '<tr class="treegrid-' + index + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + displaySubTaskListButton +'</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton+'</td></tr>';
+                tableRow += '<tr class="treegrid-' + index + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + displaySubTaskListButton + '</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + plannedStartDate + '</td><td>' + plannedEndDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton+'</td></tr>';
                 
             }
            
