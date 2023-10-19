@@ -101,6 +101,12 @@ $(document).ready(function () {
             //alert('Tab Pressed');
         }
     });
+    if (true) {
+        $('#ProjectStartDate').removeAttr('readonly');
+        $('#BatchManufacturing').removeAttr('readonly');
+        $('#ExpectedFilling').removeAttr('readonly');
+    }
+
 
 });
 function ExpiriesValueChange(ele, index) {
