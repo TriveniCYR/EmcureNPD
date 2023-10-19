@@ -883,31 +883,33 @@ function GetActiveBusinessUnitSuccess(data) {
         businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
     });
     $('#custom-tabs-business-tab').html(businessUnitHTML);
-
-    // $('#custom-tabs-business-tabContent').html(businessUnitPanel);
-
-    // LoadIPDForm(_PIDFID, _selectBusinessUnit);
+    renderpbfbu(data);
 }
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 var CurrentscreenId_Finance = '';
-function BussinesUnitInterestedFinance(pidfid, buid, screenId) {
+
+function BussinesUnitInterestedFinance(pidfid, buid, screenId, callback) {
     CurrentscreenId_Finance = screenId;
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurlFinance + "/" + pidfid + "/" + buid, 'GET', BussinesUnitInterestedFinanceSuccess, BussinesUnitInterestedFinanceError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurlFinance + "/" + pidfid + "/" + buid, 'GET', function (data) {
+        BussinesUnitInterestedFinanceSuccess(data, callback);
+    }, BussinesUnitInterestedFinanceError);
 }
-function BussinesUnitInterestedFinanceSuccess(data) {
+
+function BussinesUnitInterestedFinanceSuccess(data, callback) {
     var BUTabData_Div = '.clsContentUnderBUTab_' + CurrentscreenId_Finance;
-    var NonIntNote_Div = '#dvNotInterestedBUNote_' + CurrentscreenId_Finance;
-    var NonIntNote_HeadingNote = '#dvNotInterestedBUNoteHeading_' + CurrentscreenId_Finance;
+    var NonIntNote_Div = '.dvNotInterestedBUNote_' + CurrentscreenId_Finance;
+    var NonIntNote_HeadingNote = '.dvNotInterestedBUNoteHeading_' + CurrentscreenId_Finance;
 
     var IsInterested = DispalyStatusOfBUByInterested(data, BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote);
-    //if (!IsInterested)
-    //    $('#dvBudgetApprovingButtons').hide();
-    //else
-    //    $('#dvBudgetApprovingButtons').show();
 
+    // Call the callback function and pass the IsInterested value
+    if (typeof callback === "function") {
+        callback(IsInterested);
+    }
 }
+
 function BussinesUnitInterestedFinanceError(x, y, z) {
     toastr.error(ErrorMessage);
 }
@@ -958,12 +960,17 @@ function GetCommercialSummaryBudgetSuccess(data) {
         tableBody.appendChild(row);
     });
 }
-
-
-
-
-
 function GetCommercialSummaryBudgetError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-
+function renderpbfbu(data) {
+    var businessUnitHTML = "";
+    var businessUnitPanel = "";
+    $.each(data._object, function (index, item) {
+        let buClassName = item.businessUnitName.toLowerCase() === 'india' ? 'in' : item.businessUnitName.toLowerCase();
+        businessUnitHTML += '<li class="nav-item p-0">\
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadpbf(' + _selectedPidfId + ',\'' + item.encBusinessUnitId + '\',' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+        businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
+    });
+    $('#custom-tabs-pbffinance-tab').html(businessUnitHTML);
+}
