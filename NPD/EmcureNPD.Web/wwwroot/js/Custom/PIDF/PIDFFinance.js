@@ -101,12 +101,13 @@ $(document).ready(function () {
             //alert('Tab Pressed');
         }
     });
-    if (true) {
+    if ($('#ProjectStartDate').val()=='')
         $('#ProjectStartDate').removeAttr('readonly');
+    if ($('#BatchManufacturing').val() == '')
         $('#BatchManufacturing').removeAttr('readonly');
+    if ($('#ExpectedFilling').val() == '')
         $('#ExpectedFilling').removeAttr('readonly');
-    }
-
+    
 
 });
 function ExpiriesValueChange(ele, index) {
