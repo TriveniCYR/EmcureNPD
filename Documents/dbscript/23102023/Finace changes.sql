@@ -31,6 +31,7 @@ select Expiries,AnnualConfirmatoryRelease,[Year] from PIDF_Finance_Projection wh
        
 select    
 PC.BusinessUnitId  
+,(select BusinessUnitName from Master_BusinessUnit where BusinessUnitId = PC.BusinessUnitId) as BusinessUnitName
 ,Convert(numeric(18,2),isnull(MarketSharePercentageLow,0)) As MarketSharePercentageLow              
 ,Convert(numeric(18,2),isnull(MarketSharePercentageMedium,0)) As MarketSharePercentageMedium              
 ,Convert(numeric(18,2),isnull(MarketSharePercentageHigh,0)) As MarketSharePercentageHigh              
@@ -88,6 +89,7 @@ where projection.PIDFFinaceId=@PIDFFinaceId and projection.BusinessUnitId=@Busin
 ------------------------------------------------      
 select    
 PC.BusinessUnitId  
+,(select BusinessUnitName from Master_BusinessUnit where BusinessUnitId = PC.BusinessUnitId) as BusinessUnitName
 ,Convert(numeric(18,2),isnull(MarketSharePercentageLow,0)) As MarketSharePercentageLow              
 ,Convert(numeric(18,2),isnull(MarketSharePercentageMedium,0)) As MarketSharePercentageMedium              
 ,Convert(numeric(18,2),isnull(MarketSharePercentageHigh,0)) As MarketSharePercentageHigh              
