@@ -1277,7 +1277,9 @@ function GetPBFTabDetailsSuccess(data) {
                     }
                     event.preventDefault();
                 }
-            });
+            }); 
+          
+            formatCurrencyInElements('format-currency');
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
