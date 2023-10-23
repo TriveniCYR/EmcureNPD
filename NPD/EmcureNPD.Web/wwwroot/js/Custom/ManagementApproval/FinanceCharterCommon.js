@@ -59,7 +59,11 @@ function RenderCommercialPerPack() {
 
 
         //-----------BU loop--------
-        //jQuery.each(CommcercialBU_NPS_MS_Data, function (BUind, BUObj) {
+        var ArrOfUniqueBUs = Array.from(new Set(CommcercialBU_NPS_MS_Data.map((item) => item.businessUnitId)))
+        if (SelectedTabBU_Finance != 0) {
+            ArrOfUniqueBUs = [SelectedTabBU_Finance];
+        }
+        jQuery.each(ArrOfUniqueBUs, function (BUind, BUObj) {
 
             var Arr_FinanceTable_tr = GetBatchSizeCostingTRValues();
             jQuery.each(Arr_FinanceTable_tr, function (index, trObj) {
@@ -67,14 +71,14 @@ function RenderCommercialPerPack() {
 
                 let SKU = trObj.SKU;
                 let PackSize = trObj.PackSize;
-
+                let _BUName = '';
 
                 if (_selectBusinessUnit != SelectedTabBU_Finance) {
 
                     var Filtered_CommcercialBU_NPS_MS_Data = $.grep(CommcercialBU_NPS_MS_Data, function (n, i) {
                         return n.businessUnitId == SelectedTabBU_Finance
                     });
-
+                    
                     trObj.hdnMSLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageLow : 0
                     trObj.hdnMSMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageMedium : 0
                     trObj.hdnMSHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageHigh : 0
@@ -85,23 +89,25 @@ function RenderCommercialPerPack() {
 
                 }
 
-                //if (ScreenName == 'ManagementApproval' && SelectedTabBU_Finance=='0') {
-                //   var BU = BUObj.businessUnitId;
-                //    var Filtered_CommcercialBU_NPS_MS_Data = $.grep(CommcercialBU_NPS_MS_Data, function (n, i) {
-                //        return n.businessUnitId == BU
-                //    });
+                if (ScreenName == 'ManagementApproval' && SelectedTabBU_Finance=='0') {
+                    var BU = BUObj;
+                    var Filtered_CommcercialBU_NPS_MS_Data = $.grep(CommcercialBU_NPS_MS_Data, function (n, i) {
+                        return n.businessUnitId == BU
+                    });
+                    _BUName = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].businessUnitName : ''
+                    trObj.hdnMSLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageLow : 0
+                    trObj.hdnMSMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageMedium : 0
+                    trObj.hdnMSHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageHigh : 0
+                    trObj.marketInPacks = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketinpacks : 0
+                    trObj.hdnNSPLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsLow : 0
+                    trObj.hdnNSPMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsMedium : 0
+                    trObj.hdnNSPHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsHigh : 0
 
-                //    trObj.hdnMSLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageLow : 0
-                //    trObj.hdnMSMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageMedium : 0
-                //    trObj.hdnMSHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageHigh : 0
-                //    trObj.marketInPacks = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketinpacks : 0
-                //    trObj.hdnNSPLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsLow : 0
-                //    trObj.hdnNSPMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsMedium : 0
-                //    trObj.hdnNSPHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsHigh : 0
+                }
+                if (_BUName != '')
+                    _BUName = '-' + _BUName;
 
-                //}
-
-                html += '<tr class="bg-light"><td class="text-left" colspan="15"><b>' + SKU + " - " + PackSize + '</b></td></tr>';
+                html += '<tr class="bg-light"><td class="text-left" colspan="15"><b>' + SKU + " - " + PackSize + _BUName +'</b></td></tr>';
 
                 var _uniqueClass = "tr_" + SKU + "_" + PackSize;
                 var MS_td_data = [];
@@ -202,9 +208,7 @@ function RenderCommercialPerPack() {
                 html += "</tr>";
             });
             //--------Bu loop----------
-            //if (SelectedTabBU_Finance == '0')
-            //    continue;
-        /*});*/
+        });
 
         /* -----------Grand SUM-Rows--------------------*/
         html += "<tr><td>&nbsp</td></tr>";
