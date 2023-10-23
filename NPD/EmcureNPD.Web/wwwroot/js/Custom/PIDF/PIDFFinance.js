@@ -12,9 +12,11 @@ var ExpiriestxtboxFocusId = "";
 var AnnualConfirmatoryRtxtboxFocusId = "";
 var TabKeyPressed_control = '';
 var TabKeyPressed_controlAnnualConf = '';
+var ScreenName = 'Finance';
+
 $(document).ready(function () {
  /*   console.log("selectedSKUs" + selectedSKUs);*/
-  
+    SelectedTabBU_Finance = _selectBusinessUnit;
     GetCurrencyList();
     calculateDealTerm();
     GetDosageFormList();
@@ -101,14 +103,14 @@ $(document).ready(function () {
             //alert('Tab Pressed');
         }
     });
-    if ($('#ProjectStartDate').val()=='')
-        $('#ProjectStartDate').removeAttr('readonly');
-    if ($('#BatchManufacturing').val() == '')
-        $('#BatchManufacturing').removeAttr('readonly');
-    if ($('#ExpectedFilling').val() == '')
-        $('#ExpectedFilling').removeAttr('readonly');
+    if ($('#ProjectStartDate').val()!='')
+        $('#ProjectStartDate').attr('readonly', true)
+    if ($('#BatchManufacturing').val() != '')
+        $('#BatchManufacturing').attr('readonly', true)
+    if ($('#ExpectedFilling').val() != '')
+        $('#ExpectedFilling').attr('readonly', true)
     
-
+   
 });
 function ExpiriesValueChange(ele, index) {
 
@@ -753,6 +755,9 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(ele).closest('tr').find("#hdnNSPMid").val((data.table.length > 0 ? data.table[0].nspUnitsMedium : 0).toFixed(2));
                     $(ele).closest('tr').find("#hdnNSPHigh").val((data.table.length > 0 ? data.table[0].nspUnitsHigh : 0).toFixed(2));
 
+                    if (data.table2.length > 0) {
+                        CommcercialBU_NPS_MS_Data = data.table2;
+                    }
                     if (data.table1.length>0)
                         UpdateDynamicTextBoxValues(data.table1);
 
@@ -968,8 +973,11 @@ $(el).focusout(function () {
 
 function loadFinanceProjectionData(pidfid, encBUId, buid){
     _encBuid = encBUId;
+    SelectedTabBU_Finance = buid;
     BussinesUnitInterestedFinance(pidfid, buid, 'Finance');
-    $('.PakeSize').trigger("change");
+
+    RenderCommercialPerPack();
+    RenderFinanceProjection();
 }
 function GetBatchSizeCostingTRValues() {
     var Arr_FinanceTable_tr = [];
@@ -993,7 +1001,6 @@ function GetBatchSizeCostingTRValues() {
             //netRealisation: $(this).find(".NetRealisation").val()
 
         }
-
         Arr_FinanceTable_tr.push(trObj);
 
     });
