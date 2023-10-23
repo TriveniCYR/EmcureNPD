@@ -521,7 +521,7 @@
                                                         <div class="col-md-3">
                                                             <div class="form-group required">
                                                                 @Html.LabelFor(model => model.RFDInitialRevenuePotential, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                                                @Html.TextBoxFor(model => model.RFDInitialRevenuePotential, new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"],@maxlength="100",@required="required" })
+                                                                @Html.TextBoxFor(model => model.RFDInitialRevenuePotential, new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol format-currency", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"],@maxlength="100",@required="required" })
                                                                 @Html.ValidationMessageFor(model => model.RFDInitialRevenuePotential, "", new { @class = "text-danger" })
                                                             </div>
                                                         </div>
@@ -1499,8 +1499,8 @@
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
 <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
 <script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
-@*<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+ <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
 
 <script>
     var GetIsInterestedByPIDFandBUurlPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIsInterestedByPIDFandBU";
