@@ -163,6 +163,27 @@ function loadFinanceProjectionData(pidfid, encBUId,buid) {
 }
 
 
+//function loadpbf(pidfid, encBUId, buid) {
+//    BussinesUnitInterestedFinance(pidfid, buid, 'Finance');
+//    var currentUrl = window.location.href;
+//    var updatedUrl = currentUrl.replace(/([?&])bui=[^&]*/, '$1bui=' + encBUId);
+//    window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+//    window.location.href = updatedUrl;
+//}
+
+function loadpbf(pidfid, encBUId, buid) {
+    BussinesUnitInterestedFinance(pidfid, buid, 'Finance', function (IsInterested) {
+        // Check the value of IsInterested and prevent further execution if it's true
+        if (IsInterested) {
+            var currentUrl = window.location.href;
+            var updatedUrl = currentUrl.replace(/([?&])bui=[^&]*/, '$1bui=' + encBUId);
+            window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+            window.location.href = updatedUrl;
+        }
+    });
+}
+
+
 
 
 

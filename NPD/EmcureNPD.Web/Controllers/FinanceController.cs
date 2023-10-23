@@ -126,6 +126,9 @@ namespace EmcureNPD.Web.Controllers
 						model.ToolingAndChangePartsPhaseEndDate = data.table[0].toolingAndChangePartsPhaseEndDate;
 						model.Total = Convert.ToDecimal(data.table[0].total);
 						model.PIDFStatusId = data.table[0].PIDFStatusId;
+						model.ExpectedFilling = data.table[0].expectedFilling;
+						model.BatchManufacturing = data.table[0].batchManufacturing;
+						model.ProjectStartDate = data.table[0].projectStartDate;
 
 						var lsitem = GetFinanceBatchSizeCoating(model.PidffinaceId);
 						List<ChildPidfFinanceBatchSizeCoating> ls = new List<ChildPidfFinanceBatchSizeCoating>();
@@ -188,11 +191,11 @@ namespace EmcureNPD.Web.Controllers
 							{
 								if (item.include == true)
 									mdls.Add(item);
-								else if (item.terms == "FD")
+								else if (item.terms == "FD" && model.ExpectedFilling == null)
 									model.ExpectedFilling = item.endDate;
-								else if (item.terms == "MFD")
+								else if (item.terms == "MFD" && model.BatchManufacturing == null)
 									model.BatchManufacturing = item.endDate;
-								else if (item.terms == "IND")
+								else if (item.terms == "IND" && model.ProjectStartDate == null)
 									model.ProjectStartDate = item.endDate;
 							}
 						}

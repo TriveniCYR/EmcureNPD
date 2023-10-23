@@ -220,7 +220,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
-								@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control",@readonly ="readonly", @onchange="SetExpectedFillingBatchManufacturingDate(this.value);"})
+								@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required",@readonly ="readonly", @onchange="SetExpectedFillingBatchManufacturingDate(this.value);"})
 						                   
                         </div>
 					</div>
@@ -228,14 +228,14 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
-								@Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date",@readonly ="readonly",@class="form-control"})
+								@Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date", @class="form-control readOnlyUpdate",@required="required",@readonly ="readonly"})
 						               
                         </div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Expected Filling</label>
-								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@readonly ="readonly",@class="form-control"})
+							<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date", @class="form-control readOnlyUpdate",@required="required",@readonly ="readonly"})
                                         
 						</div>
 					</div>
