@@ -172,8 +172,13 @@ function loadFinanceProjectionData(pidfid, encBUId,buid) {
     } else {
        var data = $.parseJSON($('#JsonCommercialData').val())
         if (data.table3.length > 0) {
-            CommcercialBU_NPS_MS_Data = data.table3;
+            CommcercialBU_NPS_MS_Data = data.table3;          
         }
+        var BUTabData_Div = '.clsContentUnderBUTab_' + CurrentscreenId_Finance;
+        var NonIntNote_Div = '.dvNotInterestedBUNote_' + CurrentscreenId_Finance;
+        var NonIntNote_HeadingNote = '.dvNotInterestedBUNoteHeading_' + CurrentscreenId_Finance;
+        $(BUTabData_Div).show();
+        $(NonIntNote_Div).hide();
         UpdateProjectionCommercial();
     }
 }

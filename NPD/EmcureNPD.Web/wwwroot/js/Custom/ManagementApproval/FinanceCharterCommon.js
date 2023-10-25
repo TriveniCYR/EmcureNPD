@@ -930,7 +930,7 @@ function GetActiveBusinessUnitSuccess(data) {
             <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + item.encBusinessUnitId + '\',' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
         businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
     });
-    if (true) {
+    if (ScreenName == 'ManagementApproval') {
         let buClassName = 'All';
         businessUnitHTML += '<li class="nav-item p-0">\
             <a class="nav-link '+ (false ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + '0' + '\',' + '0' + ')" id="custom-tabs-two-' + '0' + '-tab">' + 'All' + '</a></li>';
