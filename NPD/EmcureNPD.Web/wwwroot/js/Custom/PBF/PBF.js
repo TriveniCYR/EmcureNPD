@@ -337,6 +337,7 @@ $(document).ready(function () {
         });
     }
     function GetIntfromControlValue(cntrlVal) {
+        cntrlVal = cntrlVal.replace(/,/g, '');
        return (cntrlVal == '') ? 0 : (cntrlVal);
     }
     $(document).on("change", "#RNDMasterEntities_ApirequirementMarketPrice", function () {
@@ -361,7 +362,7 @@ $(document).ready(function () {
         //var ExhibitBatchCost = _APIRows.find(".calcRNDApirequirementsExhibitBatchCost").val();
 
         var _Sum = 0;
-        $.each($(this).parent().parent().find("input[type=number]"), function (index, item) {
+        $.each($(this).parent().parent().find("input[type=text]"), function (index, item) {
             if ($(item).attr("class").indexOf("TotalStrength") === -1) {
                 _Sum += ConvertToNumber(($(item).val() == "" ? 0 : $(item).val()));
             }
@@ -816,7 +817,7 @@ $(document).ready(function () {
             }
         }
 
-        var _cost = $(this).parent().parent().find(".rndFillingExpensesTotalCost").val();
+        var _cost = GetIntfromControlValue($(this).parent().parent().find(".rndFillingExpensesTotalCost").val());
         var _totalStrength = $(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length;
         /*if ($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length > 0) {*/
         $.each($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox'), function (index, it) {
@@ -1280,6 +1281,7 @@ function GetPBFTabDetailsSuccess(data) {
             }); 
           
             formatCurrencyInElements('format-currency');
+            preventTextInCurrencyFields();
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -2391,7 +2393,7 @@ function CreateCapexMiscTable(data, activityTypeId) {
             }
         }
         objectname += '<tr  id="CapexMiscRow" class="CapexMiscactivity CapexMiscActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
-            + '<td><input type="text" class="form-control totalCapexMisc rndCapexMiscMiscellaneous" value="' + (data.length > 0 ? data[a].miscellaneousDevelopment : "") + '" /></td>'
+            + '<td><input type="text" class="form-control totalCapexMisc format-currency rndCapexMiscMiscellaneous" value="' + (data.length > 0 ? data[a].miscellaneousDevelopment : "") + '" /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
             objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndCapexMiscActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndCapexMiscStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control CapexMiscStrengthValue format-currency" min="0" value="' + (data.length > 0 ? getValueFromStrengthByMiscellaneousDevelopment(data, _strengthArray[i].pidfProductStrengthId, "strengthMiscellaneousExpense", data[a].miscellaneousDevelopment) : "") + '" /></td>';
         }

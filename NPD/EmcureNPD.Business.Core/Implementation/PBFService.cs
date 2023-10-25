@@ -1365,15 +1365,22 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
                 foreach (var item in pbfentity.PbfGeneralTdpEntity)
                 {
-                    foreach (var innovator in item.InnovatorData)
+                    if (item.InnovatorData != null)
                     {
-                        await SaveTDTSection(innovator, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, pbfentity.Approch, false , innovator.PidfproductStrngthId, pbfentity.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[0].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[0].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[0].ShelfLife, pbfentity.PbfGeneralTdpEntity[0].StorageHandling,innovatorFile, innovatoruniqueFileName,path);
+                        foreach (var innovator in item.InnovatorData)
+                        {
+                            await SaveTDTSection(innovator, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, pbfentity.Approch, false, innovator.PidfproductStrngthId, pbfentity.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[0].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[0].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[0].ShelfLife, pbfentity.PbfGeneralTdpEntity[0].StorageHandling, innovatorFile, innovatoruniqueFileName, path);
+                        }
                     }
 
-                    foreach (var emcure in item.EmcureData)
+                    if (item.EmcureData != null)
                     {
-                        await SaveTDTSection(emcure, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, pbfentity.Approch, true, emcure.PidfproductStrngthId, pbfentity.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[1].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[1].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[1].ShelfLife, pbfentity.PbfGeneralTdpEntity[1].StorageHandling, emcureFile, emcureuniqueFileName, path);
+                        foreach (var emcure in item.EmcureData)
+                        {
+                            await SaveTDTSection(emcure, pbfgeneralid, loggedInUserId, pbfentity.Pidfid, pbfentity.Approch, true, emcure.PidfproductStrngthId, pbfentity.FormulaterResponsiblePerson, pbfentity.PbfGeneralTdpEntity[1].SecondaryPackaging, pbfentity.PbfGeneralTdpEntity[1].PrimaryPackaging, pbfentity.PbfGeneralTdpEntity[1].ShelfLife, pbfentity.PbfGeneralTdpEntity[1].StorageHandling, emcureFile, emcureuniqueFileName, path);
+                        }
                     }
+                  
                 }
 
                 await _unitOfWork.SaveChangesAsync();
