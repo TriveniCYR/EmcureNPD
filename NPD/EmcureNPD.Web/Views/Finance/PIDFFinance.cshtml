@@ -13,11 +13,15 @@
 @model EmcureNPD.Business.Models.FinanceModel
 @{
 
-    ViewData["Title"] = @MasterLocalizer["Finance Management"];
-    var PidafId=Context.Request.Query["pidfid"];
-    var encBuid = Context.Request.Query["bui"];
-    var SelectedBuId=Model!=null? Model.BussinessUnitId:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
-    var selectedPidafId =Model!=null ?Model.dycrPidfid:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(PidafId)));
+	ViewData["Title"] = @MasterLocalizer["Finance Management"];
+	var PidafId=Context.Request.Query["pidfid"];
+	var encBuid = Context.Request.Query["bui"];
+	var decryptBU = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
+	var decryptPidfid = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"])));
+	var SelectedBuId=Model!=null? Model.BussinessUnitId:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
+	SelectedBuId = (SelectedBuId == 0) ? decryptBU : SelectedBuId;
+	var selectedPidafId =Model!=null ?Model.dycrPidfid:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(PidafId)));
+	selectedPidafId = (selectedPidafId == 0) ? decryptPidfid : selectedPidafId;
     var selectedSkus = string.Empty;
     var selectedPackSize=string.Empty;
     var ProjectStartDate=Model!=null?Model.ProjectStartDate:DateTime.Now;
