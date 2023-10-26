@@ -603,7 +603,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
                                                             @Html.LabelFor(model => model.RFDInitialRevenuePotential, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                                            @Html.EditorFor(model => model.RFDInitialRevenuePotential, new { htmlAttributes = new { @autocomplete = "off",@type="number",@inputmode="decimal", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"]} })
+                                                            @Html.EditorFor(model => model.RFDInitialRevenuePotential, new { htmlAttributes = new { @autocomplete = "off",@type="text",@inputmode="decimal", @class = "form-control checkbox-checked format-currency customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"]} })
                                                             @Html.ValidationMessageFor(model => model.RFDInitialRevenuePotential, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -611,7 +611,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
                                                             @Html.LabelFor(model => model.RFDPriceDiscounting, new { @class = "control-label" }) 
-                                                            @Html.EditorFor(model => model.RFDPriceDiscounting, new { htmlAttributes = new { @autocomplete = "off",@type="number",@inputmode="decimal", @class = "form-control", @placeholder = @MasterLocalizer["RFDPriceDiscounting"],@maxlength="100" } })
+                                                            @Html.EditorFor(model => model.RFDPriceDiscounting, new { htmlAttributes = new { @autocomplete = "off",@type="text",@inputmode="decimal", @class = "form-control format-currency", @placeholder = @MasterLocalizer["RFDPriceDiscounting"],@maxlength="100" } })
                                                             
                                                         </div>
                                                     </div>
@@ -619,7 +619,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
                                                             @Html.LabelFor(model => model.RFDCommercialBatchSize, new { @class = "control-label" })
-                                                            @Html.EditorFor(model => model.RFDCommercialBatchSize, new { htmlAttributes = new { @autocomplete = "off",@type="number",@inputmode="decimal", @class = "form-control ", @placeholder = @MasterLocalizer["RFDCommercialBatchSize"],@maxlength="100" } })
+                                                            @Html.EditorFor(model => model.RFDCommercialBatchSize, new { htmlAttributes = new { @autocomplete = "off",@type="text",@inputmode="decimal", @class = "form-control format-currency ", @placeholder = @MasterLocalizer["RFDCommercialBatchSize"],@maxlength="100" } })
                                                         
                                                         </div>
                                                     </div>
@@ -688,14 +688,14 @@
                                                                         <td>
                                                                             <div class="col-md">
                                                                                 <div class="form-group required">
-                                                                                    @Html.EditorFor(model => model.IMSDataEntities[i].Imsvalue, new { htmlAttributes = new {@required="required",@type="number", @autocomplete = "off", @class = "form-control checkbox-checked", id = "IMSDataEntities[" + i + "].Imsvalue", @placeholder = @MasterLocalizer["IMS Value"] } })
+                                                                                    @Html.EditorFor(model => model.IMSDataEntities[i].Imsvalue, new { htmlAttributes = new {@required="required",@type="text", @autocomplete = "off", @class = "form-control format-currency checkbox-checked", id = "IMSDataEntities[" + i + "].Imsvalue", @placeholder = @MasterLocalizer["IMS Value"] } })
                                                                                 </div>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="col-md">
                                                                                 <div class="form-group required">
-                                                                                    @Html.EditorFor(model => model.IMSDataEntities[i].Imsvolume, new { htmlAttributes = new {@required="required",@type="number", @autocomplete = "off", @class = "form-control checkbox-checked", id = "IMSDataEntities[" + i + "].Imsvolume", @placeholder = @MasterLocalizer["IMS Volume"] } })
+                                                                                    @Html.EditorFor(model => model.IMSDataEntities[i].Imsvolume, new { htmlAttributes = new {@required="required",@type="text", @autocomplete = "off", @class = "form-control checkbox-checked format-currency", id = "IMSDataEntities[" + i + "].Imsvolume", @placeholder = @MasterLocalizer["IMS Volume"] } })
                                                                                 </div>
                                                                             </div>
                                                                         </td>
@@ -761,6 +761,8 @@
 <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
 <script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
 <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF.js?v=@jsVersion"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+ <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
 <script>
 
     //#region Setup API Url
