@@ -58,6 +58,7 @@ $(document).ready(function () {
     GetCommercialSummaryBudgetData();
     UpdateProjectionCommercial();
     // GetSUIMSVolumeYearWiseByPackSize();
+    $('#custom-tabs-BudgetApproval-Finance-tab').click();
 });
 function Project_ChartertabClick() {
     $('.PBFCharter').hide();

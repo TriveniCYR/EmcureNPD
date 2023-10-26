@@ -512,6 +512,7 @@ function DispalyStatusOfBUByInterested(data,BUTabData_Div, NonIntNote_Div, NonIn
                 if (data.IsIntresetedStatusOfBU[0].actionStatus == 1) {
                     $(BUTabData_Div).show();
                     $(NonIntNote_Div).hide();
+                    $(NonIntNote_HeadingNote).text('');
                     IsINterestedBU = true;;
                 }
                 else if (data.IsIntresetedStatusOfBU[0].actionStatus == 2) {
