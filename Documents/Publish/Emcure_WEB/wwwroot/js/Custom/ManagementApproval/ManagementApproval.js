@@ -5,7 +5,9 @@ var Expiries_Yearwise_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var AnnualConfirmatoryRelease_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var Global_Projection_Year_data = [];
 var obj = [];
+var ScreenName = 'ManagementApproval';
 $(document).ready(function () {
+    SelectedTabBU_Finance = _selectBusinessUnit;
     $('#btnExportToPdf').click(() => {
         //$('#btnExportToPdf').css("display", "none");
         //$('aside.main-sidebar.sidebar-dark-primary.elevation-4').css("display", "none");
@@ -56,6 +58,7 @@ $(document).ready(function () {
     GetCommercialSummaryBudgetData();
     UpdateProjectionCommercial();
     // GetSUIMSVolumeYearWiseByPackSize();
+    $('#custom-tabs-BudgetApproval-Finance-tab').click();
 });
 function Project_ChartertabClick() {
     $('.PBFCharter').hide();
@@ -81,6 +84,10 @@ function GetManagmentApprovalBatchSizeCoating(DycPidafId, encBuid) {
             try {
                 if (data.table.length > 0) {
                     $('#JsonCommercialData').val(JSON.stringify(data));
+
+                }
+                if (data.table3.length > 0) {
+                    CommcercialBU_NPS_MS_Data = data.table3;
                 }
                 else {
                     $('#JsonCommercialData').val('');
@@ -158,8 +165,23 @@ function GetBatchSizeCostingTRValues() {
 
 function loadFinanceProjectionData(pidfid, encBUId,buid) {
     // _encBuid = encBUId;
-    BussinesUnitInterestedFinance(pidfid, buid, 'Finance');
-    GetManagmentApprovalBatchSizeCoating(pidfid, encBUId);
+    SelectedTabBU_Finance = buid;   
+    if (buid != '0') {
+        SelectedTabBU_Finance = buid;
+        BussinesUnitInterestedFinance(pidfid, buid, 'Finance');
+        GetManagmentApprovalBatchSizeCoating(pidfid, encBUId);
+    } else {
+       var data = $.parseJSON($('#JsonCommercialData').val())
+        if (data.table3.length > 0) {
+            CommcercialBU_NPS_MS_Data = data.table3;          
+        }
+        var BUTabData_Div = '.clsContentUnderBUTab_' + CurrentscreenId_Finance;
+        var NonIntNote_Div = '.dvNotInterestedBUNote_' + CurrentscreenId_Finance;
+        var NonIntNote_HeadingNote = '.dvNotInterestedBUNoteHeading_' + CurrentscreenId_Finance;
+        $(BUTabData_Div).show();
+        $(NonIntNote_Div).hide();
+        UpdateProjectionCommercial();
+    }
 }
 
 

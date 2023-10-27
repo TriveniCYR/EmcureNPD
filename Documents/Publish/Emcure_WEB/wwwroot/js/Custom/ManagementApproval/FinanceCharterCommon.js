@@ -1,4 +1,7 @@
-﻿function RenderCommercialPerPack() {
+﻿var SelectedTabBU_Finance = '';
+var CommcercialBU_NPS_MS_Data = [];
+
+function RenderCommercialPerPack() {
     $('#tblCommercialPerPack').html('');
 
     let html = "";
@@ -54,114 +57,159 @@
         SumOfCOGS = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         SumOfGC = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-        var Arr_FinanceTable_tr = GetBatchSizeCostingTRValues();
 
-        jQuery.each(Arr_FinanceTable_tr, function (index, trObj) {
-            //$('#FinanceTableBoy tr').each(function (index, value) {
+        //-----------BU loop--------
+        var ArrOfUniqueBUs = Array.from(new Set(CommcercialBU_NPS_MS_Data.map((item) => item.businessUnitId)))
+        if (SelectedTabBU_Finance != 0) {
+            ArrOfUniqueBUs = [SelectedTabBU_Finance];
+        }
+        jQuery.each(ArrOfUniqueBUs, function (BUind, BUObj) {
 
-            let SKU = trObj.SKU;
-            let PackSize = trObj.PackSize;
+            var Arr_FinanceTable_tr = GetBatchSizeCostingTRValues();
+            jQuery.each(Arr_FinanceTable_tr, function (index, trObj) {
+                //$('#FinanceTableBoy tr').each(function (index, value) {
 
-            html += '<tr class="bg-light"><td class="text-left" colspan="15"><b>' + SKU + " - " + PackSize + '</b></td></tr>';
+                let SKU = trObj.SKU;
+                let PackSize = trObj.PackSize;
+                let _BUName = '';
 
-            var _uniqueClass = "tr_" + SKU + "_" + PackSize;
-            var MS_td_data = [];
-            var NSP_td_data = [];
-            var COGS_td_data = [];
-            /* ---------------Get values from Commercial Module--------------------------------------------------------*/
+                if (_selectBusinessUnit != SelectedTabBU_Finance) {
+
+                    var Filtered_CommcercialBU_NPS_MS_Data = $.grep(CommcercialBU_NPS_MS_Data, function (n, i) {
+                        return n.businessUnitId == SelectedTabBU_Finance
+                    });
+                    
+                    trObj.hdnMSLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageLow : 0
+                    trObj.hdnMSMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageMedium : 0
+                    trObj.hdnMSHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageHigh : 0
+                    trObj.marketInPacks = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketinpacks : 0
+                    trObj.hdnNSPLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsLow : 0
+                    trObj.hdnNSPMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsMedium : 0
+                    trObj.hdnNSPHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsHigh : 0
+
+                }
+
+                if (ScreenName == 'ManagementApproval' && SelectedTabBU_Finance=='0') {
+                    var BU = BUObj;
+                    var Filtered_CommcercialBU_NPS_MS_Data = $.grep(CommcercialBU_NPS_MS_Data, function (n, i) {
+                        return n.businessUnitId == BU
+                    });
+                    _BUName = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].businessUnitName : ''
+                    trObj.hdnMSLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageLow : 0
+                    trObj.hdnMSMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageMedium : 0
+                    trObj.hdnMSHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageHigh : 0
+                    trObj.marketInPacks = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketinpacks : 0
+                    trObj.hdnNSPLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsLow : 0
+                    trObj.hdnNSPMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsMedium : 0
+                    trObj.hdnNSPHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsHigh : 0
+
+                }
+                if (_BUName != '')
+                    _BUName = '-' + _BUName;
+
+                html += '<tr class="bg-light"><td class="text-left" colspan="15"><b>' + SKU + " - " + PackSize + _BUName +'</b></td></tr>';
+
+                var _uniqueClass = "tr_" + SKU + "_" + PackSize;
+                var MS_td_data = [];
+                var NSP_td_data = [];
+                var COGS_td_data = [];
+                /* ---------------Get values from Commercial Module--------------------------------------------------------*/
 
 
-            //---------------------Start-MS%_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + trObj.hdnMSLow + "</td><td>" + trObj.hdnMSMid + "</td><td>" + trObj.hdnMSHigh + "</td><td>Units</td>";
+                //---------------------Start-MS%_Row-------------------------------------------------------
+                html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + trObj.hdnMSLow + "</td><td>" + trObj.hdnMSMid + "</td><td>" + trObj.hdnMSHigh + "</td><td>Units</td>";
 
-            var marketSharePercentage = GetMarketSharePercentage(trObj.hdnMSLow, trObj.hdnMSMid, trObj.hdnMSHigh);
-            let marketInPacks = formatToNumber(trObj.marketInPacks);
-            let msErosion = formatToNumber($("#MarketShareErosionrate").val(), true);
+                var marketSharePercentage = GetMarketSharePercentage(trObj.hdnMSLow, trObj.hdnMSMid, trObj.hdnMSHigh);
+                let marketInPacks = formatToNumber(trObj.marketInPacks);
+                let msErosion = formatToNumber($("#MarketShareErosionrate").val(), true);
 
-            for (var i = 0; i < 10; i++) {
-                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
-                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
-                var trRevenueMonths = formatToNumber($('#tblCommercialPerPack').find('.trRevenueMonths:eq(' + i + ')').text());
-                let _units = ((marketInPacks * (marketSharePercentage / 100)) * (Math.pow((1 - (msErosion / 100)), trYearIndex))) * (trRevenueMonths / 12);
-                _units = isNaN(_units) ? 0 : _units;
-                html += "<td>" + _units.toFixed() + "</td>";
-                MS_td_data.push(_units);
-            }
-            html += "</tr>";
-            //---------------------End-MS%_Row-------------------------------------------------------   
-            //---------------------Start-NSP_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td>NSP</td><td>" + trObj.hdnNSPLow + "</td><td>" + trObj.hdnNSPMid + "</td><td>" + trObj.hdnNSPHigh + "</td><td>NSP</td>";
-            var nsp_val = GetNSPPercentage(trObj.hdnNSPLow, trObj.hdnNSPMid, trObj.hdnNSPHigh);
-            // let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
-            let nsp_Erosion = formatToNumber($("#PriceErosion").val(), true);
+                for (var i = 0; i < 10; i++) {
+                    var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
+                    var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
+                    var trRevenueMonths = formatToNumber($('#tblCommercialPerPack').find('.trRevenueMonths:eq(' + i + ')').text());
+                    let _units = ((marketInPacks * (marketSharePercentage / 100)) * (Math.pow((1 - (msErosion / 100)), trYearIndex))) * (trRevenueMonths / 12);
+                    _units = isNaN(_units) ? 0 : _units;
+                    html += "<td>" + _units.toFixed() + "</td>";
+                    MS_td_data.push(_units);
+                }
+                html += "</tr>";
+                //---------------------End-MS%_Row-------------------------------------------------------   
+                //---------------------Start-NSP_Row-------------------------------------------------------
+                html += "<tr class='" + _uniqueClass + "'><td>NSP</td><td>" + trObj.hdnNSPLow + "</td><td>" + trObj.hdnNSPMid + "</td><td>" + trObj.hdnNSPHigh + "</td><td>NSP</td>";
+                var nsp_val = GetNSPPercentage(trObj.hdnNSPLow, trObj.hdnNSPMid, trObj.hdnNSPHigh);
+                // let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
+                let nsp_Erosion = formatToNumber($("#PriceErosion").val(), true);
 
-            for (var i = 0; i < 10; i++) {
-                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
-                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
-                let _units = (nsp_val) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))
-                _units = isNaN(_units) ? 0 : _units;
-                html += "<td>" + _units.toFixed(3) + "</td>";
-                NSP_td_data.push(_units);
-            }
-            html += "</tr>";
-            //---------------------End-NSP_Row-------------------------------------------------------
-            //---------------------Start-COGS_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td>COGS</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>COGS/Unit</td>";
-            let COGS_Escalation = formatToNumber($("#EscalationinCOGS").val(), true);
-            var COGS_val = GetCOGSPercentage(trObj.emcureCOGs_pack, trObj.emcureCOGs_pack, trObj.emcureCOGs_pack);
-            for (var i = 0; i < 10; i++) {
-                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
-                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
+                for (var i = 0; i < 10; i++) {
+                    var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
+                    var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
+                    let _units = (nsp_val) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))
+                    _units = isNaN(_units) ? 0 : _units;
+                    html += "<td>" + _units.toFixed(3) + "</td>";
+                    NSP_td_data.push(_units);
+                }
+                html += "</tr>";
+                //---------------------End-NSP_Row-------------------------------------------------------
+                //---------------------Start-COGS_Row-------------------------------------------------------
+                html += "<tr class='" + _uniqueClass + "'><td>COGS</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>COGS/Unit</td>";
+                let COGS_Escalation = formatToNumber($("#EscalationinCOGS").val(), true);
+                var COGS_val = GetCOGSPercentage(trObj.emcureCOGs_pack, trObj.emcureCOGs_pack, trObj.emcureCOGs_pack);
+                for (var i = 0; i < 10; i++) {
+                    var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
+                    var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
 
-                let _units = (COGS_val) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
+                    let _units = (COGS_val) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
 
-                _units = isNaN(_units) ? 0 : _units;
-                html += "<td>" + _units.toFixed(3) + "</td>";
-                COGS_td_data.push(_units);
-            }
-            html += "</tr>";
-            //---------------------END-COGS_Row-------------------------------------------------------
-            //--------------------Sales-------------------------------------------------------
-            var Sales_data = [];
-            html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>Sales</td>";
-            for (var i = 0; i < 10; i++) {
-                let result = MS_td_data[i] * NSP_td_data[i];
+                    _units = isNaN(_units) ? 0 : _units;
+                    html += "<td>" + _units.toFixed(3) + "</td>";
+                    COGS_td_data.push(_units);
+                }
+                html += "</tr>";
+                //---------------------END-COGS_Row-------------------------------------------------------
+                //--------------------Sales-------------------------------------------------------
+                var Sales_data = [];
+                html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>Sales</td>";
+                for (var i = 0; i < 10; i++) {
+                    let result = MS_td_data[i] * NSP_td_data[i];
 
-                result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
-                Sales_data.push(result);
-                SumOfSales[i] = SumOfSales[i] + result;
-            }
-            html += "</tr>";
-            //--------------------COGS-------------------------------------------------------
-            var COGS_data = [];
-            html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>COGS</td>";
-            for (var i = 0; i < 10; i++) {
-                let result = MS_td_data[i] * COGS_td_data[i];
-                result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
-                COGS_data.push(result);
-                SumOfCOGS[i] = SumOfCOGS[i] + result;
-            }
-            html += "</tr>";
-            //--------------------GC-------------------------------------------------------
-            var GC_data = [];
-            html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>GC</td>";
-            for (var i = 0; i < 10; i++) {
-                let result = Sales_data[i] - COGS_data[i];
-                result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
-                GC_data.push(result);
-                SumOfGC[i] = SumOfGC[i] + result;
-            }
-            html += "</tr>";
-            //--------------------GC%-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>GC%</td>";
-            for (var i = 0; i < 10; i++) {
-                let result = GC_data[i] / Sales_data[i];
-                result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-                result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(0) + "</td>";
+                    result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+                    Sales_data.push(result);
+                    SumOfSales[i] = SumOfSales[i] + result;
+                }
+                html += "</tr>";
+                //--------------------COGS-------------------------------------------------------
+                var COGS_data = [];
+                html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>COGS</td>";
+                for (var i = 0; i < 10; i++) {
+                    let result = MS_td_data[i] * COGS_td_data[i];
+                    result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+                    COGS_data.push(result);
+                    SumOfCOGS[i] = SumOfCOGS[i] + result;
+                }
+                html += "</tr>";
+                //--------------------GC-------------------------------------------------------
+                var GC_data = [];
+                html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>GC</td>";
+                for (var i = 0; i < 10; i++) {
+                    let result = Sales_data[i] - COGS_data[i];
+                    result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+                    GC_data.push(result);
+                    SumOfGC[i] = SumOfGC[i] + result;
+                }
+                html += "</tr>";
+                //--------------------GC%-------------------------------------------------------
+                html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>GC%</td>";
+                for (var i = 0; i < 10; i++) {
+                    let result = GC_data[i] / Sales_data[i];
+                    result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
+                    result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(0) + "</td>";
 
-            }
-            html += "</tr>";
+                }
+                html += "</tr>";
+            });
+            //--------Bu loop----------
         });
+
         /* -----------Grand SUM-Rows--------------------*/
         html += "<tr><td>&nbsp</td></tr>";
         /*---------------Sales------------------------------*/
@@ -317,7 +365,7 @@ function RenderFinanceProjection() {
         }
         html += "</tr>";
         /*-----------Opex--------------------------*/
-        var Opexasapercenttosale =  formatToNumber($('#Opexasapercenttosale').val())/100; // G21
+        var Opexasapercenttosale = formatToNumber($('#Opexasapercenttosale').val()) / 100; // G21
         html += "<tr class='lblHeading'><td colspan='3' >Opex</td>";
         for (var i = 0; i < 10; i++) {
             let result = Opexasapercenttosale * SumOfGrossSales[i];
@@ -382,7 +430,7 @@ function RenderFinanceProjection() {
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' >&nbsp</td>";
         /*-----------Tax--------------------------*/
-        var Incometaxrate_Value = formatToNumber($('#Incometaxrate').val())/100 ; // G14
+        var Incometaxrate_Value = formatToNumber($('#Incometaxrate').val()) / 100; // G14
         html += "<tr class='lblHeading'><td colspan='3' ><b>Tax</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] * Incometaxrate_Value;
@@ -395,7 +443,7 @@ function RenderFinanceProjection() {
         var Net_Income_PAT_projection_data = [];
         html += "<tr class='lblHeading'><td colspan='3' ><b>Net Income - PAT</b></td>";
         for (var i = 0; i < 10; i++) {
-            let result = Net_Income_PBT_projection_data[i] - (Net_Income_PBT_projection_data[i]*Incometaxrate_Value);
+            let result = Net_Income_PBT_projection_data[i] - (Net_Income_PBT_projection_data[i] * Incometaxrate_Value);
             Net_Income_PAT_projection_data.push(result);
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
@@ -767,7 +815,7 @@ function RenderFinanceProjection() {
                         result = -Cumulative_Discount_cash_flow_projection_data[i - 1] / Discount_Cash_Flow_Projection[i] * 12;
                     }
                     else {
-                        result =   Operating_Months_Projection_data[i];
+                        result = Operating_Months_Projection_data[i];
                     }
                 }
             }
@@ -879,9 +927,16 @@ function GetActiveBusinessUnitSuccess(data) {
     $.each(data._object, function (index, item) {
         let buClassName = item.businessUnitName.toLowerCase() === 'india' ? 'in' : item.businessUnitName.toLowerCase();
         businessUnitHTML += '<li class="nav-item p-0">\
-            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + item.encBusinessUnitId + '\',' + item.businessUnitId+')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + item.encBusinessUnitId + '\',' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
         businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
     });
+    if (ScreenName == 'ManagementApproval') {
+        let buClassName = 'All';
+        businessUnitHTML += '<li class="nav-item p-0">\
+            <a class="nav-link '+ (false ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + '0' + '\',' + '0' + ')" id="custom-tabs-two-' + '0' + '-tab">' + 'All' + '</a></li>';
+        businessUnitPanel += '<div class="tab-pane ' + ((false ? "fade show active" : "")) + '" id="custom-tabs-' + '0' + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + '0' + '-tab"></div>';
+
+    }
     $('#custom-tabs-business-tab').html(businessUnitHTML);
     renderpbfbu(data);
 }
@@ -914,6 +969,8 @@ function BussinesUnitInterestedFinanceError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
+
+//-----------------Non-Finace charter code----------------------
 function GetCommercialSummaryBudgetData() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetCommercialSummaryBudget + '/' + _selectedPidfId, 'GET', GetCommercialSummaryBudgetSuccess, GetCommercialSummaryBudgetError);
 }
@@ -926,7 +983,7 @@ function GetCommercialSummaryBudgetSuccess(data) {
         var cells = [
             item.businessUnitName,
             item.pidfStrengthPackSize,
-            "", 
+            "",
         ];
 
         var countryNameAdded = false;
@@ -938,7 +995,7 @@ function GetCommercialSummaryBudgetSuccess(data) {
                     cells[2] = yearData.countryName;
                     countryNameAdded = true;
                 } else {
-                   
+
                 }
 
                 cells.push(yearData.price);
