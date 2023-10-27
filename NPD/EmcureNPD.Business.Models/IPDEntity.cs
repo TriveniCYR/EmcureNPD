@@ -61,7 +61,7 @@ namespace EmcureNPD.Business.Models
         public string LegalStatus { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        public int CostOfLitication { get; set; }
+        public double CostOfLitication { get; set; }
         public bool IsComment { get; set; } = true;
         public string Comments { get; set; }
         public bool IsActive { get; set; } = true;

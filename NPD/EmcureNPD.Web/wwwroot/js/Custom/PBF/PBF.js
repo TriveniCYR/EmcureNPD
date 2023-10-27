@@ -624,7 +624,7 @@ $(document).ready(function () {
         $('#loading-wrapper').hide();
     });
     $(document).on("change", ".analyticalTotalAMVCost, .rndanalyticalStrengthIsChecked", function () {
-        var _TotalAMVCost = ($('.analyticalTotalAMVCost').val() == "" ? 0 : GetIntfromControlValue($('.analyticalTotalAMVCost').val()));
+        var _TotalAMVCost = ($('.analyticalTotalAMVCost').val() == "" ? 0 : $('.analyticalTotalAMVCost').val());
         $('.analyticalAMVStrengthValue').val("");
         $.each($('.rndanalyticalStrengthIsChecked:checked'), function () {
             $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber(GetIntfromControlValue(_TotalAMVCost) / $('.rndanalyticalStrengthIsChecked:checked').length));
@@ -641,10 +641,10 @@ $(document).ready(function () {
         var _TotalAMVCost = ($('.analyticalTotalAMVCost').val() == "" ? 0 : $('.analyticalTotalAMVCost').val());
         $('.analyticalAMVStrengthValue').val("");
         $.each($('.rndanalyticalStrengthIsChecked:checked'), function () {
-            $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber((_TotalAMVCost / $('.rndanalyticalStrengthIsChecked:checked').length)));
+            $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber(GetIntfromControlValue(_TotalAMVCost) / $('.rndanalyticalStrengthIsChecked:checked').length));
         });
         if ($('.rndanalyticalStrengthIsChecked:checked').length > 0) {
-            $('.analyticalTotalAMVCostStrength').val(formatNumber(_TotalAMVCost));
+            $('.analyticalTotalAMVCostStrength').val(formatNumber(GetIntfromControlValue(_TotalAMVCost)));
         } else {
             $('.analyticalTotalAMVCostStrength').val("");
         }
@@ -1904,6 +1904,7 @@ function SetChildRowDeleteIconPBF() {
     //    }
     //}
 }
+
 function SetAnalyticalChildRows() {
     var _AnalyticalArray = [];
     var _AnalyticalAMVCostStrengthArray = [];
@@ -1931,7 +1932,7 @@ function SetAnalyticalChildRows() {
                 } else {
                     var _AnalyticalObject = new Object();
                     _AnalyticalObject.StrengthId = $(this).val();
-                    _AnalyticalObject.PrototypeCost = $(this).parent().find(".analyticalStrengthValue").val();
+                    _AnalyticalObject.PrototypeCost = ConvertToNumber($(this).parent().find(".analyticalStrengthValue").val());
                     _AnalyticalObject.TestTypeId = TestTypeId;
                     _AnalyticalObject.ActivityTypeId = ActivityTypeId;
                     _AnalyticalObject.Numberoftests = Numberoftests;
@@ -1982,7 +1983,7 @@ function CreateRNDExicipientTable(data, activityTypeId) {
             + '<td><input type="text" class="form-control format-currency rndExicipientRsperkg" min="0" value="' + (data.length > 0 ? data[a].rsPerKg : "") + '"  /></td>'
             + '<td><input type="text" class="form-control rndExicipientQuantity" min="0" readonly="readonly" tabindex=-1 /><span>Kg</span></td>';//value="' + (data.length > 0 ? data[a].mgPerUnitDosage : "") + '"
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndExicipientTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndExicipientStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control rndExicipientStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthByProrotype(data, _strengthArray[i].pidfProductStrengthId, "exicipientDevelopment", data[a].exicipientPrototype) : "") + '" /><span>Mg</span></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndExicipientTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndExicipientStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="text" class="form-control format-currency rndExicipientStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthByProrotype(data, _strengthArray[i].pidfProductStrengthId, "exicipientDevelopment", data[a].exicipientPrototype) : "") + '" /><span>Mg</span></td>';
         }
         objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowRNDExicipient(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowRNDExicipient(this);' ></i></td></tr>";
 
@@ -2027,6 +2028,8 @@ function addRowRNDExicipient(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
+    formatCurrencyInElements('format-currency');
+    preventTextInCurrencyFields();
     SetChildRowDeleteIconPBF();
 }
 function deleteRowRNDExicipient(element) {
@@ -2063,7 +2066,7 @@ function CreateRNDPackagingTable(data, activityTypeId) {
             + '<td><input type="text" class="form-control format-currency rndPackagingRsperUnit" min="0"  value="' + (data.length > 0 ? data[a].rsPerUnit : "") + '" /></td>';
         //+ '<td><input type="number" class="form-control rndPackagingQuantity" min="0" value="' + (data.length > 0 ? data[a].quantity : "") + '"  /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndPackagingActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndPackagingStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control rndPackagingStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthPackingTypeId(data, _strengthArray[i].pidfProductStrengthId, "packagingDevelopment", data[a].packingTypeId) : "") + '"/><span>Kg</span></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndPackagingActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndPackagingStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="text" class="form-control format-currency rndPackagingStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthPackingTypeId(data, _strengthArray[i].pidfProductStrengthId, "packagingDevelopment", data[a].packingTypeId) : "") + '"/><span>Kg</span></td>';
         }
         objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>Kg</span></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowRNDPackaging(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon'  onclick='deleteRowRNDPackaging(this);' ></i></td></tr>";
 
@@ -2113,6 +2116,8 @@ function addRowRNDPackaging(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
+    formatCurrencyInElements('format-currency');
+    preventTextInCurrencyFields();
     SetChildRowDeleteIconPBF();
 }
 function deleteRowRNDPackaging(element) {

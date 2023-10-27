@@ -158,7 +158,7 @@
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.CostOfLitication, "Cost of Litigation (In Lacs)", new { @class = "control-label" }) <span class="text-danger">*</span>
-                        @Html.EditorFor(model => model.CostOfLitication, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Cost of Litigation"]} })
+                        @Html.EditorFor(model => model.CostOfLitication, new { htmlAttributes = new { @autocomplete = "off",@type="text", @class = "form-control format-currency checkbox-checked", @placeholder = @MasterLocalizer["Cost of Litigation"]} })
                         @Html.ValidationMessageFor(model => model.CostOfLitication, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -359,6 +359,8 @@
 @*@Html.Partial("_ValidationScriptsPartial")*@
 @Html.Partial("_ValidationScriptsPartial")
 <script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+ <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
 <script>
     $(document).ready(function () {
         setRegion();
