@@ -19,7 +19,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string ApprovedGenetics { get; set; }
         public string LaunchedGenetics { get; set; }
         public string LegalStatus { get; set; }
-        public int? CostOfLitication { get; set; }
+        public double? CostOfLitication { get; set; }
         public string Comments { get; set; }
         public bool? IsComment { get; set; }
         public DateTime CreatedDate { get; set; }

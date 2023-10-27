@@ -24,7 +24,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string LaunchedGenetics { get; set; }
         public string Innovators { get; set; }
         public string LegalStatus { get; set; }
-        public int? CostOfLitication { get; set; }
+        public double? CostOfLitication { get; set; }
         public string Comments { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
