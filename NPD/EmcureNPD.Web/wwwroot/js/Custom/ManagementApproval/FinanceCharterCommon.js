@@ -82,7 +82,7 @@ function RenderCommercialPerPack() {
                     trObj.hdnMSLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageLow : 0
                     trObj.hdnMSMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageMedium : 0
                     trObj.hdnMSHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageHigh : 0
-                    trObj.marketInPacks = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketinpacks : 0
+                   // trObj.marketInPacks = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketinpacks : 0
                     trObj.hdnNSPLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsLow : 0
                     trObj.hdnNSPMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsMedium : 0
                     trObj.hdnNSPHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsHigh : 0
@@ -98,7 +98,7 @@ function RenderCommercialPerPack() {
                     trObj.hdnMSLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageLow : 0
                     trObj.hdnMSMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageMedium : 0
                     trObj.hdnMSHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketSharePercentageHigh : 0
-                    trObj.marketInPacks = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketinpacks : 0
+                   // trObj.marketInPacks = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].marketinpacks : 0
                     trObj.hdnNSPLow = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsLow : 0
                     trObj.hdnNSPMid = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsMedium : 0
                     trObj.hdnNSPHigh = (Filtered_CommcercialBU_NPS_MS_Data.length > 0) ? Filtered_CommcercialBU_NPS_MS_Data[0].nspUnitsHigh : 0
