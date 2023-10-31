@@ -90,7 +90,7 @@
                                     @Html.LabelFor(model => model.ProjectComplexityId  ,@MasterLocalizer["ProjectComplexity"], new { @class = "control-label" })
                                 </td>
                                 <td>
-                                    @Enum.GetName((ProjectComplexicity)Model.ProjectComplexityId)
+                                   @(Model.ProjectComplexityId != null ? Enum.GetName(typeof(ProjectComplexicity), Model.ProjectComplexityId) : "")
                                 </td>
                             </tr>
                         </table>

@@ -101,22 +101,22 @@ function RoundUPReadonlyValues() {
 $("[id*='TimelineInMonthsValue']").change(function () {
     let sum = 0;
     $("[id*='TimelineInMonthsValue']").each(function () {
-        let Value = ($(this).val() == '') ? 0 : $(this).val();
+        let Value = ($(this).val() == '') ? 0 : GetIntfromControlValue($(this).val());
         if (($(this).attr('id') != 'TimelineInMonths_6__TimelineInMonthsValue') && !isNaN(Value))
             sum = parseFloat(sum) + parseFloat(Value);
     });
-    $("#TimelineInMonths_6__TimelineInMonthsValue").val(sum);
+    $("#TimelineInMonths_6__TimelineInMonthsValue").val(formatNumber(sum));
     CalculateTotalHeadwiseAnalytical();
 });
 //--------------Calculation of PRDDepartmentRawMaterialValue----------------------
 $("[id*='PRDDepartmentRawMaterialValue']").change(function () {
     let sum = 0;
     $("[id*='PRDDepartmentRawMaterialValue']").each(function () {
-        let Value = ($(this).val() == '') ? 0 : $(this).val();
+        let Value = ($(this).val() == '') ? 0 : GetIntfromControlValue($(this).val());
         if (($(this).attr('id') != 'PRDDepartment_4__PRDDepartmentRawMaterialValue') && !isNaN(Value))
             sum = parseFloat(sum) + parseFloat(Value);
     });
-    $("#PRDDepartment_4__PRDDepartmentRawMaterialValue").val(sum);
+    $("#PRDDepartment_4__PRDDepartmentRawMaterialValue").val(formatNumber(sum));
     $("#HeadwiseBudget_1__HeadwiseBudgetValue").val(sum);
     $("[id*='HeadwiseBudgetValue']").change();
     CalculateTotalHeadwiseAnalytical();
@@ -124,13 +124,13 @@ $("[id*='PRDDepartmentRawMaterialValue']").change(function () {
 //----------Impurity------------------------------
 
 $("[id*='AnalyticalDepartmentImpurityValue']").change(function () {
-    let NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentImpurityValue").val();
-    let CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentImpurityValue").val();
+    let NoOfCols = GetIntfromControlValue$("#AnalyticalDepartment_1__AnalyticalDepartmentImpurityValue").val();
+    let CostPerCols = GetIntfromControlValue$("#AnalyticalDepartment_2__AnalyticalDepartmentImpurityValue").val();
     let TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
     $("#AnalyticalDepartment_3__AnalyticalDepartmentImpurityValue").val(TotalCostPerColumn);
 
-    let Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentImpurityValue").val();
-    let CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentImpurityValue").val();
+    let Chemical = GetIntfromControlValue($("#AnalyticalDepartment_0__AnalyticalDepartmentImpurityValue").val());
+    let CostofSilica = GetIntfromControlValue($("#AnalyticalDepartment_4__AnalyticalDepartmentImpurityValue").val());
     let TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
     $("#AnalyticalDepartment_5__AnalyticalDepartmentImpurityValue").val(TotalCostAnalytical);
 
@@ -145,13 +145,13 @@ $("[id*='AnalyticalDepartmentImpurityValue']").change(function () {
 });
 //----------Stability------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentStabilityValue
 $("[id*='AnalyticalDepartmentStabilityValue']").change(function () {
-    let NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentStabilityValue").val();
-    let CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentStabilityValue").val();
+    let NoOfCols = GetIntfromControlValue($("#AnalyticalDepartment_1__AnalyticalDepartmentStabilityValue").val());
+    let CostPerCols = GetIntfromControlValue($("#AnalyticalDepartment_2__AnalyticalDepartmentStabilityValue").val());
     let TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
     $("#AnalyticalDepartment_3__AnalyticalDepartmentStabilityValue").val(TotalCostPerColumn);
 
-    let Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentStabilityValue").val();
-    let CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentStabilityValue").val();
+    let Chemical = GetIntfromControlValue($("#AnalyticalDepartment_0__AnalyticalDepartmentStabilityValue").val());
+    let CostofSilica = GetIntfromControlValue($("#AnalyticalDepartment_4__AnalyticalDepartmentStabilityValue").val());
     let TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
     $("#AnalyticalDepartment_5__AnalyticalDepartmentStabilityValue").val(TotalCostAnalytical);
     //let sum = 0;
@@ -165,8 +165,8 @@ $("[id*='AnalyticalDepartmentStabilityValue']").change(function () {
 });
 //----------AMV------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentAMVValue
 $("[id*='AnalyticalDepartmentAMVValue']").change(function () {
-    let NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentAMVValue").val();
-    let CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentAMVValue").val();
+    let NoOfCols = GetIntfromControlValue($("#AnalyticalDepartment_1__AnalyticalDepartmentAMVValue").val());
+    let CostPerCols = GetIntfromControlValue($("#AnalyticalDepartment_2__AnalyticalDepartmentAMVValue").val());
     let TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
     $("#AnalyticalDepartment_3__AnalyticalDepartmentAMVValue").val(TotalCostPerColumn);
 
@@ -186,13 +186,13 @@ $("[id*='AnalyticalDepartmentAMVValue']").change(function () {
 
 //----------AMT------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentAMTValue
 $("[id*='AnalyticalDepartmentAMTValue']").change(function () {
-    let NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentAMTValue").val();
-    let CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentAMTValue").val();
+    let NoOfCols = GetIntfromControlValue($("#AnalyticalDepartment_1__AnalyticalDepartmentAMTValue").val());
+    let CostPerCols = GetIntfromControlValue($("#AnalyticalDepartment_2__AnalyticalDepartmentAMTValue").val());
     let TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
     $("#AnalyticalDepartment_3__AnalyticalDepartmentAMTValue").val(TotalCostPerColumn);
 
-    let Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentAMTValue").val();
-    let CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentAMTValue").val();
+    let Chemical = GetIntfromControlValue($("#AnalyticalDepartment_0__AnalyticalDepartmentAMTValue").val());
+    let CostofSilica = GetIntfromControlValue($("#AnalyticalDepartment_4__AnalyticalDepartmentAMTValue").val());
     let TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
     $("#AnalyticalDepartment_5__AnalyticalDepartmentAMTValue").val(TotalCostAnalytical);
 
@@ -207,13 +207,13 @@ $("[id*='AnalyticalDepartmentAMTValue']").change(function () {
 });
 //----------ARD------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentARDValue
 $("[id*='AnalyticalDepartmentARDValue']").change(function () {
-    let NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentARDValue").val();
-    let CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentARDValue").val();
+    let NoOfCols = GetIntfromControlValue($("#AnalyticalDepartment_1__AnalyticalDepartmentARDValue").val());
+    let CostPerCols = GetIntfromControlValue($("#AnalyticalDepartment_2__AnalyticalDepartmentARDValue").val());
     let TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
     $("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val(TotalCostPerColumn);
 
-    let Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentARDValue").val();
-    let CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val();
+    let Chemical = GetIntfromControlValue($("#AnalyticalDepartment_0__AnalyticalDepartmentARDValue").val());
+    let CostofSilica = GetIntfromControlValue($("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val());
     let TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
     $("#AnalyticalDepartment_5__AnalyticalDepartmentARDValue").val(TotalCostAnalytical);
 
@@ -275,14 +275,14 @@ function Calculate_ManhourEstimates(ControlID) {
     let ManHourRates = ($("#ManHourRates").val() == '') ? 0 : $("#ManHourRates").val();
 
     //let HoursInMonth = parseFloat(730);    // Asuumed , later may be change
-    let HourValue = parseFloat(MonthValue) * (8 * 22) * NoofEmployeeValue;
+    let HourValue = parseFloat(GetIntfromControlValue(MonthValue)) * (8 * 22) * GetIntfromControlValue(NoofEmployeeValue);
     let CostValue = parseFloat(ManHourRates) * parseFloat(HourValue);
 
     let HoursControlID = "#" + SpliID[0] + "__ManhourEstimatesHoursValue";
     let CostControlID = "#" + SpliID[0] + "__ManhourEstimatesCostValue";
 
-    $(HoursControlID).val(HourValue)
-    $(CostControlID).val(CostValue);
+    $(HoursControlID).val(formatNumber(HourValue))
+    $(CostControlID).val(formatNumber(CostValue));
     $(HoursControlID).change();
     $(CostControlID).change();
 }
@@ -295,21 +295,37 @@ $("#ManHourRates").change(function () {
 $("[id*='ManhourEstimatesHoursValue']").change(function () {
     let sum = 0;
     $("[id*='ManhourEstimatesHoursValue']").each(function () {
-        let Value = ($(this).val() == '') ? 0 : $(this).val();
+        let Value = ($(this).val() == '') ? 0 : GetIntfromControlValue($(this).val());
         if (($(this).attr('id') != 'ManhourEstimates_7__ManhourEstimatesHoursValue') && !isNaN(Value))
             sum = parseFloat(sum) + parseFloat(Value);
     });
-    $("#ManhourEstimates_7__ManhourEstimatesHoursValue").val(sum);
+    $("#ManhourEstimates_7__ManhourEstimatesHoursValue").val(formatNumber(sum));
 });
+function formatNumber(value, round, code) {
+    if (code == null || code == undefined || code == "") {
+        code = "en-US"
+    }
+    if (round == null || round == undefined || round == "") {
+        value = parseFloat(value).toFixed(2);
+    } else {
+        value = Math.round(parseFloat(value));
+    }
+    return new Intl.NumberFormat(code).format(value);
+}
+
+function GetIntfromControlValue(cntrlVal) {
+    cntrlVal = cntrlVal.replace(/,/g, '');
+    return (cntrlVal == '') ? 0 : (cntrlVal);
+}
 //--------------Calculation of Total Cost------------------------------------------
 $("[id*='ManhourEstimatesCostValue']").change(function () {
     let sum = 0;
     $("[id*='ManhourEstimatesCostValue']").each(function () {
-        let Value = ($(this).val() == '') ? 0 : $(this).val();
+        let Value = ($(this).val() == '') ? 0 : GetIntfromControlValue($(this).val());
         if (($(this).attr('id') != 'ManhourEstimates_7__ManhourEstimatesCostValue') && !isNaN(Value))
             sum = parseFloat(sum) + parseFloat(Value);
     });
-    $("#ManhourEstimates_7__ManhourEstimatesCostValue").val(sum);
+    $("#ManhourEstimates_7__ManhourEstimatesCostValue").val(formatNumber(sum));
     $("#HeadwiseBudget_2__HeadwiseBudgetValue").val(sum);
     $("[id*='HeadwiseBudgetValue']").change();
 });

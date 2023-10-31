@@ -444,7 +444,7 @@ function NSP_OnMarketSizeUnitEdited(variable) {
 
 // ----------Calulations Methods----All formulam taken from--"Revenue -Dummy Calculations (1).xlsx"----------
 //----------- Market Size-----------------------
-$('input[type="number"]').focusout(function () {
+$('input[type="text"]').focusout(function () {
     var result = 0;
 
     var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
@@ -462,29 +462,45 @@ $('input[type="number"]').focusout(function () {
     $('#MarketSize').val(result.toFixed());
 });
 //--------- Estimated Market Share Units--------------------
-$('input[type="number"]').focusout(function () {
+$('input[type="text"]').focusout(function () {
     EstimatedMarketShareUnits('Low');
 });
-$('input[type="number"]').focusout(function () {
+$('input[type="text"]').focusout(function () {
     EstimatedMarketShareUnits('Medium');
 });
-$('input[type="number"]').focusout(function () {
+$('input[type="text"]').focusout(function () {
     EstimatedMarketShareUnits('High');
 });
 function EstimatedMarketShareUnits(variable) {
-    var MarketSize = $('#MarketSize').val();
-    var MarketShare = $('#MarketSharePercentage' + variable).val();
+    var MarketSize = GetIntfromControlValue($('#MarketSize').val());
+    var MarketShare = GetIntfromControlValue($('#MarketSharePercentage' + variable).val());
     var result = MarketSize * MarketShare / 100;
-    $('#MarketShareUnit' + variable).val(result.toFixed());
+    $('#MarketShareUnit' + variable).val(formatNumber(result.toFixed()));
+}
+function formatNumber(value, round, code) {
+    if (code == null || code == undefined || code == "") {
+        code = "en-US"
+    }
+    if (round == null || round == undefined || round == "") {
+        value = parseFloat(value).toFixed(2);
+    } else {
+        value = Math.round(parseFloat(value));
+    }
+    return new Intl.NumberFormat(code).format(value);
+}
+
+function GetIntfromControlValue(cntrlVal) {
+    cntrlVal = cntrlVal.replace(/,/g, '');
+    return (cntrlVal == '') ? 0 : (cntrlVal);
 }
 //---------NSP------------------------------------
-$('input[type="number"]').focusout(function () {
+$('input[type="text"]').focusout(function () {
     NSP('Low');
     CalculateAPIRequirment();
 });
 function CalculateAPIRequirment() {
     var strength_val = 0;
-    var marketShareUnitMedium_val = ($('#MarketShareUnitMedium').val() == '') ? 0 : $('#MarketShareUnitMedium').val();
+    var marketShareUnitMedium_val = ($('#MarketShareUnitMedium').val() == '') ? 0 : GetIntfromControlValue($('#MarketShareUnitMedium').val());
     var packSize_val = 0;
     var _strenthid = 0;
     if (!(ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined)) {
@@ -502,31 +518,26 @@ function CalculateAPIRequirment() {
     var result = marketShareUnitMedium_val * packSize_val * strength_val/1000000;
 
     result = isNaN(result) ? 0 : result;
-    $('#Apireq').val(result.toFixed(6));
+    $('#Apireq').val(formatNumber(result.toFixed(6)));
 }
-$('input[type="number"]').focusout(function () {
+$('input[type="text"]').focusout(function () {
     NSP('Medium');
 });
-$('input[type="number"]').focusout(function () {
+$('input[type="text"]').focusout(function () {
     NSP('High');
 });
 function NSP(variable) {
     var result = 0;
     var Nspunits;
-    var PriceErosion = $('#PriceErosion').val();
+    var PriceErosion = GetIntfromControlValue($('#PriceErosion').val());
     var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
 
     var currentIndex = (EditIndex == -1) ? (_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length) : EditIndex;
-    //if (currentIndex == 0) {
-    //    Nspunits = $('#Nspunits' + variable).val();
-    //}
-    //if (currentIndex > 0) {
-    //    Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['nsp' + variable];
-    //}
 
-    Nspunits = $('#Nspunits' + variable).val();
+
+    Nspunits = GetIntfromControlValue($('#Nspunits' + variable).val());
     result = Nspunits * (1 + (PriceErosion / 100))
-    $('#Nsp' + variable).val(result.toFixed(5));
+    $('#Nsp' + variable).val(formatNumber(result.toFixed(5)));
 }
 function UpdateOtherYearData(currentEditingYearIndex) {
     var yearlength = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length;

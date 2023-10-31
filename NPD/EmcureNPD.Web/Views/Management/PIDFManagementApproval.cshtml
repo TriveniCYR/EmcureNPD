@@ -178,7 +178,7 @@
                                                     @*add condition here*@
                                                     @if (Model.lsProjectStrength.FirstOrDefault().IsInhouse == true)
                                                     {
-                                                        <div class="col-6 mb-4 d-flex flex-column">
+                                                        <div class="table-responsive">
                                                             <table class="table table-bordered text-center head-wise-table mb-5">
                                                                 <thead class="bg-primary">
                                                                     <tr>
@@ -889,7 +889,7 @@
                                                                                             <td>@item.pbfworkflowname</td>
                                                                                             <td>@item.tentative</td>
                                                                                             <td>@item.pbfworkflowtaskname</td>
-                                                                                            <td>@item.cost</td>
+                                                                                            <td class="format-currency">@item.cost</td>
                                                                                             <td>@item.workflowname</td>
                                                                                         </tr>
                                                                                     }

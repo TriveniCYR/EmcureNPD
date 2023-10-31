@@ -831,7 +831,7 @@ $(document).ready(function () {
 
         });
         if ($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length > 0) {
-            $(this).parent().parent().find('.rndTotalFillingExpenseStrength').val((_cost == "" ? 0 : _cost));
+            $(this).parent().parent().find('.rndTotalFillingExpenseStrength').val((_cost == "" ? 0 : formatNumber(_cost)));
         } else {
             $(this).parent().parent().find('.rndTotalFillingExpenseStrength').val("");
         }

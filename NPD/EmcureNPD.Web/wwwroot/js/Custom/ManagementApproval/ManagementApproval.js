@@ -182,6 +182,7 @@ function loadFinanceProjectionData(pidfid, encBUId,buid) {
         $(NonIntNote_Div).hide();
         UpdateProjectionCommercial();
     }
+    formatCurrencyInElements('format-currency');
 }
 
 
