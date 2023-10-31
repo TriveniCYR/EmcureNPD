@@ -240,6 +240,7 @@ function RenderCommercialPerPack() {
         html += "</tbody>";
     }
     $('#tblCommercialPerPack').html(html);
+    formatCurrencyInElements('format-currency');
 }
 function RenderFinanceProjection() {
     $('#tblFinanceProjection').html('');
@@ -847,6 +848,7 @@ function RenderFinanceProjection() {
         $('#tblOutputGridFinanceProjection').html(TempHtml);
     }
     $('#tblFinanceProjection').html(html);
+    formatCurrencyInElements('format-currency');
 
 }
 function UpdateDynamicTextBoxValues(table) {
