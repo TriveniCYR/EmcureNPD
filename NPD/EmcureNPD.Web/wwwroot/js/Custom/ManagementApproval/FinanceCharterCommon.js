@@ -939,6 +939,7 @@ function GetActiveBusinessUnitSuccess(data) {
     }
     $('#custom-tabs-business-tab').html(businessUnitHTML);
     renderpbfbu(data);
+  
 }
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
@@ -1011,7 +1012,7 @@ function GetCommercialSummaryBudgetSuccess(data) {
         cells.forEach(function (cellData, index) {
             var cell = document.createElement("td");
             cell.textContent = cellData;
-            if (index === 3 || index === 5|| index === 4) { // Add the class to the 4th and 7th cells (price and units)
+            if (index > 2) { // Add the class to the 4th and 7th cells (price and units)
                 cell.classList.add("format-currency");
             }
             row.appendChild(cell);

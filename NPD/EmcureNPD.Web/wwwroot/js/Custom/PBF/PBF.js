@@ -84,7 +84,9 @@ $(document).ready(function () {
                 }
             }
         }
-        $(this).parent().parent().find('.analyticalRsTest').val(formatNumber($(this).find(':selected').attr('data-testTypePrice')));
+        var testTypePrice = $(this).find(':selected').attr('data-testTypePrice');
+        var priceValue = testTypePrice !== undefined ? testTypePrice : '0';
+        $(this).parent().parent().find('.analyticalRsTest').val(formatNumber(priceValue));
         $(this).parent().parent().find('.analyticalPrototypeDevelopment').val($(this).find(':selected').text());
         $(this).parent().parent().find('.analyticalNumberOfTest').val("1");
     });
