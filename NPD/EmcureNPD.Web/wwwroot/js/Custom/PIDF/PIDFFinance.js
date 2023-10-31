@@ -513,12 +513,16 @@ function grantSubmit() {
 function calculateDealTerm(id) {
     let totaldealterm = 0;
     $('.deal-term').each(function () {
-        if ($(this).val() >0) {
-            totaldealterm += parseInt($(this).val());
+        const inputValue = $(this).val();
+        const numericValue = parseInt(inputValue.replace(/,/g, ''));
+        if (!isNaN(numericValue) && numericValue > 0) {
+            totaldealterm += numericValue;
         }
     });
-    $("#spanTotal").text(totaldealterm)
+    $("#spanTotal").text(totaldealterm);
+    formatCurrencyInElements('format-currency');
 }
+
 function calculateBatchSizeCaoting(ele) {
     let netRealisation = 0;
     let EstMat2020By12units = 0;
@@ -978,6 +982,7 @@ function loadFinanceProjectionData(pidfid, encBUId, buid){
 
     RenderCommercialPerPack();
     RenderFinanceProjection();
+
 }
 function GetBatchSizeCostingTRValues() {
     var Arr_FinanceTable_tr = [];

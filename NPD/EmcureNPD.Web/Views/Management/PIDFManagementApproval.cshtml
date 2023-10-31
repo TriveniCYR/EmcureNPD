@@ -223,7 +223,7 @@
                                                                                     @Model.lsHeadWiseBudget[i].BudgetsHeades
                                                                                 </td>
                                                                                 <td>
-
+                                                                                    
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].Prototype) > 0)
                                                                                             prototype = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Prototype) / 100000;
@@ -232,9 +232,11 @@
 
                                                                                         totalprototype += @Math.Round(@prototype, 2);
                                                                                     }
-                                                                                    <span>@CurrencySymbol</span> @Math.Round(@prototype,2)
+                                                                                    
+                                                                                    <span>@CurrencySymbol</span>  <span class="format-currency">@Math.Round(@prototype,2)</span>
                                                                                 </td>
                                                                                 <td>
+                                                                               
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].ScaleUp) > 0)
                                                                                             scaleup = Convert.ToDouble(@Model.lsHeadWiseBudget[i].ScaleUp) / 100000;
@@ -243,9 +245,11 @@
 
                                                                                         totalscaleup += @Math.Round(@scaleup, 2);
                                                                                     }
-                                                                                    <span>@CurrencySymbol</span> @Math.Round(@scaleup,2)
+                                                                               
+                                                                                    <span>@CurrencySymbol</span>  <span class="format-currency"> @Math.Round(@scaleup,2)</span>
                                                                                 </td>
                                                                                 <td>
+                                                                                
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].Exhibit) > 0)
                                                                                             exhibit = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Exhibit) / 100000;
@@ -254,11 +258,11 @@
 
                                                                                         totalexhibit += @Math.Round(@exhibit, 2);
                                                                                     }
-
-                                                                                    <span>@CurrencySymbol</span> @Math.Round(@exhibit,2)
+                                                                                  
+                                                                                    <span>@CurrencySymbol</span> <span class="format-currency"> @Math.Round(@exhibit,2)  </span>
                                                                                 </td>
                                                                                 <td>
-
+                                                                                    
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].TOTAL) > 0)
                                                                                             total = Convert.ToDouble(@Model.lsHeadWiseBudget[i].TOTAL) / 100000;
@@ -267,7 +271,7 @@
                                                                                         finaltotal += @Math.Round(@total, 2);
                                                                                     }
 
-                                                                                    <span>@CurrencySymbol</span> @Math.Round(@total,2)
+                                                                                    <span>@CurrencySymbol</span> <span class="format-currency">@Math.Round(@total,2)     </span>
                                                                                 </td>
 
                                                                             </tr>
@@ -277,10 +281,10 @@
                                                                             <td class="text-start">
                                                                                 Total
                                                                             </td>
-                                                                            <td><span>@CurrencySymbol</span> @Math.Round(@totalprototype,2)</td>
-                                                                            <td><span>@CurrencySymbol</span> @Math.Round(@totalscaleup,2)</td>
-                                                                            <td><span>@CurrencySymbol</span> @Math.Round(@totalexhibit,2)</td>
-                                                                            <td><span>@CurrencySymbol</span> @Math.Round(@finaltotal,2)</td>
+                                                                            <td><span>@CurrencySymbol</span> <span class="format-currency">@Math.Round(@totalprototype,2) </span></td>
+                                                                            <td><span>@CurrencySymbol</span><span class="format-currency"> @Math.Round(@totalscaleup,2) </span></td>
+                                                                            <td><span>@CurrencySymbol</span> <span class="format-currency">@Math.Round(@totalexhibit,2) </span></td>
+                                                                            <td><span>@CurrencySymbol</span> <span class="format-currency">@Math.Round(@finaltotal,2) </span></td>
                                                                         </tr>
                                                                     }
                                                                     else
@@ -333,23 +337,24 @@
                                                                                     Feasibility
                                                                                 </td>
                                                                                 <td>
-                                                                                    @{
+                                                                                  @{
                                                                                         if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) > 0)
                                                                                             perfeasibility = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
                                                                                         else
                                                                                             perfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability);
                                                                                     }
-                                                                                    @Math.Round(@perfeasibility,2)  <span>%</span>
+                                                                                    @Math.Round(@perfeasibility,2) <span>%</span>
                                                                                 </td>
                                                                                 <td>
                                                                                     <span>@CurrencySymbol</span>
+                                                                                     <span class="format-currency">
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) > 0)
                                                                                             costfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) / 100000;
                                                                                         else
                                                                                             costfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability);
                                                                                     }
-                                                                                    @Math.Round(@costfeasibility,2)
+                                                                                    @Math.Round(@costfeasibility,2)</span>
                                                                                 </td>
 
                                                                             </tr>
@@ -368,13 +373,14 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <span>@CurrencySymbol</span>
+                                                                                       <span class="format-currency">
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) > 0)
                                                                                             costprototype = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) / 100000;
                                                                                         else
                                                                                             costprototype = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype);
                                                                                     }
-                                                                                    @Math.Round(@costprototype,2)
+                                                                                    @Math.Round(@costprototype,2)</span>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
@@ -392,13 +398,14 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <span>@CurrencySymbol</span>
+                                                                                       <span class="format-currency">
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) > 0)
                                                                                             costscaleup = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) / 100000;
                                                                                         else
                                                                                             costscaleup = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp);
                                                                                     }
-                                                                                    @Math.Round(@costscaleup,2)
+                                                                                    @Math.Round(@costscaleup,2)</span>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
@@ -416,13 +423,14 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <span>@CurrencySymbol</span>
+                                                                                       <span class="format-currency">
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) > 0)
                                                                                             costamvamt = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) / 100000;
                                                                                         else
                                                                                             costamvamt = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV);
                                                                                     }
-                                                                                    @Math.Round(@costamvamt,2)
+                                                                                    @Math.Round(@costamvamt,2)</span>
                                                                                 </td>
                                                                             </tr>
 
@@ -441,13 +449,14 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <span>@CurrencySymbol</span>
+                                                                                       <span class="format-currency">
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) > 0)
                                                                                             costexhibit = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) / 100000;
                                                                                         else
                                                                                             costexhibit = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit);
                                                                                     }
-                                                                                    @Math.Round(@costexhibit,2)
+                                                                                    @Math.Round(@costexhibit,2)</span>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
@@ -465,6 +474,7 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <span>@CurrencySymbol</span>
+                                                                                       <span class="format-currency">
                                                                                     @{
                                                                                         if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) > 0)
                                                                                             costfiling = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) / 100000;
@@ -472,7 +482,7 @@
                                                                                             costfiling = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing);
                                                                                     }
 
-                                                                                    @Math.Round(@costfiling,2)
+                                                                                    @Math.Round(@costfiling,2)</span>
                                                                                     @{
                                                                                         FinalTotal += Math.Round(@costfiling, 2);
                                                                                     }
@@ -581,14 +591,14 @@
                                                                                 <td colspan="2">
                                                                                     API Commercial Quantity
                                                                                 </td>
-                                                                                <td colspan="8">@Model.lsProjectDetails[i].APICommercialQuantity</td>
+                                                                                <td colspan="8" class="format-currency">@Model.lsProjectDetails[i].APICommercialQuantity</td>
 
                                                                             </tr>
                                                                             <tr>
                                                                                 <td colspan="2">
                                                                                     API price in (<span>@CurrencySymbol</span>/kg)
                                                                                 </td>
-                                                                                <td colspan="8">@Model.lsProjectDetails[i].APIPrice</td>
+                                                                                <td colspan="8" class="format-currency">@Model.lsProjectDetails[i].APIPrice</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td colspan="2">
@@ -601,7 +611,7 @@
                                                                                 <td colspan="2">
                                                                                     Prototype
                                                                                 </td>
-                                                                                <td colspan="8">@Model.lsProjectDetails[i].Prototype</td>
+                                                                                <td colspan="8" class="format-currency">@Model.lsProjectDetails[i].Prototype</td>
 
 
                                                                             </tr>
@@ -609,14 +619,14 @@
                                                                                 <td colspan="2">
                                                                                     Scale Up
                                                                                 </td>
-                                                                                <td colspan="8">@Model.lsProjectDetails[i].ScaleUp</td>
+                                                                                <td colspan="8" class="format-currency">@Model.lsProjectDetails[i].ScaleUp</td>
 
                                                                             </tr>
                                                                             <tr>
                                                                                 <td colspan="2">
                                                                                     Exhibit
                                                                                 </td>
-                                                                                <td colspan="8">@Model.lsProjectDetails[i].Exhibit</td>
+                                                                                <td colspan="8" class="format-currency">@Model.lsProjectDetails[i].Exhibit</td>
 
                                                                             </tr>
                                                                         }
@@ -723,7 +733,7 @@
                                                                                             referenceproductcost = Convert.ToDouble(@Model.lsAdditionalCost[i].ReferenceProductCost);
 
                                                                                     }
-                                                                                    <span>@CurrencySymbol</span> @Math.Round(@referenceproductcost,2)
+                                                                                    <span>@CurrencySymbol</span> <span class="format-currency">@Math.Round(@referenceproductcost,2)</span>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
@@ -739,7 +749,7 @@
                                                                                             biostudycost = Convert.ToDouble(@Model.lsAdditionalCost[i].BioStudyCost);
 
                                                                                     }
-                                                                                    <span>@CurrencySymbol</span> @Math.Round(@biostudycost,2)
+                                                                                    <span>@CurrencySymbol</span> <span class="format-currency">@Math.Round(@biostudycost,2)</span>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
@@ -755,7 +765,7 @@
                                                                                             capexmisccost = Convert.ToDouble(@Model.lsAdditionalCost[i].CapexMiscCost);
 
                                                                                     }
-                                                                                    <span>@CurrencySymbol</span> @Math.Round(@capexmisccost,2)
+                                                                                    <span>@CurrencySymbol</span> <span class="format-currency">@Math.Round(@capexmisccost,2)</span>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
@@ -771,7 +781,7 @@
                                                                                             filingcost = Convert.ToDouble(@Model.lsAdditionalCost[i].FillingCost);
 
                                                                                     }
-                                                                                    <span>@CurrencySymbol</span> @Math.Round(@filingcost,2)
+                                                                                    <span>@CurrencySymbol</span> <span class="format-currency">@Math.Round(@filingcost,2)</span>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr class="fw-bold">
@@ -788,7 +798,7 @@
 
                                                                                         FinalTotal += @Math.Round(@totalcost, 2);
                                                                                     }
-                                                                                    <span>@CurrencySymbol</span>  @Math.Round(@totalcost,2)
+                                                                                    <span>@CurrencySymbol</span> <span class="format-currency"> @Math.Round(@totalcost,2)</span>
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
@@ -804,7 +814,7 @@
                                                                         <td class="text-start">
                                                                             Total
                                                                         </td>
-                                                                        <td><span>@CurrencySymbol</span> @Math.Round(@FinalTotal, 2) lacs</td>
+                                                                        <td><span>@CurrencySymbol</span><span class="format-currency"> @Math.Round(@FinalTotal, 2)</span> lacs </td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -1060,7 +1070,8 @@
     @*  <script src="~/js/plugins/html2canvas.js"></script>*@
     <script src="~/js/custom/managementapproval/managementapproval.js?v=@jsVersion"></script>
     <script src="~/js/custom/managementapproval/financechartercommon.js"></script>
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+    <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
 
     <script>
         const GetManagmentApprovalBatchSizeCoatingURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetManagmentApprovalBatchSizeCoating";

@@ -559,6 +559,8 @@
 @section MyScripts {
     @Html.Partial("_DataTablePartial")
     <script src="~/js/custom/project/projectmanagement.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+<script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
     <script>
         var FillTaskDropdown = "@EmcureNPD.Web.Helpers.APIURLHelper.FillTaskDropdown";
         var DeleteTasksubTask = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteTaskSubTAsk";

@@ -103,7 +103,7 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProductStrength,@MasterLocalizer["ProductStrength"], new { @class = "control-label" })
                                         <span class="text-danger">*</span>
-                                        @Html.TextBoxFor(model => model.ProductStrength, new {@class = "form-control"})
+                                        @Html.TextBoxFor(model => model.ProductStrength, new {@class = "form-control format-currency"})
                                         <lable id="valmsgProductStrength" class="text-danger"></lable>
                                     </div>
                                 </div>
@@ -154,7 +154,7 @@
                                                 <td> @item.LaunchedGenetics                    </td>
                                                @* <td> @item.Country</td>*@
                                                 <td> @item.LegalStatus                    </td>
-                                                <td> @item.CostOfLitication                    </td>
+                                                <td class="format-currency"> @item.CostOfLitication                    </td>
                                                 <td> @item.Comments                    </td>
                                                 <td> @item.Innovators                    </td>
                                                 <td> @item.PatentStatus                    </td>
@@ -278,6 +278,8 @@
     @*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/custom/api/apiipddetailsform.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+    <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
     <script>
         var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";

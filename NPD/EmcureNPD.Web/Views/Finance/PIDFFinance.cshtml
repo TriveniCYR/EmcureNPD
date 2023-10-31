@@ -246,7 +246,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Approval Period in Days<span style="color:red;">*</span></label>
-								@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate clsProjectTimeline",@required="required",@type="number"})
+								@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate clsProjectTimeline format-currency",@required="required",@type="text"})
                                           <div class="invalid-feedback">
                                             Please enter Approval Period in Days.
                                            </div>
@@ -285,7 +285,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Gestation Period in Years<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.GestationPeriodinYears,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.GestationPeriodinYears,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
                                           <div class="invalid-feedback">
                                             Please enter Gestation Period in Years.
                                            </div>
@@ -310,7 +310,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Market Share Erosion Rate % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
                                            <div class="invalid-feedback">
                                             Please enter Market Share Erosion rate.
                                            </div>
@@ -323,7 +323,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Price Erosion % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.PriceErosion,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.PriceErosion,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
                                           <div class="invalid-feedback">
                                             Please enter Price Erosion.
                                            </div>
@@ -335,7 +335,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Escalation in COGS % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
                                           <div class="invalid-feedback">
                                             Please enter Escalation in COGS.
                                            </div>
@@ -364,7 +364,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Discount Rate<span style="color:red;">*</span></label>
-								@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
+								@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
                                          <div class="invalid-feedback">
                                             Please enter Discount Rate.
                                            </div>
@@ -377,7 +377,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Income tax rate<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
                                           <div class="invalid-feedback">
                                             Please enter Income tax rate.
                                            </div>
@@ -389,7 +389,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Opex as a % to sales <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
                                           <div class="invalid-feedback">
                                             Please enter Opex as a % to sales.
                                            </div>
@@ -401,7 +401,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">External Profit Share % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
                                            <div class="invalid-feedback">
                                             Please enter External Profit Share %.
                                            </div>
@@ -415,7 +415,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Collection in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
                                           <div class="invalid-feedback">
                                             Please enter Collection in Days.
                                            </div>
@@ -428,7 +428,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Inventory in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
                                           <div class="invalid-feedback">
                                             Please enter Inventory in Days.
                                            </div>
@@ -440,7 +440,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Creditor in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
                                        <div class="invalid-feedback">
                                             Please enter Creditor in Days.
                                            </div>
@@ -452,7 +452,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Marketing Allowance<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
                                        <div class="invalid-feedback">
                                             Please enter Marketing Allowance.
                                            </div>
@@ -467,7 +467,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Regulatory Maintenance Cost<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
                             <div class="invalid-feedback">
                                             Please enter Regulatory Maintenance Cost.
                                            </div>
@@ -480,7 +480,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Gross to Net<span style="color:red;">*</span></label>
-                                @Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+                                @Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
                              <div class="invalid-feedback">
                                             Please enter Gross to Net.
                                            </div>
@@ -530,7 +530,7 @@
 								<td>
 									<div class="">
 										<div class="form-group required">
-											<label class="control-label" pattern="\d{1,5}">@pwb.cost</label>
+											<label class="control-label format-currency" pattern="\d{1,5}">@pwb.cost</label>
 										</div>
 									</div>
 								</td>
@@ -554,7 +554,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Noofbatchestobemanufactured,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.Noofbatchestobemanufactured,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
                                         <div class="invalid-feedback">
                                             Please enter No of batches to be manufactured.
                                            </div>
@@ -589,7 +589,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.NoSkus,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.NoSkus,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
 									<div class="invalid-feedback">
                                             Please enter No of SKUs.
                                            </div>
@@ -624,7 +624,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-											@Html.TextBoxFor(@modal=>modal.RandDanalyticalcost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+											@Html.TextBoxFor(@modal=>modal.RandDanalyticalcost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter R&D/Analytical cost.
                                            </div>
@@ -659,7 +659,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Rldsamplecost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.Rldsamplecost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter RLD sample cost.
                                            </div>
@@ -694,7 +694,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEst,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEst,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Batch manufacturing cost/ API Actuals Est.
                                            </div>
@@ -729,7 +729,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Sixmonthsstabilitycost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.Sixmonthsstabilitycost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter 6 months stability cost.
                                            </div>
@@ -764,7 +764,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.TechTransfer,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.TechTransfer,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Tech Transfer.
                                            </div>
@@ -799,7 +799,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Bestudies,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.Bestudies,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter BE studies.
                                            </div>
@@ -834,7 +834,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Filingfees,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.Filingfees,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Filing fees.
                                            </div>
@@ -869,7 +869,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BioStuddyCost,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.BioStuddyCost,new{@class="form-control deal-term readOnlyUpdate format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Bio Study Cost.
                                            </div>
@@ -904,7 +904,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-                                            @Html.TextBoxFor(@modal=>modal.Capex,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+                                            @Html.TextBoxFor(@modal=>modal.Capex,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Capex.
                                            </div>
@@ -939,7 +939,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-                                            @Html.TextBoxFor(@modal=>modal.ToolingAndChangeParts,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+                                            @Html.TextBoxFor(@modal=>modal.ToolingAndChangeParts,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Tooling & Change Parts.
                                            </div>
@@ -976,7 +976,7 @@
 								<div class="">
 									<div class="form-group required">
                                         @*<input type="text" id="spanTotal" readonly="true"/>*@
-                                            <b><span id="spanTotal" name="Total"></span></b>
+                                            <b><span id="spanTotal" class="format-currency" name="Total"></span></b>
                                             @Html.HiddenFor(@modal=>modal.Total)
 									</div>
 								</div>
@@ -1290,6 +1290,8 @@
 	<script src="~/js/custom/managementapproval/financechartercommon.js"></script>
 	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
 	<script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
+	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+    <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
 <script>
 	const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
     const AllDosageForm = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveDosageFormFinance";
