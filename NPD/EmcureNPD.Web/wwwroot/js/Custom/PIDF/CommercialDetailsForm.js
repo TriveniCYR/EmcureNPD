@@ -395,8 +395,9 @@ function UpdateYearOnMarketSizeUnitEdited() {
     var result = 0;
     /* ----------------Update - marketSize--------------------------*/
     var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
-    var MarketSizeAsLaunch = parseFloat(_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].marketSizeInUnit);
-    var MarketGrowth = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketGrowth']);
+    var MarketSizeAsLaunch = parseAndFormatNumber(_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].marketSizeInUnit);
+    var MarketGrowth = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketGrowth']);
+
     var currentIndex = (EditIndex == -1) ? (_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length) : EditIndex;
     if (currentIndex == 0) {
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
@@ -419,7 +420,7 @@ function UpdateYearOnMarketSizeUnitEdited() {
 }
 function EstimatedMarketShareUnits_OnMarketSizeUnitEdited(variable) {
     var MarketSize = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketSize']
-    var MarketShare = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketSharePercentage' + variable];
+    var MarketShare = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketSharePercentage' + variable]);
     var result = MarketSize * MarketShare / 100;
     ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketShareUnit' + variable] = result.toFixed();
     // $('#MarketShareUnit' + variable).val(result.toFixed());
@@ -427,15 +428,15 @@ function EstimatedMarketShareUnits_OnMarketSizeUnitEdited(variable) {
 function NSP_OnMarketSizeUnitEdited(variable) {
     var result = 0;
     var Nspunits;
-    var PriceErosion = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['priceErosion'];
+    var PriceErosion = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['priceErosion']);
     var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
 
     var currentIndex = (EditIndex == -1) ? (_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length) : EditIndex;
     if (currentIndex == 0) {
-        Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex]['nspunits' + variable];
+        Nspunits = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex]['nspunits' + variable]);
     }
     if (currentIndex > 0) {
-        Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['nsp' + variable];
+        Nspunits = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['nsp' + variable]);
     }
     result = Nspunits * (1 + (PriceErosion / 100))
     ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex]['nsp' + variable] = result.toFixed(5);
@@ -449,17 +450,18 @@ $('input[type="text"]').focusout(function () {
 
     var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
 
-    var MarketSizeAsLaunch = parseFloat(_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].marketSizeInUnit);
-    var MarketGrowth = parseFloat($('#MarketGrowth').val());
+    var MarketSizeAsLaunch = parseAndFormatNumber(_foundObject ? 0 : GetIntfromControlValue(ArrMainCommercial[MainRowEditIndex].marketSizeInUnit));
+    var MarketGrowth = parseAndFormatNumber($('#MarketGrowth').val());
+ 
     var currentIndex = (EditIndex == -1) ? (_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length) : EditIndex;
     if (currentIndex == 0) {
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
     }
     if (currentIndex > 0) {
-        MarketSizeAsLaunch = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['marketSize']
+        MarketSizeAsLaunch = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['marketSize'])
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
     }
-    $('#MarketSize').val(result.toFixed());
+    $('#MarketSize').val(formatNumber(result.toFixed()));
 });
 //--------- Estimated Market Share Units--------------------
 $('input[type="text"]').focusout(function () {
@@ -473,6 +475,10 @@ $('input[type="text"]').focusout(function () {
 });
 function EstimatedMarketShareUnits(variable) {
     var MarketSize = GetIntfromControlValue($('#MarketSize').val());
+
+    if (isNaN(MarketSize)) {
+        MarketSize = 0;
+    }
     var MarketShare = GetIntfromControlValue($('#MarketSharePercentage' + variable).val());
     var result = MarketSize * MarketShare / 100;
     $('#MarketShareUnit' + variable).val(formatNumber(result.toFixed()));
@@ -548,25 +554,25 @@ function UpdateOtherYearData(currentEditingYearIndex) {
 
         var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
 
-        var MarketSizeAsLaunch = parseFloat(_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].marketSizeInUnit);
-        var MarketGrowth = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketGrowth']);
+        var MarketSizeAsLaunch = parseAndFormatNumber(_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].marketSizeInUnit);
+        var MarketGrowth = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketGrowth']);
 
-        MarketSizeAsLaunch = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex]['marketSize']
+        MarketSizeAsLaunch = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex]['marketSize'])
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
 
         ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSize'] = result.toFixed();
         //  $('#MarketSize').val(result.toFixed());
         //-----------------------------------------------
         var MarketSize = result;
-        var MarketShare = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageLow']);
+        var MarketShare = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageLow']);
         result = MarketSize * MarketShare / 100;
         ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketShareUnitLow'] = result.toFixed();
 
-        MarketShare = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageMedium']);
+        MarketShare = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageMedium']);
         result = MarketSize * MarketShare / 100;
         ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketShareUnitMedium'] = result.toFixed();
 
-        MarketShare = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageHigh']);
+        MarketShare = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageHigh']);
         result = MarketSize * MarketShare / 100;
         ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketShareUnitHigh'] = result.toFixed();
 
@@ -578,7 +584,7 @@ function UpdateOtherYearData(currentEditingYearIndex) {
 function ReEditingNSP(variable, currentEditingYearIndex) {
     var result = 0;
     var Nspunits;
-    var PriceErosion = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['priceErosion']);
+    var PriceErosion = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['priceErosion']);
     Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex]['nsp' + variable];
 
     result = Nspunits * (1 + (PriceErosion / 100))
@@ -847,13 +853,22 @@ function UpdateChildTableDetail(_cObject) {
             var ArrItem = FSSelectedText.split('/');
             var MarketShareUnit = it["marketShareUnit" + ArrItem[0]];
             var Nsp = it["nsp" + ArrItem[1]];
-            var result = MarketShareUnit * Nsp;
-            html = '<tr id="RevenueRow"' + index + '><td>Year' + (index + 1) + '</td><td>' + FSSelectedText + '</td><td>' + result.toFixed() + '</td></tr>';
+            var result = GetIntfromControlValue(MarketShareUnit) * GetIntfromControlValue(Nsp);
+            html = '<tr id="RevenueRow"' + index + '><td>Year' + (index + 1) + '</td><td>' + FSSelectedText + '</td><td>' + formatNumber(result.toFixed()) + '</td></tr>';
 
             $('#tblMainCommercial').find('#Yearclildrows_' + _cObject.packSizeId).find("#tblRevenue").find("#RevenueTbody").append(html);
         });
     }
 }
+function parseAndFormatNumber(numberString) {
+    if (numberString === '') {
+        return 0;
+    } else {
+        return parseFloat(numberString.replace(/,/g, ''));
+    }
+}
+
+
 
 function editCommercialYearRow(packSizeId, i, businessUnitId, pidfProductStrengthId) {
     EditIndex = i;
