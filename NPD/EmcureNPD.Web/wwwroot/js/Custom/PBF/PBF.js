@@ -309,30 +309,30 @@ $(document).ready(function () {
 
 
             var id_batchcontrol_proto = '.BatchSize_Excipient_PrototypeFormulation_' + val.pidfProductStrengthId;
-            var id_APIReqcontrol_proto = "[name='RNDApirequirements["+ind+"].Prototype']";
-            var result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength)/multFatcor;
-            $(id_APIReqcontrol_proto).val(result).trigger('change');
+            var id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].Prototype']";
+            var result = GetIntfromControlValue($(id_batchcontrol_proto).val()) * parseFloat(eval(strength)) / multFatcor
+            $(id_APIReqcontrol_proto).val(result.toFixed(2)).trigger('change');
 
             
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ScaleUpbatch']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ScaleUp']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            result = GetIntfromControlValue($(id_batchcontrol_proto).val()) * parseFloat(eval(strength)) / multFatcor
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch1']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch1']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            result = GetIntfromControlValue($(id_batchcontrol_proto).val()) * parseFloat(eval(strength)) / multFatcor
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch2']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch2']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            result = GetIntfromControlValue($(id_batchcontrol_proto).val()) * parseFloat(eval(strength)) / multFatcor
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
             id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch3']";
             id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch3']";
-            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            result = GetIntfromControlValue($(id_batchcontrol_proto).val()) * parseFloat(eval(strength)) / multFatcor
             $(id_APIReqcontrol_proto).val(result).trigger('change');
 
 
@@ -1915,9 +1915,9 @@ function SetAnalyticalChildRows() {
         $.each($('#tableanalytical tbody tr.analyticalActivity' + i + ''), function () {
             var TestTypeId = $(this).find(".AnalyticalTestTypeId").val();
             var ActivityTypeId = $(this).find(".analyticalTypeId").val();
-            var Numberoftests = $(this).find(".analyticalNumberOfTest").val();
+            var Numberoftests = ConvertToNumber($(this).find(".analyticalNumberOfTest").val());
             var PrototypeDevelopment = '100' // $(this).find(".analyticalPrototypeDevelopment").val();
-            var CostPerTest = $(this).find(".analyticalRsTest").val();
+            var CostPerTest = ConvertToNumber($(this).find(".analyticalRsTest").val());
 
             $.each($(this).find(".analyticalStrengthId"), function (index, item) {
                 if (i == 4) {

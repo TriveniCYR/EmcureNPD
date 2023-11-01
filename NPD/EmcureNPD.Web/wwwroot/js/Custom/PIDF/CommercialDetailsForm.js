@@ -518,7 +518,7 @@ function CalculateAPIRequirment() {
         });
 
         if (CurrentSelectedStrengthValList != null || CurrentSelectedStrengthValList.length > 0)
-            strength_val = parseInt(CurrentSelectedStrengthValList[0].strength);
+            strength_val = parseFloat(eval(CurrentSelectedStrengthValList[0].strength));
     }
     
     var result = marketShareUnitMedium_val * packSize_val * strength_val/1000000;
