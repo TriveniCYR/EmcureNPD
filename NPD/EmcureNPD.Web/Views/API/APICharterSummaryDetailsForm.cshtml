@@ -349,14 +349,14 @@
                                         }
                                         else
                                         {
-                                            <td></td>
-                                            <td></td>
+                                            <td class="format-currency"></td>
+                                            <td class="format-currency"></td>
                                         }
-                                        <td>
-                                            @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                        <td class="format-currency">
+                                            @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @class = "form-control format-currency" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
-                                        <td>
+                                        <td class="format-currency">
                                             @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesCostValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
@@ -457,6 +457,8 @@
 @section MyScripts {
     <script type="text/javascript" src="~/js/plugins/jspdf.debug.js"></script>
     <script type="text/javascript" src="~/js/html2canvas.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+    <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
     <script>
         var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";

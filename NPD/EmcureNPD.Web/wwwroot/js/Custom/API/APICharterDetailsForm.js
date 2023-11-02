@@ -28,16 +28,33 @@ $('#Save').click(function () {
    
     $("#SaveType_APICharter").val('Save');
     if (IsValid) {
+        removeCommasFromFormatCurrencyInputs();
         return true;
+
     } else {
         return false;
     }
 });
+
+
 $('#SaveDraft').click(function () {
     RoundUPReadonlyValues();
     $('#frmAPICharterDetails').validate().settings.ignore = "*";
     $("#SaveType_APICharter").val('SaveDraft');
+    removeCommasFromFormatCurrencyInputs()
 });
+function removeCommasFromFormatCurrencyInputs() {
+    var currencyInputs = document.querySelectorAll('.format-currency');
+    currencyInputs.forEach(function (inputElement) {
+        var value = inputElement.value;
+        if (value) {
+            var newValue = value.replace(/,/g, '');
+            inputElement.value = newValue;
+        }
+    });
+}
+
+
 
 function ValidateForm() {
     let ArrofInvalid = []
