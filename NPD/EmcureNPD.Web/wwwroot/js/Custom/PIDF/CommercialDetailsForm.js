@@ -599,25 +599,15 @@ function AddYearClick() { //SaveYearClick
     var valBUStrength = ValidateBU_Strength();
     if (ValidateYearForm() && valBUStrength) {
         var entityYear = {};
-        //var IsValid = true;;
         $.each($('#AddYearForm').serializeArray(), function (_, kv) {
             if (kv.value == '') {
-                //$('#valmsg' + kv.name).text('Required').show();
-                ////IsValid = false;
-                //ArrofInvalid.push(kv.name);
-
                 if (!(kv.name == "TotalApireq")) {
                 $('#valmsg' + kv.name).text('Required').show();
                 //IsValid = false;
                 ArrofInvalid.push(kv.name);
                 }
-                //if (!(kv.name == "TotalApireq")) {
-                //    $('#valmsg' + kv.name).text('Required').show();
-                //    //IsValid = false;
-                //    ArrofInvalid.push(kv.name);
-                //}
             }
-            entityYear[getPropertyName(kv.name)] = kv.value;
+            entityYear[getPropertyName(kv.name)] = parseAndFormatNumber(kv.value)
         });
 
         entityYear.businessUnitId = SelectedBUValue;
@@ -681,7 +671,7 @@ function BUstregthPack_AddButtonClick() {
         if ($('#hdnPackSizeMode').val() == "1") {
             //Find index of specific object using findIndex method.    
             objIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == ent_BuStrPack.packSizeId && obj.businessUnitId == SelectedBUValue && obj.pidfProductStrengthId == selectedStrength));
-            ArrMainCommercial[objIndex].marketSizeInUnit = ent_BuStrPack.marketSizeInUnit;
+            ArrMainCommercial[objIndex].marketSizeInUnit = parseAndFormatNumber(ent_BuStrPack.marketSizeInUnit);
             ArrMainCommercial[objIndex].packSizeName = ent_BuStrPack.packSizeName;
             ArrMainCommercial[objIndex].shelfLife = ent_BuStrPack.shelfLife;
             //--------Update PidfCommercialYears onject when MarketSizeUnit is Edited----------------------------------------            
@@ -730,7 +720,7 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
 
         let ExpandRowBtn = '<a class="large-font" style="" onclick="ShowChildRows(\'Yearclildrows_' + object.packSizeId + '\', this);" title="Show Year Details"><i class="fa fa-minus-circle text-danger icoShowSubRow' + i + '" aria-hidden="true"></i>' + '</a>';
 
-        tableRow = '<tr class="highlight-tr"><td>' + ExpandRowBtn + '</td><td>' + object.packSizeName + '</td><td class="marketSize">' + object.marketSizeInUnit + '</td><td class="shelfLife">' + object.shelfLife + '</td><td>' + editbtn + deletebtn + addYearbtn + '</td> </tr>';
+        tableRow = '<tr class="highlight-tr"><td>' + ExpandRowBtn + '</td><td>' + object.packSizeName + '</td><td class="marketSize">' + formatNumber(object.marketSizeInUnit) + '</td><td class="shelfLife">' + object.shelfLife + '</td><td>' + editbtn + deletebtn + addYearbtn + '</td> </tr>';
 
         $('#tblMainCommercial #mainCommercialRows').append(tableRow);
         // end of Add parent row into table for commercial
@@ -853,7 +843,7 @@ function UpdateChildTableDetail(_cObject) {
             var ArrItem = FSSelectedText.split('/');
             var MarketShareUnit = it["marketShareUnit" + ArrItem[0]];
             var Nsp = it["nsp" + ArrItem[1]];
-            var result = GetIntfromControlValue(MarketShareUnit) * GetIntfromControlValue(Nsp);
+            var result = MarketShareUnit * (Nsp);
             html = '<tr id="RevenueRow"' + index + '><td>Year' + (index + 1) + '</td><td>' + FSSelectedText + '</td><td>' + formatNumber(result.toFixed()) + '</td></tr>';
 
             $('#tblMainCommercial').find('#Yearclildrows_' + _cObject.packSizeId).find("#tblRevenue").find("#RevenueTbody").append(html);
@@ -861,12 +851,17 @@ function UpdateChildTableDetail(_cObject) {
     }
 }
 function parseAndFormatNumber(numberString) {
-    if (numberString === '') {
+    if (typeof numberString !== 'string') {
         return 0;
-    } else {
+    } else if (numberString === '') {
+        return 0;
+    } else if (numberString.includes(',')) {
         return parseFloat(numberString.replace(/,/g, ''));
+    } else {
+        return parseFloat(numberString);
     }
 }
+
 
 
 
