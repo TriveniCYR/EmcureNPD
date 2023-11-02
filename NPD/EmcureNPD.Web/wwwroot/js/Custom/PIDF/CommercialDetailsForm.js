@@ -27,14 +27,14 @@ $(document).ready(function () {
     }
     //if(true)
     //$('.PBFDetailsTab').hide();
-  
+
 
 });
 
 function RedirectToPIDF() {
     var arrurl = $(location).attr('href').split('?');
     if (arrurl.length == 2)
-        location.href = '/PIDF/PIDF?pidfid=' + _PIDFID + '&bui=' + SelectedBUValue + '&IsCountryAdd=1&ReturnURL=' +arrurl[1];
+        location.href = '/PIDF/PIDF?pidfid=' + _PIDFID + '&bui=' + SelectedBUValue + '&IsCountryAdd=1&ReturnURL=' + arrurl[1];
 }
 
 function SetBU_Strength() {
@@ -214,8 +214,8 @@ function CommercialSaveAsDraftClickClick(saveType) {
             SaveCommertialPIDFForm();
         }
         else {
-            if (saveType !='TabClick')
-            toastr.error('No Data Added');
+            if (saveType != 'TabClick')
+                toastr.error('No Data Added');
         }
     }
 }
@@ -281,7 +281,7 @@ function BUtabClick(BUVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     renderCountryTabList(BUVal);
-   
+
     Update_BUstregthPackTable(ArrMainCommercial);
     // Update_IsInterested_Remark();
     SetCommercialDisableForOtherUserBU();
@@ -450,9 +450,9 @@ $('input[type="text"]').focusout(function () {
 
     var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
 
-    var MarketSizeAsLaunch = parseAndFormatNumber(_foundObject ? 0 : GetIntfromControlValue(ArrMainCommercial[MainRowEditIndex].marketSizeInUnit));
+    var MarketSizeAsLaunch = parseAndFormatNumber(_foundObject ? 0 : parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].marketSizeInUnit));
     var MarketGrowth = parseAndFormatNumber($('#MarketGrowth').val());
- 
+
     var currentIndex = (EditIndex == -1) ? (_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length) : EditIndex;
     if (currentIndex == 0) {
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
@@ -510,7 +510,7 @@ function CalculateAPIRequirment() {
     var packSize_val = 0;
     var _strenthid = 0;
     if (!(ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined)) {
-         packSize_val = ArrMainCommercial[MainRowEditIndex].packSize;
+        packSize_val = ArrMainCommercial[MainRowEditIndex].packSize;
         _strenthid = ArrMainCommercial[MainRowEditIndex].pidfProductStrengthId;
 
         var CurrentSelectedStrengthValList = $.grep(MainArrCountryList, function (n, i) {
@@ -520,8 +520,8 @@ function CalculateAPIRequirment() {
         if (CurrentSelectedStrengthValList != null || CurrentSelectedStrengthValList.length > 0)
             strength_val = parseFloat(eval(CurrentSelectedStrengthValList[0].strength));
     }
-    
-    var result = marketShareUnitMedium_val * packSize_val * strength_val/1000000;
+
+    var result = marketShareUnitMedium_val * packSize_val * strength_val / 1000000;
 
     result = isNaN(result) ? 0 : result;
     $('#Apireq').val(formatNumber(result.toFixed(6)));
@@ -599,15 +599,25 @@ function AddYearClick() { //SaveYearClick
     var valBUStrength = ValidateBU_Strength();
     if (ValidateYearForm() && valBUStrength) {
         var entityYear = {};
+        //var IsValid = true;;
         $.each($('#AddYearForm').serializeArray(), function (_, kv) {
             if (kv.value == '') {
+                //$('#valmsg' + kv.name).text('Required').show();
+                ////IsValid = false;
+                //ArrofInvalid.push(kv.name);
+
                 if (!(kv.name == "TotalApireq")) {
-                $('#valmsg' + kv.name).text('Required').show();
-                //IsValid = false;
-                ArrofInvalid.push(kv.name);
+                    $('#valmsg' + kv.name).text('Required').show();
+                    //IsValid = false;
+                    ArrofInvalid.push(kv.name);
                 }
+                //if (!(kv.name == "TotalApireq")) {
+                //    $('#valmsg' + kv.name).text('Required').show();
+                //    //IsValid = false;
+                //    ArrofInvalid.push(kv.name);
+                //}
             }
-            entityYear[getPropertyName(kv.name)] = parseAndFormatNumber(kv.value)
+            entityYear[getPropertyName(kv.name)] =parseAndFormatNumber(kv.value);
         });
 
         entityYear.businessUnitId = SelectedBUValue;
@@ -671,7 +681,7 @@ function BUstregthPack_AddButtonClick() {
         if ($('#hdnPackSizeMode').val() == "1") {
             //Find index of specific object using findIndex method.    
             objIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == ent_BuStrPack.packSizeId && obj.businessUnitId == SelectedBUValue && obj.pidfProductStrengthId == selectedStrength));
-            ArrMainCommercial[objIndex].marketSizeInUnit = parseAndFormatNumber(ent_BuStrPack.marketSizeInUnit);
+            ArrMainCommercial[objIndex].marketSizeInUnit = ent_BuStrPack.marketSizeInUnit;
             ArrMainCommercial[objIndex].packSizeName = ent_BuStrPack.packSizeName;
             ArrMainCommercial[objIndex].shelfLife = ent_BuStrPack.shelfLife;
             //--------Update PidfCommercialYears onject when MarketSizeUnit is Edited----------------------------------------            
@@ -699,7 +709,7 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
 
 
     _objArrMainCommercial = $.grep(_objArrMainCommercial, function (n, i) {
-        return n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength && n.countryId == selectedCountry ;
+        return n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength && n.countryId == selectedCountry;
     });
 
     $("#tblMainCommercial #mainCommercialRows tr").remove();
@@ -720,7 +730,7 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
 
         let ExpandRowBtn = '<a class="large-font" style="" onclick="ShowChildRows(\'Yearclildrows_' + object.packSizeId + '\', this);" title="Show Year Details"><i class="fa fa-minus-circle text-danger icoShowSubRow' + i + '" aria-hidden="true"></i>' + '</a>';
 
-        tableRow = '<tr class="highlight-tr"><td>' + ExpandRowBtn + '</td><td>' + object.packSizeName + '</td><td class="marketSize">' + formatNumber(object.marketSizeInUnit) + '</td><td class="shelfLife">' + object.shelfLife + '</td><td>' + editbtn + deletebtn + addYearbtn + '</td> </tr>';
+        tableRow = '<tr class="highlight-tr"><td>' + ExpandRowBtn + '</td><td>' + object.packSizeName + '</td><td class="marketSize">' + object.marketSizeInUnit + '</td><td class="shelfLife">' + object.shelfLife + '</td><td>' + editbtn + deletebtn + addYearbtn + '</td> </tr>';
 
         $('#tblMainCommercial #mainCommercialRows').append(tableRow);
         // end of Add parent row into table for commercial
@@ -784,7 +794,7 @@ function OpenYearForm(packSizeId, yearIndex) {
         $('#dvCommercialAddYear').modal('show');
         IsShowCancel_Save_buttons(false);
     }
-    MainRowEditIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == SelectedBUValue && obj.countryId==selectedCountry && obj.pidfProductStrengthId == selectedStrength));
+    MainRowEditIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == SelectedBUValue && obj.countryId == selectedCountry && obj.pidfProductStrengthId == selectedStrength));
     EditIndex = (yearIndex == null || yearIndex == undefined ? -1 : yearIndex);
 
     if ((yearIndex == null || yearIndex == undefined)) {
@@ -797,8 +807,8 @@ function OpenYearForm(packSizeId, yearIndex) {
         $("#btnSaveYear").text("Save Year" + (_years + 1));
         if (_years == 0) {
             $("#MarketSize").removeAttr('readonly');
-            
-        } 
+
+        }
         else {
             $("#MarketSize").attr("readonly", true);
             UpdateNSPasperlasteYear(MainRowEditIndex, _years, 'Low');
@@ -809,7 +819,7 @@ function OpenYearForm(packSizeId, yearIndex) {
 }
 
 function UpdateNSPasperlasteYear(mainind, yearind, variable) {
-    var nspval = ArrMainCommercial[mainind].PidfCommercialYears[yearind-1]['nsp' + variable];
+    var nspval = ArrMainCommercial[mainind].PidfCommercialYears[yearind - 1]['nsp' + variable];
     $('#Nspunits' + variable).val(nspval);
 }
 
@@ -843,7 +853,7 @@ function UpdateChildTableDetail(_cObject) {
             var ArrItem = FSSelectedText.split('/');
             var MarketShareUnit = it["marketShareUnit" + ArrItem[0]];
             var Nsp = it["nsp" + ArrItem[1]];
-            var result = MarketShareUnit * (Nsp);
+            var result = (MarketShareUnit) * (Nsp);
             html = '<tr id="RevenueRow"' + index + '><td>Year' + (index + 1) + '</td><td>' + FSSelectedText + '</td><td>' + formatNumber(result.toFixed()) + '</td></tr>';
 
             $('#tblMainCommercial').find('#Yearclildrows_' + _cObject.packSizeId).find("#tblRevenue").find("#RevenueTbody").append(html);
@@ -875,6 +885,8 @@ function editCommercialYearRow(packSizeId, i, businessUnitId, pidfProductStrengt
         $('#dvCommercialForm').find('#' + kv.name).val(entityYear[getPropertyName(kv.name)]);
     });
     $('#dvCommercialForm').find('#PackagingTypeId').focus();
+    formatCurrencyInElements('format-currency');
+    preventTextInCurrencyFields();
 }
 function deleteCommercialYearRow(packSizeId, index) {
     var _commercialIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId));
@@ -899,7 +911,7 @@ function renderPIDFStrength(pidfStrength) {
     $('#dvCommercialForm').find("#ProductStrengthTabs").html(html);
     var _StrenthByBU = $.grep(pidfStrength, function (n, i) {
         return n.countryId == selectedCountry && n.businessUnitId == SelectedBUValue
-    }); 
+    });
     if (_StrenthByBU != null && _StrenthByBU != undefined && _StrenthByBU.length > 0) {
         $.each(_StrenthByBU, function (index, item) {
             html += '<li class="nav-item col-6 p-0">\
@@ -912,7 +924,7 @@ function renderPIDFStrength(pidfStrength) {
         selectedStrength = PIDFProductStrengthId;
         $('#Strengthtab_' + PIDFProductStrengthId).addClass('active');
         StrengthtabClick(selectedStrength, _PIDFID);
-    }    
+    }
 
     if (html == "") {
         IsNoStrengthforSelectedBU = true;
@@ -1063,7 +1075,7 @@ function Bind_ddlProjectWorkflowId(data) {
         $.each(data, function (index, object) {
             $('#ddlProjectWorkflowId').append($('<option>').text(object.workflowName).attr('value', object.workflowId));
         });
-        
+
     } catch (e) {
         console.log('Get ddlProjectWorkflow Error:' + e.message);
     }
@@ -1074,7 +1086,7 @@ function Bind_ddlPbfworkflowId(data) {
         $.each(data, function (index, object) {
             $('#ddlPbfworkflowId').append($('<option>').text(object.pbfworkFlowName).attr('value', object.pbfworkFlowId));
         });
-       
+
     } catch (e) {
         console.log('Get ddlPbfworkflow  Error:' + e.message);
     }
@@ -1123,9 +1135,9 @@ function AddTaskTo_tblPBFOutsourcetask(data) {
         html += '<td> <input type="number" class="form-control clscost"   value="' + _cost + '" /> </td>'
         html += '<td> <input type="date" class="form-control clstentative" value="' + _tentative + '" /> </td>'
 
-        html += '<td class="clsAddDeleteIconPBFComm"> <i class="fa-solid fa-circle-plus nav-icon text-success AddIconAPI" id="addIcon_' + ind + '" onclick="addRowParent_PBFOutsource(' + ind +')"></i> '
+        html += '<td class="clsAddDeleteIconPBFComm"> <i class="fa-solid fa-circle-plus nav-icon text-success AddIconAPI" id="addIcon_' + ind + '" onclick="addRowParent_PBFOutsource(' + ind + ')"></i> '
 
-        html += '<i  class="fa-solid fa-trash nav-icon text-red DeleteIconAPI" id="deleteIconAPI_' + ind + '" onclick="removeRowParent_PBFOutsource(' + ind +', this)"></i>'
+        html += '<i  class="fa-solid fa-trash nav-icon text-red DeleteIconAPI" id="deleteIconAPI_' + ind + '" onclick="removeRowParent_PBFOutsource(' + ind + ', this)"></i>'
 
         html += '</td> </tr>'
     });
@@ -1140,11 +1152,11 @@ function AddTaskTo_tblPBFOutsourcetask(data) {
 }
 
 function UpdatePBFOutSourceData(data) {
- 
+
     if (data != null && data.length > 0) {
         pbfOutSourceData_Arr = data;
         AddTaskTo_tblPBFOutsourcetask(data);
-    }    
+    }
 }
 function IsPBFPageValid() {
     var IsValid = true;
@@ -1162,13 +1174,13 @@ function IsPBFPageValid() {
     else {
         $('#valmsgddlProjectWorkflowId').text('');
     }
-    if(!IsValid)
-        toastr.error('Some feilds missing values!'); 
+    if (!IsValid)
+        toastr.error('Some feilds missing values!');
 
     return IsValid;
 }
 function SavePBFOutsourceData(saveType) {
-  //  IsPBFPageValid = true;
+    //  IsPBFPageValid = true;
     if (saveType != 'Sv' || (IsPBFPageValid() && ValidateTaskData())) {
         var pbfworkflowId = $('#ddlPbfworkflowId').val();
         var _projectWorkFlowId = $('#ddlProjectWorkflowId').val();
@@ -1186,9 +1198,9 @@ function SavePBFOutsourceData(saveType) {
 }
 function AddUpdatePBFoutsourceDataSuccess(data) {
     try {
-       // $('#SavePIDFModel').modal('hide');
+        // $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            
+
             if (!IsTabClick) {
                 toastr.success(data._Message);
                 window.location.href = "/PIDF/PIDFList?ScreenId=4";
@@ -1205,9 +1217,9 @@ function AddUpdatePBFoutsourceDataError(x, y, z) {
     console.log(ErrorMessage);
 }
 function getPBFTaskDataToSave() {
-   
+
     var taskdataArr = [];
-    $("tr.taskdataRow").each(function () {   
+    $("tr.taskdataRow").each(function () {
         var taskdataObj = {};
         var pbfWorkFlowTaskName = $(this).find("input.clspbfWorkFlowTaskName").val();
         var cost = $(this).find("input.clscost").val();
@@ -1218,7 +1230,7 @@ function getPBFTaskDataToSave() {
             'Cost': cost,
             'Tentative': tentative
         };
-        taskdataArr.push(taskdataObj);        
+        taskdataArr.push(taskdataObj);
     });
     return taskdataArr;
 }
@@ -1232,7 +1244,7 @@ function addRowParent_PBFOutsource(j) {
 function removeRowParent_PBFOutsource(j, element) {
     $(element).closest("tr").remove();
     PBFOutsourceRowDeleteIcon();
-} 
+}
 function PBFOutsourceRowDeleteIcon() {
     if ($('#tblPBFOutsourcetask tbody tr').length > 1) {
         $('.DeleteIconAPI').show();
@@ -1241,7 +1253,7 @@ function PBFOutsourceRowDeleteIcon() {
     }
 }
 function ValidateTaskData() {
-    isValidIPDForm = true; 
+    isValidIPDForm = true;
     $('#tblPBFOutsourcetask input').each(function () {
         if ($(this).val() == '') {
             $(this).css("border-color", "red");
@@ -1251,8 +1263,8 @@ function ValidateTaskData() {
             $(this).css("border-color", "");
         }
     });
-    if(!isValidIPDForm)
-        toastr.error('Some Task are missing values !'); 
+    if (!isValidIPDForm)
+        toastr.error('Some Task are missing values !');
 
     return isValidIPDForm;
 }
@@ -1270,7 +1282,7 @@ $('#btnSaveAsDraftPBFCommercial').click(function () {
 $('#custom-tabs-BudgetApproval-PBF-tab').click(function () {//commercial Tab Click
     IsTabClick = true;
     if ($("#IsView").val() != '1')
-    SavePBFOutsourceData('TabClick'); 
+        SavePBFOutsourceData('TabClick');
 })
 // Commercial save
 $("#custom-tabs-BudgetApproval-Finance-tab").click(function () { // PBF tab click
@@ -1280,8 +1292,8 @@ $("#custom-tabs-BudgetApproval-Finance-tab").click(function () { // PBF tab clic
         SetPBFDDLValues();
     }
     IsCommTabClick = true;
-    if ($("#IsView").val() != '1') 
-    CommercialSaveAsDraftClickClick('TabClick');
+    if ($("#IsView").val() != '1')
+        CommercialSaveAsDraftClickClick('TabClick');
 
 
     var IsViewInMode = ($("#IsView").val() == '1');
@@ -1301,7 +1313,7 @@ $('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
     CommercialSaveAsDraftClickClick('SvDrf');
 });
 $(document).on("change", ".clstentative", function () {
-   var isValidTentativeDate = true;
+    var isValidTentativeDate = true;
     var todaysDate = new Date();
     var _originalExpiryDate = new Date($(this).val());
     if (_originalExpiryDate < new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate())) {
