@@ -681,7 +681,7 @@ function BUstregthPack_AddButtonClick() {
         if ($('#hdnPackSizeMode').val() == "1") {
             //Find index of specific object using findIndex method.    
             objIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == ent_BuStrPack.packSizeId && obj.businessUnitId == SelectedBUValue && obj.pidfProductStrengthId == selectedStrength));
-            ArrMainCommercial[objIndex].marketSizeInUnit = ent_BuStrPack.marketSizeInUnit;
+            ArrMainCommercial[objIndex].marketSizeInUnit = parseAndFormatNumber(ent_BuStrPack.marketSizeInUnit);
             ArrMainCommercial[objIndex].packSizeName = ent_BuStrPack.packSizeName;
             ArrMainCommercial[objIndex].shelfLife = ent_BuStrPack.shelfLife;
             //--------Update PidfCommercialYears onject when MarketSizeUnit is Edited----------------------------------------            
@@ -730,7 +730,7 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
 
         let ExpandRowBtn = '<a class="large-font" style="" onclick="ShowChildRows(\'Yearclildrows_' + object.packSizeId + '\', this);" title="Show Year Details"><i class="fa fa-minus-circle text-danger icoShowSubRow' + i + '" aria-hidden="true"></i>' + '</a>';
 
-        tableRow = '<tr class="highlight-tr"><td>' + ExpandRowBtn + '</td><td>' + object.packSizeName + '</td><td class="marketSize">' + object.marketSizeInUnit + '</td><td class="shelfLife">' + object.shelfLife + '</td><td>' + editbtn + deletebtn + addYearbtn + '</td> </tr>';
+        tableRow = '<tr class="highlight-tr"><td>' + ExpandRowBtn + '</td><td>' + object.packSizeName + '</td><td class="marketSize">' + formatNumber(parseAndFormatNumber(object.marketSizeInUnit)) + '</td><td class="shelfLife">' + object.shelfLife + '</td><td>' + editbtn + deletebtn + addYearbtn + '</td> </tr>';
 
         $('#tblMainCommercial #mainCommercialRows').append(tableRow);
         // end of Add parent row into table for commercial
@@ -862,7 +862,7 @@ function UpdateChildTableDetail(_cObject) {
 }
 function parseAndFormatNumber(numberString) {
     if (typeof numberString !== 'string') {
-        return 0;
+        return numberString;
     } else if (numberString === '') {
         return 0;
     } else if (numberString.includes(',')) {

@@ -113,14 +113,14 @@
                                         </td>
                                         @if (i == 6)
                                         {
-                                            <td>
+                                            <td class=format-currency>
                                                 @Html.DisplayFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @readonly = "readonly", @class = "form-control" , @placeholder="" })
                                                 <label class="text-danger" style="display:contents"></label>
                                             </td>
                                         }
                                         else
                                         {
-                                            <td>
+                                            <td class="format-currency">
                                                 @Html.DisplayFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @class = "form-control" , @placeholder="" })
                                                 <label class="text-danger" style="display:contents"></label>
                                             </td>
@@ -338,12 +338,12 @@
                                         </td>
                                         @if (i != 7)
                                         {
-                                            <td>
-                                                @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesNoOfEmployeeValue, new { @class = "form-control" , @placeholder="" })
+                                            <td class="format-currency">
+                                                @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesNoOfEmployeeValue, new { @class = "form-control format-currency" , @placeholder="" })
                                                 <label class="text-danger" style="display:contents"></label>
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                            <td class="format-currency">
+                                                @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesMonthsValue, new { @class = "form-control format-currency" , @placeholder="" })
                                                 <label class="text-danger" style="display:contents"></label>
                                             </td>
                                         }
@@ -353,10 +353,10 @@
                                             <td class="format-currency"></td>
                                         }
                                         <td class="format-currency">
-                                            @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @class = "form-control format-currency" , @placeholder="" })
+                                            @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
-                                        <td class="format-currency">
+                                        <td>
                                             @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesCostValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
