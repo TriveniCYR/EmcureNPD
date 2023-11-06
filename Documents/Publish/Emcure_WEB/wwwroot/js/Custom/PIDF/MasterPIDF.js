@@ -447,6 +447,9 @@ function addRowIMSData(j) {
     var node = $('#ImsDataRow_0').clone(true);
     table.find('tr:last').after(node);
     table.find('tr:last').find("input").val("");
+    formatCurrencyInElements('format-currency');
+    preventTextInCurrencyFields();
+
     SetChildRowDeleteIcon();
 }
 function deleteRowIMSData(j, element) {

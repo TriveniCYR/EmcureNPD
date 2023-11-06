@@ -74,15 +74,16 @@ function GetBusinessUnitDetailsSuccess(data) {
                 $('#BDetailsTable tbody').append('<tr><td>' + object.projectName +
                     '</td><td>' + object.country + '</td><td>' + object.inHouses +
                     '</td><td>' + object.strength + '</td><td>' + object.year +
-                    '</td><td>' + object.packagingTypeName + '</td><td>' + object.batchSize +
-                    '</td><td>' + object.currencyName + '</td><td>' + object.marketSize +
-                    '</td><td>' + object.priceDiscounting + '</td><td>' + object.marketGrowth +
-                    '</td><td>' + object.suimsVolume + '</td><td>' + object.totalAPIReq + '</td></td></tr>');
+                    '</td><td>' + object.packagingTypeName + '</td><td class="format-currency">' + object.batchSize +
+                    '</td><td>' + object.currencyName + '</td><td class="format-currency">' + object.marketSize +
+                    '</td><td class="format-currency">' + object.priceDiscounting + '</td><td class="format-currency">' + object.marketGrowth +
+                    '</td><td class="format-currency">' + object.suimsVolume + '</td><td class="format-currency">' + object.totalAPIReq + '</td></td></tr>');
             })
         }
         else {
             $('#BDetailsTable tbody').append('<tr><td></td> <td></td> <td></td> <td></td> <td></td> <td></td><td width="20%" style="text-align:center;"><span style="color:red"><b>No Record Found</b></span></td><td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr>');
         }
+        formatCurrencyInElements('format-currency');
     }
     catch (e) {
         toastr.error('Error:' + e.message);

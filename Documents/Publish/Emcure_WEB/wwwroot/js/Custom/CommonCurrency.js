@@ -3,9 +3,11 @@
     elements.forEach(function (element) {
         if (element.tagName === 'INPUT') {
             const formatInput = (inputElement) => {
-                const numericValue = parseFloat(inputElement.value.replace(/[^\d.]/g, ''));
+                const inputText = inputElement.value;
+                const hasNegativeSign = inputText.includes('-');
+                const numericValue = parseFloat(inputText.replace(/[^\d.]/g, ''));
                 if (!isNaN(numericValue)) {
-                    inputElement.value = accounting.formatMoney(numericValue, { symbol: '', precision: 2 });
+                    inputElement.value = (hasNegativeSign ? '-' : '') + accounting.formatMoney(Math.abs(numericValue), { symbol: '', precision: 2 });
                 }
             };
             formatInput(element);
@@ -14,9 +16,11 @@
                 formatInput(this);
             });
         } else {
-            const numericValue = parseFloat(element.textContent.replace(/[^\d.]/g, ''));
+            const elementText = element.textContent;
+            const hasNegativeSign = elementText.includes('-');
+            const numericValue = parseFloat(elementText.replace(/[^\d.]/g, ''));
             if (!isNaN(numericValue)) {
-                element.textContent = accounting.formatMoney(numericValue, { symbol: '', precision: 2 });
+                element.textContent = (hasNegativeSign ? '-' : '') + accounting.formatMoney(Math.abs(numericValue), { symbol: '', precision: 2 });
             }
         }
     });
@@ -26,7 +30,7 @@ function preventTextInCurrencyFields() {
     const currencyInputs = document.querySelectorAll('.format-currency');
     currencyInputs.forEach(function (inputElement) {
         inputElement.addEventListener('input', function () {
-            this.value = this.value.replace(/[^0-9,.]/g, '');
+            this.value = this.value.replace(/[^0-9,-.]/g, '');
 
             const valueParts = this.value.split('.');
             if (valueParts.length > 2) {
