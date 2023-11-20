@@ -3680,7 +3680,8 @@ function BindRA(data, IsEdit = false) {
                                <td><input type="date" id="CountryApprovalDate${e}" name="RaEntities[${e}].CountryApprovalDate" value="${data[e].countryApprovalDate != null ? data[e].countryApprovalDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
                                <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
                                 <td> <input type="date" id="LasDateToRegulatory${e}" name="RaEntities[${e}].LasDateToRegulatory" value="${data[e].lasDateToRegulatory == null ? '' : data[e].lasDateToRegulatory.split('T')[0]}" class="form-control readOnlyUpdate valid"></td>
-                               <td> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
+                               <td> <input type="date" id="BudgetLaunchDate${e}"   name="RaEntities[${e}].BudgetLaunchDate" value="${data[e].budgetLaunchDate == null ? '' : data[e].budgetLaunchDate.split('T')[0]}" class="form-control readOnlyUpdate valid"></td>
+                                <td> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
                                </td>
                                </tr>`;
                     } catch (e) {
