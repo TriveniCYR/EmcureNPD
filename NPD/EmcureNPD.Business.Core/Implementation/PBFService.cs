@@ -3055,8 +3055,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 recordsTable.Columns.Add("BuId", typeof(int));
                 recordsTable.Columns.Add("TypeOfSubmissionId", typeof(int));
                 recordsTable.Columns.Add("DossierReadyDate", typeof(DateTime));
-                recordsTable.Columns.Add("EarliestSubmissionDExcl", typeof(DateTime));
-                recordsTable.Columns.Add("EarliestLaunchDExcl", typeof(DateTime));
+                recordsTable.Columns.Add("EarliestSubmissionDExcl", typeof(DateTime)); 
+                recordsTable.Columns.Add("BudgetLaunchDate", typeof(DateTime));
+				recordsTable.Columns.Add("EarliestLaunchDExcl", typeof(DateTime));
                 recordsTable.Columns.Add("LasDateToRegulatory", typeof(DateTime));
                 recordsTable.Columns.Add("CreatedOn", typeof(DateTime));
                 recordsTable.Columns.Add("UpdatedOn", typeof(DateTime));
@@ -3083,7 +3084,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         row["DossierReadyDate"] = item.DossierReadyDate == null ? DBNull.Value : item.DossierReadyDate;
                         row["EarliestSubmissionDExcl"] = item.EarliestSubmissionDexcl == null ? DBNull.Value : item.EarliestSubmissionDexcl;
                         row["EarliestLaunchDExcl"] = item.EarliestLaunchDexcl == null ? DBNull.Value : item.EarliestLaunchDexcl;
-                        row["LasDateToRegulatory"] = item.LasDateToRegulatory == null ? DBNull.Value : item.LasDateToRegulatory;
+						row["BudgetLaunchDate"] = item.BudgetLaunchDate == null ? DBNull.Value : item.BudgetLaunchDate;						
+						row["LasDateToRegulatory"] = item.LasDateToRegulatory == null ? DBNull.Value : item.LasDateToRegulatory;
                         row["CreatedOn"] = item.Pidfpbfraid > 0 ? DBNull.Value : DateTime.Now;
                         row["UpdatedOn"] = item.Pidfpbfraid > 0 ? DateTime.Now : DBNull.Value;
                         row["DeletedOn"] = item.Pidfpbfraid > 0 ? DateTime.Now : DBNull.Value;

@@ -817,25 +817,25 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             });
 
             modelBuilder.Entity<MasterNotification>(entity =>
-            {
-                entity.HasKey(e => e.NotificationId);
+			{
+				entity.HasKey(e => e.NotificationId);
 
-                entity.ToTable("Master_Notification", "dbo");
+				entity.ToTable("Master_Notification", "dbo");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+				entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.NotificationDescription).HasMaxLength(500);
+				entity.Property(e => e.NotificationDescription).HasMaxLength(500);
 
-                entity.Property(e => e.NotificationTitle)
-                    .IsRequired()
-                    .HasMaxLength(100);
+				entity.Property(e => e.NotificationTitle)
+					.IsRequired()
+					.HasMaxLength(100);
 
-                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+				entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
 
-                entity.Property(e => e.SentDatetime).HasColumnType("datetime");
-            });
+				entity.Property(e => e.SentDatetime).HasColumnType("datetime");
+			});
 
-            modelBuilder.Entity<MasterNotificationUser>(entity =>
+			modelBuilder.Entity<MasterNotificationUser>(entity =>
             {
                 entity.HasKey(e => e.NotificationUserId);
 
@@ -3608,6 +3608,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.BefinalReport)
                     .HasColumnType("datetime")
                     .HasColumnName("BEFinalReport");
+
+                entity.Property(e => e.BudgetLaunchDate).HasColumnType("datetime");
 
                 entity.Property(e => e.CountryApprovalDate).HasColumnType("datetime");
 

@@ -6,7 +6,18 @@ BEGIN
   
  ----- Step1: Add PIDFID for table -----  
  -- ALTER TABLE [dbo].[ExcelExportPIDF] ADD PIDFID INT  
-  
+ --ALTER TABLE [dbo].PIDF_PBF_RA ADD BudgetLaunchDate datetime null
+
+  --Master_BusinessUnit
+  --Master_UnitofMeasurement
+  --Master_ProductStrength
+  --Master_Country
+  --Master_DosageForm
+  --Master_PackSize
+  --Master_MarketExtenstion
+  --Master_DIA / MA
+  --Master In house/InLicensed
+  --Master_Manufacturing
  --===== Data update =======  
  --- Unit of measurement ----  
  INSERT INTO Master_UnitofMeasurement(UnitofMeasurementName, IsActive, CreatedBy, CreatedDate)  
@@ -47,7 +58,7 @@ FROM ExcelExportPIDF t
  SELECT DISTINCT 'Pack Size Name'+ TRIM(CONVERT(varchar, t.[Pack Size])),  TRIM(CONVERT(varchar, t.[Pack Size])), 1, @By,@Dt  
  FROM [dbo].[ExcelExportPIDF] t   
  WHERE t.[Pack Size] IS NOT NULL   --   
- AND NOT EXISTS (SELECT TOP 1 1 FROM Master_PackSize m1 WHERE m1.PackSizeName = t.[Pack Size Name])     
+ AND NOT EXISTS (SELECT TOP 1 1 FROM Master_PackSize m1 WHERE m1.PackSizeName = Convert(varchar, t.[Pack Size]))     
    --- Market Extenstion ---   
  INSERT INTO Master_MarketExtenstion(MarketExtenstionName, IsActive, CreatedBy, CreatedDate)  
  SELECT  distinct TRIM(t.[Market Extension]), 1, @By,@Dt  
@@ -103,7 +114,7 @@ FROM ExcelExportPIDF t
            ,[LastStatusId]  
            ,[InHouses],   
      OralId, UnitofMeasurementId, DosageFormId, PackagingTypeId, RFDCountryId, DIAId, MarketExtenstionId, StatusUpdatedBy, PIDFNO)   
-     SELECT DISTINCT 2 [BusinessUnitId], t.Product, 1, GETDATE(), GETDATE(), 1, 1,  
+     SELECT DISTINCT 31 [BusinessUnitId], t.Product, 1, GETDATE(), GETDATE(), 1, 1,  
      1 [StatusId], 1 [LastStatusId], 1 [InHouses]  
      , 1, 17 UnitofMeasurementId, 1, 1 PackagingTypeId, 1, 1 DIAId, 1, 1, 'PIDF-00'  
      FROM [dbo].[ExcelExportPIDF] t WHERE t.Product = @name  
@@ -154,8 +165,59 @@ FROM ExcelExportPIDF t
  CLOSE db_cursor    
  DEALLOCATE db_cursor  
 
+ ---step 3 insert into PBF tables-----
 
- 
+ ------start----Insert into --PIDF_PBF------------------------------------
+-- insert into PIDF_PBF (PIDFID,ProjectName,CreatedDate,CreatedBy,ManufacturingId) 
+--select PIDFID,MoleculeName,getdate(), 1,(
+--select ManufacturingId from Master_Manufacturing where ManufacturingName =
+--(select top 1 Manufacturer from ExcelExportPIDF where Product = MoleculeName)
+--)
+--from PIDF where BusinessUnitId  =2 -- 31 is Itly Country ID and 2 is EU country ID
+
+--insert into PIDF_PBF (PIDFID,ProjectName,CreatedDate,CreatedBy,ManufacturingId) 
+--select PIDFID,MoleculeName,getdate(), 1,(
+--select ManufacturingId from Master_Manufacturing where ManufacturingName =
+--(select top 1 Manufacturer from ExcelExportPIDF where Product = MoleculeName)
+--)
+--from PIDF where BusinessUnitId  =31 -- 31 is Itly Country ID and 2 is EU country ID
+
+------End----Insert into --PIDF_PBF------------------------------------
+
+------Start----Insert into --PIDF_PBF_RA------------------------------------
+
+--insert into PIDF_PBF_RA (PIDFId,PBFId,CountryIdBuId,BudgetLaunchDate,EarliestLaunchDExcl,BuId,CreatedOn)
+--select PIDFID
+--,(select top 1 PIDFPBFID from PIDF_PBF where PIDFID = p.PIDFID)
+--,(select TOP 1 CountryID from Master_Country where CountryCode = 
+--	(select TOP 1 Country from ExcelExportPIDF_EU where Product =  p.MoleculeName)
+--)
+--,(select TOP 1 [Bud Launch] from ExcelExportPIDF_EU where Product = p.MoleculeName)
+--,(select TOP 1 [Launch date] from ExcelExportPIDF_EU where Product = p.MoleculeName)
+--,(select TOP 1 BusinessUnitId from Master_BusinessUnit where BusinessUnitName = 
+--	(select TOP 1 BU from ExcelExportPIDF_EU where Product = p.MoleculeName)
+--)
+--,getdate()
+--from PIDF p where BusinessUnitId  =2 -- 31 is Itly Country ID and 2 is EU country ID
+
+--insert into PIDF_PBF_RA (PIDFId,PBFId,CountryIdBuId,BudgetLaunchDate,EarliestLaunchDExcl,BuId,CreatedOn)
+--select PIDFID
+--,(select top 1 PIDFPBFID from PIDF_PBF where PIDFID = p.PIDFID)
+--,(select TOP 1 CountryID from Master_Country where CountryCode = 
+--	(select TOP 1 Country from ExcelExportPIDF where Product =  p.MoleculeName)
+--)
+--,(select TOP 1 [Bud Launch] from ExcelExportPIDF where Product = p.MoleculeName)
+--,(select TOP 1 [Launch date] from ExcelExportPIDF where Product = p.MoleculeName)
+--,(select TOP 1 BusinessUnitId from Master_BusinessUnit where BusinessUnitName = 
+--	(select TOP 1 BU from ExcelExportPIDF where Product = p.MoleculeName)
+--)
+--,getdate()
+--from PIDF p where BusinessUnitId  =31 -- 31 is Itly Country ID and 2 is EU country ID
+
+------End----Insert into --PIDF_PBF_RA------------------------------------
+
+ ------update PIDFProductStrength set BusinessUnitId = 31 where PIDFID > 176 
+-------update PIDF_PBF_RA set buid = 2 where PIDFID <177
 --DECLARE @i INT = 2;
 --WHILE @i <= 20
 --	BEGIN
