@@ -381,9 +381,9 @@
                                                 <table id="APIDetailsTable" class="table table-bordered table-striped table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th>@MasterLocalizer["API Name"] <span class="text-danger">*</span></th>
-                                                            <th>@MasterLocalizer["API Sourcing"] <span class="text-danger">*</span></th>
-                                                            <th>@SharedLocalizer["API Vendor"] <span class="text-danger">*</span></th>
+                                                            <th>@MasterLocalizer["API Name"] 
+                                                            <th>@MasterLocalizer["API Sourcing"]
+                                                            <th>@SharedLocalizer["API Vendor"] 
                                                             <th class="text-center">@SharedLocalizer["Action"]</th>
                                                         </tr>
                                                     </thead>
@@ -535,9 +535,10 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
-                                                            @Html.LabelFor(model => model.RFDIndication, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                                            @Html.EditorFor(model => model.RFDIndication, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDIndication"],@maxlength="100" } })
-                                                            @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
+                                                            @Html.LabelFor(model => model.IndicationId, "Indication", new { @class = "control-label" }) <span class="text-danger">*</span>
+                                                            <input type="hidden" id="hdnIndicationId" value="@Model.IndicationId" />
+                                                            <select id="IndicationId" name="IndicationId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                                                            @Html.ValidationMessageFor(model => model.IndicationId, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                 </div>

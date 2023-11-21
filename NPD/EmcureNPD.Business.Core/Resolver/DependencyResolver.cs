@@ -44,7 +44,8 @@ namespace EmcureNPD.Business.Core.Resolver
             services.AddTransient<IMasterProductStrengthService, MasterProductStrengthService>();
             services.AddTransient<IMasterBERequirementService, MasterBERequirementService>();
             services.AddTransient<IMasterDIAService, MasterDIAService>();
-            services.AddTransient<IMasterMarketExtensionService, MasterMarketExtensionService>();
+			services.AddTransient<IMasterIndicationService, MasterIndicationService>();
+			services.AddTransient<IMasterMarketExtensionService, MasterMarketExtensionService>();
             services.AddTransient<IMasterTransformFormService, MasterTransformFormService>();
             services.AddTransient<IMasterExtensionApplicationService, MasterExtensionApplicationService>();
             services.AddTransient<IMasterActivityTypeService, MasterActivityTypeService>();

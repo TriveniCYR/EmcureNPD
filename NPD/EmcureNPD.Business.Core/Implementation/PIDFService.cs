@@ -88,6 +88,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.MasterBusinessUnits = dsDropdownOptions.Tables[5];
             DropdownObjects.MasterAPISourcing = dsDropdownOptions.Tables[6];
             DropdownObjects.MasterDIAs = dsDropdownOptions.Tables[7];
+            DropdownObjects.MasterIndications = dsDropdownOptions.Tables[8];
 
             //DropdownObjects.MasterCountrys = GetCountryByUserId(userid).Result;
             DropdownObjects.InHouses = new List<InHouseEntity> { new InHouseEntity { InHouseId = 1, InHouseName = "Yes" }, new InHouseEntity { InHouseId = 2, InHouseName = "No" } };
@@ -307,6 +308,7 @@ namespace EmcureNPD.Business.Core.Implementation
                                     objPIDFBusinessUnit.RfdpriceDiscounting = entityPIDF.RFDPriceDiscounting;
                                     objPIDFBusinessUnit.RfdcommercialBatchSize = entityPIDF.RFDCommercialBatchSize;
                                     objPIDFBusinessUnit.Diaid = entityPIDF.Diaid;
+                                    objPIDFBusinessUnit.IndicationId = entityPIDF.IndicationId;
                                     objPIDFBusinessUnit.MarketExtenstionId = entityPIDF.MarketExtenstionId;
                                     objPIDFBusinessUnit.TradeNameDate = entityPIDF.TradeNameDate;
                                     objPIDFBusinessUnit.TradeNameRequired = entityPIDF.TradeNameRequired;
@@ -617,7 +619,8 @@ namespace EmcureNPD.Business.Core.Implementation
                             data.RFDInitialRevenuePotential = _objPIDFBusinessUnit.RfdinitialRevenuePotential;
                             data.RFDPriceDiscounting = _objPIDFBusinessUnit.RfdpriceDiscounting;
                             data.RFDCommercialBatchSize = _objPIDFBusinessUnit.RfdcommercialBatchSize;
-                            data.Diaid = _objPIDFBusinessUnit.Diaid;
+                            data.Diaid = _objPIDFBusinessUnit.Diaid; 
+                            data.IndicationId = _objPIDFBusinessUnit.IndicationId;
                             data.MarketExtenstionId = _objPIDFBusinessUnit.MarketExtenstionId;
                             data.TradeNameDate = _objPIDFBusinessUnit.TradeNameDate;
                             data.TradeNameRequired = (_objPIDFBusinessUnit.TradeNameRequired == null ? false : Convert.ToBoolean(_objPIDFBusinessUnit.TradeNameRequired));

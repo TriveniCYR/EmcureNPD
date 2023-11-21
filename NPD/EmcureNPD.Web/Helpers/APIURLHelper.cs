@@ -305,11 +305,20 @@ namespace EmcureNPD.Web.Helpers
         public static string GetDIAById = "api/Dashboard/GetDIAById";
         public static string DeleteDIAById = "api/Dashboard/DeleteDIA";
 
-        #endregion DIA
+		#endregion DIA
 
-        #region User
+		#region Indication
 
-        public static string GetAllUser = "api/User/GetAllUser";
+		public static string GetAllIndication = "api/Dashboard/GetAllIndication";
+		public static string SaveGetAllIndication = "api/Dashboard/InsertUpdateIndication";
+		public static string GetIndicationById = "api/Dashboard/GetIndicationById";
+		public static string DeleteIndicationById = "api/Dashboard/DeleteIndication";
+
+		#endregion Indication
+
+		#region User
+
+		public static string GetAllUser = "api/User/GetAllUser";
         public static string SaveUser = "api/User/InsertUpdateUser";
         public static string GetUserById = "api/User/GetUserById";
         public static string GetUserDropdown = "api/User/GetUserDropdown";
