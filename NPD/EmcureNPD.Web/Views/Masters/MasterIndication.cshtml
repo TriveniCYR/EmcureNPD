@@ -85,7 +85,7 @@
 							<div class="form-group required">
 								@Html.LabelFor(model => model.IndicationId, "Indication", new { @class = "control-label" })
 								<span class="text-danger">*</span>
-								@Html.EditorFor(model => model.IndicationId, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder =Indication } })
+								@Html.EditorFor(model => model.IndicationId, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder ="Indication" } })
 								@Html.ValidationMessageFor(model => model.IndicationId, "", new { @class = "text-danger" })
 							</div>
 						</div>
