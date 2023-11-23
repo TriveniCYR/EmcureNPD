@@ -6,14 +6,14 @@ CREATE or alter PROCEDURE [dbo].[stp_npd_GetPIDFList]
 @PageSize INT = 25,                              
 @SortColumn VARCHAR(100) = 'PIDFNO',                              
 @SortDirection VARCHAR(5) = 'ASC',                              
-@SearchText VARCHAR(MAX) ='',            
+@SearchText VARCHAR(MAX) ='',           
 @ScreenId int = 0  ,
-@countryid	int =0,
-@marketextenstionid	int =0,
-@buid	int =0,
-@manufacturingid	int =0,
-@budgetlaunchdate	int =0,
-@inhouse	int =0
+@countryid	VARCHAR ='',
+@marketextenstionid	VARCHAR ='',
+@buid	VARCHAR ='',
+@manufacturingid	VARCHAR ='',
+@budgetlaunchdate	VARCHAR ='',
+@inhouse	VARCHAR =''
 )                          
 AS                            
 BEGIN                      
