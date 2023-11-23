@@ -114,12 +114,12 @@ namespace EmcureNPD.Web.Models
         public string entity { get; set; }
         public string product { get; set; }
         public DateTime? forecastDate { get; set; }
-        public string Currencyid { get; set; }
+        public string? Currencyid { get; set; }
         public int dosageFrom { get; set; }
         public string manufacturingSiteOrPartner { get; set; }
         public string skus { get; set; }
-        public int mspersentage { get; set; }
-        public int targetPriceScenario { get; set; }
+        public int? mspersentage { get; set; }
+        public int? targetPriceScenario { get; set; }
         public DateTime ?projectStartDate { get; set; }
         public DateTime ?batchManufacturing { get; set; }
         public DateTime ?expectedFilling { get; set; }
@@ -131,21 +131,21 @@ namespace EmcureNPD.Web.Models
 
         //---------------------------
 
-        public string approvalPeriodinDays { get; set; }
+        public string? approvalPeriodinDays { get; set; }
         public DateTime ?approvalDate { get; set; }
         public DateTime ?productLaunchDate { get; set; }
-        public double gestationPeriodinYears { get; set; }
-        public double ?marketShareErosionrate { get; set; }
-        public double ?priceErosion { get; set; }
+        public double? gestationPeriodinYears { get; set; }
+        public double? marketShareErosionrate { get; set; }
+        public double? priceErosion { get; set; }
         public string EscalationinCOGS { get; set; }
-        public double ?discountRate { get; set; }
-        public double ?incometaxrate { get; set; }
+        public double? discountRate { get; set; }
+        public double? incometaxrate { get; set; }
         public double? opexasapercenttosale { get; set; }
         public double? externalProfitSharepercent { get; set; }
-        public double ?collectioninDays { get; set; }
-        public double ?inventoryinDays { get; set; }
-        public double ?creditorinDays { get; set; }
-        public double ?marketingAllowance { get; set; }
+        public double? collectioninDays { get; set; }
+        public double? inventoryinDays { get; set; }
+        public double? creditorinDays { get; set; }
+        public double? marketingAllowance { get; set; }
         public double ?regulatoryMaintenanceCost { get; set; }
         public double ?grosstoNet { get; set; }
         public double ?noofbatchestobemanufactured { get; set; }

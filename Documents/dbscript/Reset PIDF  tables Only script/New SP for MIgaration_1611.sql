@@ -7,14 +7,14 @@ BEGIN
  ----- Step1: Add PIDFID for table -----  
  -- ALTER TABLE [dbo].[ExcelExportPIDF] ADD PIDFID INT  
  --ALTER TABLE [dbo].PIDF_PBF_RA ADD BudgetLaunchDate datetime null
-
+ 
   --Master_BusinessUnit
   --Master_UnitofMeasurement
   --Master_ProductStrength
   --Master_Country
-  --Master_DosageForm
+  --Master_DosageForm------
   --Master_PackSize
-  --Master_MarketExtenstion
+  --Master_MarketExtenstion---------
   --Master_DIA / MA
   --Master In house/InLicensed
   --Master_Manufacturing
@@ -216,8 +216,73 @@ FROM ExcelExportPIDF t
 
 ------End----Insert into --PIDF_PBF_RA------------------------------------
 
+----Start----Insert into --PIDF.DIAID------------------------------------
+--update  p
+--set p.DIAID = md.DIAId	
+--from PIDF p inner join ExcelExportPIDF_EU eu on eu.PIDFID = p.PIDFID
+--inner join Master_DIA md on md.DIAName = eu.[MA]
+-----------------------------------------
+--update  p
+--set p.DIAID = md.DIAId	
+--from PIDF p inner join ExcelExportPIDF eu on eu.PIDFID = p.PIDFID
+--inner join Master_DIA md on md.DIAName = eu.[MA]
+---End----Insert into --PIDF.DIAID------------------------------------
+--update  p set p.InHouses = case when (eu.[In house/ In-licensed] ='In-House')	 then 1 else 0 end
+--from PIDF p inner join ExcelExportPIDF_EU eu on eu.PIDFID = p.PIDFID
+----------------------------------
+--update  p set p.InHouses = case when (eu.[In house/ In-licensed] ='In-House')	 then 1 else 0 end
+--from PIDF p inner join ExcelExportPIDF eu on eu.PIDFID = p.PIDFID
+
+-----------------------------------------------------------------------------------------
+--insert into PIDF_Finance (PIDFId,Product,CreatedDate,CreatedBy,DosageFrom)
+--select PIDFID,MoleculeName,getdate(), 1,
+--(
+--	select DosageFormId from Master_DosageForm where DosageFormName =
+--	(select top 1 [Dosage Form] from ExcelExportPIDF where PIDFID = p.PIDFID)
+--)
+--from PIDF p where BusinessUnitId  =31 -- 31 is Itly Country ID and 2 is EU country ID
+
+-----------------------------------------------------------------
+--insert into PIDF_Finance (PIDFId,Product,CreatedDate,CreatedBy,DosageFrom)
+--select PIDFID,MoleculeName,getdate(), 1,
+--(
+--	select DosageFormId from Master_DosageForm where DosageFormName =
+--	(select top 1 [Dosage Form] from ExcelExportPIDF_EU where PIDFID = p.PIDFID)
+--)
+--from PIDF p where BusinessUnitId  =2 -- 31 is Itly Country ID and 2 is EU country ID
+-----------------------------------------------------------------------------
+----update  p
+----set p.MarketExtenstionId = md.MarketExtenstionId	
+------select p.MarketExtenstionId ,md.MarketExtenstionId	, eu.[Market Extension],md.MarketExtenstionName
+----from PIDF p inner join ExcelExportPIDF_EU eu on eu.PIDFID = p.PIDFID
+----inner join Master_MarketExtenstion md on md.MarketExtenstionName = eu.[Market Extension]
+
+
+---------------------------------------------------------------------------------
  ------update PIDFProductStrength set BusinessUnitId = 31 where PIDFID > 176 
 -------update PIDF_PBF_RA set buid = 2 where PIDFID <177
+
+
+-- changes for Commercila screen-------------------
+--update PIDFProductStrength set UnitofMeasurementId = 1 where UnitofMeasurementId  is null
+-----Finance  chnage-------------------------------------
+--need to insert data in below tables from Commercial-> 
+--and for Pack size and Strength from Excel
+--PIDF_Commercial,PIDF_Commercial_Years 
+----------------------------------------------------------------------------------------------------------
+--update  p
+--set p.BusinessUnitId = md.BusinessUnitId	
+--from PIDF p inner join ExcelExportPIDF eu on eu.PIDFID = p.PIDFID
+--inner join Master_BusinessUnit md on md.BusinessUnitName = eu.[BU]
+------------------------------------------------------------------------------------------------------
+
+--update pc
+--set  pc.countryId = prdc.CountryId 
+--from 
+--PIDF_Commercial pc inner join PIDFProductStrength prd on pc.PIDFId = prd.PIDFID 
+-- inner join PIDFProductStrength_CountryMapping prdc on prdc.PIDFProductStrengthId = prd.PIDFProductStrengthId
+
+---------------------------------------------------------------
 --DECLARE @i INT = 2;
 --WHILE @i <= 20
 --	BEGIN
