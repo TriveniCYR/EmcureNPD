@@ -73,6 +73,11 @@ function GetPIDFListFilterDropdownError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function InitializePIDFList() {
+
+    var tbl = $("#PIDFTable");
+    if (tbl.find('tbody tr').length > 0)
+        tbl.dataTable().fnDestroy(); 
+
     var setDefaultOrder = [22, 'desc'];
     var ajaxObject = {
         "url": $('#hdnBaseURL').val() + AllPIDF + "?ScreenId=" + _screenId, 
@@ -481,7 +486,7 @@ function SaveAppRejSuccess(data) {
         if (data._Success === true) {
             toastr.success(data._Message);
             objApprRejList = [];
-            $("#PIDFTable").dataTable().fnDestroy();
+           // $("#PIDFTable").dataTable().fnDestroy();
             InitializePIDFList();
         }
         else {
@@ -573,7 +578,7 @@ function ShowAddFilterPopUpModel() {
 }
 function ApplyFilterButtonClick() {
     $('#dvAddFilterModel').modal('hide');
-    $("#PIDFTable").dataTable().fnDestroy();
+   // $("#PIDFTable").dataTable().fnDestroy();
     InitializePIDFList();
 }
 function ValidateISInterestedAPIUserForm(IsInterested) {
