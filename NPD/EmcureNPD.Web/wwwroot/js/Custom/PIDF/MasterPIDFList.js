@@ -90,8 +90,8 @@ function InitializePIDFList() {
             d.marketextenstionid = $('#ddlMarketExtension').val();
             d.buid = $('#ddlBU').val();
             d.manufacturingid = $('#ddlManifacturer').val();
-            d.budgetlaunchdate = $('#ddlCountry').val();
-            d.inhouse = $('#ddlBudgetLaunch').val();
+            d.budgetlaunchdate = $('#ddlBudgetLaunch').val();
+            d.inhouse = $('#ddlInHouse').val();
         },
         "datatype": "json"
     };
