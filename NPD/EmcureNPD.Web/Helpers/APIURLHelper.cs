@@ -358,6 +358,7 @@ namespace EmcureNPD.Web.Helpers
 
         public static string GetPbfFormDetailsAnalytical = "api/PBF/GetPbfFormDetailsAnalytical";
 
+        public static string GetPIDFListFilterDropdown = "api/PIDF/GetPIDFFilterFormData";
         public static string GetPIDFDropdown = "api/PIDF/FillDropdown";
         public static string GetAllPIDF = "api/PIDF/GetAllPIDFList";
         public static string SavePIDF = "api/PIDF/InsertUpdatePIDF";

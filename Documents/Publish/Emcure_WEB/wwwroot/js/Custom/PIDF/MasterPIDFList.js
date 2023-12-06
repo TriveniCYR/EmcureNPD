@@ -29,18 +29,69 @@ $(document).ready(function () {
         }
 
     });
-
+    GetPIDFListFilterDropdown_Method();
 });
+function GetPIDFListFilterDropdown_Method() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFListFilterDropdown, 'GET', GetPIDFListFilterDropdownSuccess, GetPIDFListFilterDropdownError);
+}
+function GetPIDFListFilterDropdownSuccess(data) {
+    try {
+        if (data != null) {
+            var _emptyOption = '<option value="">-- Select --</option>';
+            $('#ddlCountry').append(_emptyOption);
+            $('#ddlMarketExtension').append(_emptyOption);
+            $('#ddlInHouse').append(_emptyOption);
+            $('#ddlBU').append(_emptyOption);
+            $('#ddlBudgetLaunch').append(_emptyOption);
+            $('#ddlManifacturer').append(_emptyOption);
 
+            $(data.MasterCountry).each(function (index, item) {
+                $('#ddlCountry').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
+            });
+            $(data.MasterMarketExtenstion).each(function (index, item) {
+                $('#ddlMarketExtension').append('<option value="' + item.marketExtenstionId + '">' + item.marketExtenstionName + '</option>');
+            });
+            
+            $('#ddlInHouse').append('<option value="' + 1 + '">' + 'In-House' + '</option>');
+            $('#ddlInHouse').append('<option value="' + 0 + '">' + 'In-Licensed' + '</option>');
+                     
+            $(data.MasterBusinessUnit).each(function (index, item) {
+                $('#ddlBU').append('<option value="' + item.businessUnitId + '">' + item.businessUnitName + '</option>');
+            });
+            $(data.BudgetLaunchDate).each(function (index, item) {
+                $('#ddlBudgetLaunch').append('<option value="' + item.budgetLaunchDate + '">' + item.budgetLaunchDate + '</option>');
+            }); 
+            $(data.MasterManufacturing).each(function (index, item) {
+                $('#ddlManifacturer').append('<option value="' + item.manufacturingId + '">' + item.manufacturingName + '</option>');
+            });
+        }
+    } catch (e) {
+      //  toastr.error('Error:' + e.message);
+    }
+}
+function GetPIDFListFilterDropdownError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
 function InitializePIDFList() {
+
+    var tbl = $("#PIDFTable");
+    if (tbl.find('tbody tr').length > 0)
+        tbl.dataTable().fnDestroy(); 
+
     var setDefaultOrder = [22, 'desc'];
     var ajaxObject = {
-        "url": $('#hdnBaseURL').val() + AllPIDF + "?ScreenId=" + _screenId,
+        "url": $('#hdnBaseURL').val() + AllPIDF + "?ScreenId=" + _screenId, 
         "type": "POST",
         "data": function (d) {
             var pageNumber = $('#' + tableId).DataTable().page.info();
             d.PageNumber = pageNumber.page;
             d.ScreenId = _screenId;
+            d.countryid = $('#ddlCountry').val();
+            d.marketextenstionid = $('#ddlMarketExtension').val();
+            d.buid = $('#ddlBU').val();
+            d.manufacturingid = $('#ddlManifacturer').val();
+            d.budgetlaunchdate = $('#ddlBudgetLaunch').val();
+            d.inhouse = $('#ddlInHouse').val();
         },
         "datatype": "json"
     };
@@ -435,7 +486,7 @@ function SaveAppRejSuccess(data) {
         if (data._Success === true) {
             toastr.success(data._Message);
             objApprRejList = [];
-            $("#PIDFTable").dataTable().fnDestroy();
+           // $("#PIDFTable").dataTable().fnDestroy();
             InitializePIDFList();
         }
         else {
@@ -521,6 +572,14 @@ function ShowAddAPIUserPopUp(pidfid) {
     ResetIsAPIInterestedForm();
     $('#dvInterestedAPIUser').hide();
     $('#dvNotInterestedAPIUser').hide(); // Initially hide the div for 'Not Interested'
+}
+function ShowAddFilterPopUpModel() {
+    $('#dvAddFilterModel').modal('show');
+}
+function ApplyFilterButtonClick() {
+    $('#dvAddFilterModel').modal('hide');
+   // $("#PIDFTable").dataTable().fnDestroy();
+    InitializePIDFList();
 }
 function ValidateISInterestedAPIUserForm(IsInterested) {
     let IsValid = true;

@@ -28,12 +28,12 @@ function GetAllNotificationListSuccess(data) {
             $("#notificationCounter").html(elehtml);
         }
     } catch (e) {
-        toastr.error('Error:' + e.message);
+      //  toastr.error('Error:' + e.message);
     }
 }
 function GetAllNotificationListError(x, y, z) {
     //console.log("GetAllNotificationListError");
-    toastr.error(ErrorMessage);
+   // toastr.error(ErrorMessage);
 }
 
 function GetNotificationsForUser() {
@@ -49,11 +49,11 @@ function GetNotificationsForUserSuccess(data) {
             }
         }
     } catch (e) {
-        toastr.error('Error:' + e.message);
+     //   toastr.error('Error:' + e.message);
     }
 }
 function GetNotificationsForUserError(x, y, z) {
-    toastr.error(ErrorMessage);
+  //  toastr.error(ErrorMessage);
     //console.log("GetNotificationsForUserError");
 }
 
@@ -68,11 +68,11 @@ function GetNotificationClickedSuccess(data) {
                 }
         }
     } catch (e) {
-        toastr.error('Error:' + e.message);
+      //  toastr.error('Error:' + e.message);
     }
 }
 function GetNotificationClickedError(x, y, z) {
-    toastr.error(ErrorMessage);
+  //  toastr.error(ErrorMessage);
     //console.log("GetNotificationClickedError");
 }
 //var signalRServer = $.connection.signalRServer;

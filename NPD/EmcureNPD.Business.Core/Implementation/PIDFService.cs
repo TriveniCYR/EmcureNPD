@@ -164,6 +164,14 @@ namespace EmcureNPD.Business.Core.Implementation
                     new SqlParameter("@SortDirection", SortDir),
                     new SqlParameter("@SearchText", SearchText),
                     new SqlParameter("@ScreenId", ScreenId),
+
+                    new SqlParameter("@countryid", model.countryid),
+                    new SqlParameter("@marketextenstionid", model.marketextenstionid),
+                    new SqlParameter("@buid", model.buid),
+                    new SqlParameter("@manufacturingid", model.manufacturingid),
+                    new SqlParameter("@budgetlaunchdate", model.budgetlaunchdate),
+                    new SqlParameter("@inhouse", model.inhouse),
+
             };
 
             var PIDFList = await _repository.GetBySP("stp_npd_GetPIDFList", System.Data.CommandType.StoredProcedure, osqlParameter);
@@ -832,6 +840,25 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 return DBOperation.NotFound;
             }
+        }
+
+        public async Task<dynamic> GetPIDFFilterFormData()
+        {
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@UserId", loggedInUserId),
+            };
+
+            DataSet dsCommercial = await _repository.GetDataSetBySP("stp_npd_Get_PIDFListFilterDropdowndata", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            dynamic DropdownObjects = new ExpandoObject();
+            DropdownObjects.MasterCountry = dsCommercial.Tables[0];
+            DropdownObjects.MasterMarketExtenstion = dsCommercial.Tables[1];
+            DropdownObjects.MasterBusinessUnit = dsCommercial.Tables[2];
+            DropdownObjects.MasterManufacturing = dsCommercial.Tables[3];
+            DropdownObjects.BudgetLaunchDate = dsCommercial.Tables[4];
+            return DropdownObjects;
         }
     }
 }
