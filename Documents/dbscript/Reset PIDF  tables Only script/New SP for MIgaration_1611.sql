@@ -283,6 +283,17 @@ FROM ExcelExportPIDF t
 -- inner join PIDFProductStrength_CountryMapping prdc on prdc.PIDFProductStrengthId = prd.PIDFProductStrengthId
 
 ---------------------------------------------------------------
+
+--select * 
+--insert into Master_UserDepartmentMapping (DepartmentId,UserId,CreatedDate)
+--select md.DepartmentId, mu.UserId,GETDATE()
+--from Master_Department md 
+--inner join ExcelUserData ex on ex.Department = md.DepartmentName
+--inner join Master_User mu  on mu.EmailAddress = ex.Email
+
+
+
+
 --DECLARE @i INT = 2;
 --WHILE @i <= 20
 --	BEGIN
