@@ -260,6 +260,7 @@ FROM ExcelExportPIDF t
 
 ---------------------------------------------------------------------------------
  ------update PIDFProductStrength set BusinessUnitId = 31 where PIDFID > 176 
+
 -------update PIDF_PBF_RA set buid = 2 where PIDFID <177
 
 
@@ -292,6 +293,16 @@ FROM ExcelExportPIDF t
 --inner join Master_User mu  on mu.EmailAddress = ex.Email
 
 
+
+-----------update PIDF_PBF_RA set buid = 2 where PIDFID <177
+--------------------------------------------------------------------
+
+--update pf
+--set pf.Product = p.MoleculeName
+--from 
+--PIDF_Finance pf inner join PIDF p on p.PIDFID = pf.PIDFId
+
+----------------------------------------------------------------------
 
 
 --DECLARE @i INT = 2;

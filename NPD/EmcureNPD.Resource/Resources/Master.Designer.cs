@@ -898,6 +898,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Indication.
+        /// </summary>
+        public static string Indication {
+            get {
+                return ResourceManager.GetString("Indication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In House.
         /// </summary>
         public static string InHouses {

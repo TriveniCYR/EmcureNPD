@@ -67,6 +67,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string StatusRemark { get; set; }
         public bool? TradeNameRequired { get; set; }
         public DateTime? TradeNameDate { get; set; }
+        public int? IndicationId { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual MasterDium Dia { get; set; }

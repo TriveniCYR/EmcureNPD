@@ -33,5 +33,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? Diaid { get; set; }
         public bool? TradeNameRequired { get; set; }
         public DateTime? TradeNameDate { get; set; }
+        public int? IndicationId { get; set; }
     }
 }
