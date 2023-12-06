@@ -1,9 +1,9 @@
 ﻿$(document).ready(function () {
-    GetAllNotifications();
-    GetNotificationsForUser();
-    $(".notification").click(function () {
-        ajaxServiceMethod($('#hdnBaseURL').val() + NotificationsClickedByUser, 'GET', GetNotificationClickedSuccess, GetNotificationClickedError);
-    });
+   // GetAllNotifications();
+  //  GetNotificationsForUser();
+    //$(".notification").click(function () {
+    //    ajaxServiceMethod($('#hdnBaseURL').val() + NotificationsClickedByUser, 'GET', GetNotificationClickedSuccess, GetNotificationClickedError);
+    //});
 });
 function GetAllNotifications() {
     let ColumnName = "CreatedDate", SortDir = "DESC", start = 0, length = 4;

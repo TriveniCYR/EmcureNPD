@@ -327,6 +327,7 @@ function GetPIDFDropdownSuccess(data) {
             $('#BusinessUnitId').append(_emptyOption);
             $('#MarketExtenstionId').append(_emptyOption);
             $('#Diaid').append(_emptyOption);
+            $('#IndicationId').append(_emptyOption);
             $('.productStrengthUnit').append(_emptyOption);
             $('.productApiSourcing').append(_emptyOption);
 
@@ -361,7 +362,9 @@ function GetPIDFDropdownSuccess(data) {
             $(data.MasterDIAs).each(function (index, item) {
                 $('#Diaid').append('<option value="' + item.diaId + '">' + item.diaName + '</option>');
             });
-
+            $(data.MasterIndications).each(function (index, item) {
+                $('#IndicationId').append('<option value="' + item.indicationId + '">' + item.indicationName + '</option>');
+            });
             try {
                 if (_PIDFId > 0) {
                     $('#OralId').val($('#hdnOralId').val());
@@ -371,6 +374,7 @@ function GetPIDFDropdownSuccess(data) {
                     $('#BusinessUnitId').val($('#hdnBusinessUnitId').val()).trigger("change");
                     $('#MarketExtenstionId').val($('#hdnMarketExtenstionId').val());
                     $('#Diaid').val($('#hdnDiaid').val());
+                    $('#IndicationId').val($('#hdnIndicationId').val());
 
                     var _Inhousevalue = ($('#InHouses').val() == 'True') ? 1 : 2;
                     $('#InhouseDropdownId').val(_Inhousevalue);
@@ -602,7 +606,7 @@ function validateDynamicControldDetails() {
     var isValidPIDFForm = true;
     var strengthValues = [];
 
-    $('select[name$="UnitofMeasurementId"], input[name$="Imsvalue"], input[name$="Imsvolume"], select[name$="ApisourcingId"], input[name$="Apivendor"], input[name$="Apiname"], .customvalidateformcontrol').each(function () {
+    $('select[name$="UnitofMeasurementId"], input[name$="Imsvalue"], input[name$="Imsvolume"], .customvalidateformcontrol').each(function () {
         if (!validatecontrols(this)) {
             isValidPIDFForm = false;
         }

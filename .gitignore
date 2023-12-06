@@ -8,3 +8,5 @@
 /ExistingApplication
 /NPD/EmcureNPD.API/wwwroot/Uploads/PIDF/Medical
 /Documents/HTML/Emcure/Project-charter/.vs
+/Documents/Publish/Emcure_API/wwwroot/Uploads/errorlogs/AppLogs20231121.log
+*.log

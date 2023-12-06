@@ -711,4 +711,7 @@
   <data name="Domestic" xml:space="preserve">
     <value>Domestic</value>
   </data>
+  <data name="Indication" xml:space="preserve">
+    <value>Indication</value>
+  </data>
 </root>
