@@ -52,7 +52,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							@Html.Label(@SharedLocalizer["DeleteConfirm"])
+						@Html.Label(@SharedLocalizer["DeleteConfirm"])
 						</div>
 					</div>
 				</div>
@@ -83,10 +83,10 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group required">
-								@Html.LabelFor(model => model.IndicationId, "Indication", new { @class = "control-label" })
+								@Html.LabelFor(model => model.IndicationName, "Indication", new { @class = "control-label" })
 								<span class="text-danger">*</span>
-								@Html.EditorFor(model => model.IndicationId, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder ="Indication" } })
-								@Html.ValidationMessageFor(model => model.IndicationId, "", new { @class = "text-danger" })
+								@Html.EditorFor(model => model.IndicationName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder ="Indication" } })
+								@Html.ValidationMessageFor(model => model.IndicationName, "", new { @class = "text-danger" })
 							</div>
 						</div>
 					</div>
@@ -113,12 +113,11 @@
 
 	<script type="text/javascript" src="~/js/Custom/Masters/MasterIndication.js?v=@jsVersion"></script>
 	<script>
-
 		//#region Setup API Url
-		var AllDIA = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDIA";
-		var SaveDIA = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveDIA";
-		var GetDIAByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetDIAById";
-		var DeleteDIAByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteDIAById";
+		var AllDIA = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllIndication";
+		var SaveDIA = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveIndication";
+		var GetDIAByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIndicationById";
+		var DeleteDIAByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteIndicationById";
 		// #endregion
 		var IsEditAllow = "@IsEditAllow";
 		var IsDeleteAllow = "@IsDeleteAllow";

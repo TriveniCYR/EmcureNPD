@@ -309,10 +309,10 @@ namespace EmcureNPD.Web.Helpers
 
 		#region Indication
 
-		public static string GetAllIndication = "api/Dashboard/GetAllIndication";
-		public static string SaveGetAllIndication = "api/Dashboard/InsertUpdateIndication";
-		public static string GetIndicationById = "api/Dashboard/GetIndicationById";
-		public static string DeleteIndicationById = "api/Dashboard/DeleteIndication";
+		public static string GetAllIndication = "api/Indication/GetAllIndication";
+		public static string SaveIndication = "api/Indication/InsertUpdateIndication";
+		public static string GetIndicationById = "api/Indication/GetIndicationById";
+		public static string DeleteIndicationById = "api/Indication/DeleteIndication";
 
 		#endregion Indication
 
