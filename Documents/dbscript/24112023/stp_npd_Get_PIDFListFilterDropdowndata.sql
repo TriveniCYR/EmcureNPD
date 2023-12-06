@@ -1,4 +1,8 @@
 
+
+alter table PIDF_PBF_RA add [BudgetLaunchDate] [datetime] NULL
+
+
 CREATE or alter PROCEDURE [dbo].[stp_npd_Get_PIDFListFilterDropdowndata]                          
 (                
 @UserId int             
