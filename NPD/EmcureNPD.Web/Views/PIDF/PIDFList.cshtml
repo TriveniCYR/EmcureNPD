@@ -4,6 +4,7 @@
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @using EmcureNPD.Web.Helpers;
+@model EmcureNPD.Business.Models.PIDFFIlterEntity
 
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
@@ -140,6 +141,7 @@
 
 @*-----------------*@
 <div id="dvAddFilterModel" class="modal themeModal " role="dialog">
+ <form>
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
@@ -152,41 +154,41 @@
                         <div class="col-md-4">
                             <div class="form-group required">
                                 <lable class="control-label"> <b>Country</b> </lable>
-                                <select id="ddlCountry" name="ddlCountry" class="form-control"></select>
-                               @* <label id="valmsgInterestedAPIUser" class="text-danger"></label>*@
-                            </div>
+                            @Html.DropDownListFor(model => model.ddlCountry, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple" })
+
+                        </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group required">
                                 <lable class="control-label"> <b>Market Extension</b> </lable>
-                                <select id="ddlMarketExtension" name="ddlMarketExtension" class="form-control"></select>
+                                <select id="ddlMarketExtension" multiple="multiple" name="ddlMarketExtension" class="form-control"></select>
                               
                             </div>
                         </div>
                         <div class="col-md-4" >
                             <div class="form-group required">
                                 <lable class="control-label"> <b>Is Inhouse</b> </lable>
-                                <select id="ddlInHouse" name="ddlInHouse" class="form-control"></select>
+                                <select id="ddlInHouse" name="ddlInHouse" class="form-control" multiple = "multiple" ></select>
                               
                             </div>
                         </div>
                          <div class="col-md-4" >
                             <div class="form-group required">
                                 <lable class="control-label"> <b>Bussines Unit</b> </lable>
-                                <select id="ddlBU" name="ddlBU" class="form-control"></select>
+                                <select id="ddlBU" name="ddlBU" class="form-control"  multiple="multiple" ></select>
                               
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group required">
                                 <lable class="control-label"> <b>Budget Launch</b> </lable>
-                                <select id="ddlBudgetLaunch" name="ddlBudgetLaunch" class="form-control"></select>
+                                <select id="ddlBudgetLaunch" name="ddlBudgetLaunch" class="form-control"  multiple="multiple" ></select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group required">
                                 <lable class="control-label"> <b>Manifacturer</b> </lable>
-                            <select id="ddlManifacturer" name="ddlManifacturer" class="form-control"></select>
+                            <select id="ddlManifacturer" name="ddlManifacturer" class="form-control"  multiple="multiple" ></select>
                             </div>
                         </div>
                     </div>
@@ -197,6 +199,7 @@
             </div>
         </div>
     </div>
+    </form>
 </div>
 @*-----------------*@
 
@@ -272,6 +275,9 @@
     <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
     <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDFList.js?v=@jsVersion"></script>
 
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
 
     <script>
 

@@ -38,16 +38,18 @@ function GetPIDFListFilterDropdownSuccess(data) {
     try {
         if (data != null) {
             var _emptyOption = '<option value="">-- Select --</option>';
-            $('#ddlCountry').append(_emptyOption);
-            $('#ddlMarketExtension').append(_emptyOption);
-            $('#ddlInHouse').append(_emptyOption);
-            $('#ddlBU').append(_emptyOption);
-            $('#ddlBudgetLaunch').append(_emptyOption);
-            $('#ddlManifacturer').append(_emptyOption);
+            //$('#ddlCountry').append(_emptyOption);
+            //$('#ddlMarketExtension').append(_emptyOption);
+            //$('#ddlInHouse').append(_emptyOption);
+            //$('#ddlBU').append(_emptyOption);
+            //$('#ddlBudgetLaunch').append(_emptyOption);
+            //$('#ddlManifacturer').append(_emptyOption);
 
             $(data.MasterCountry).each(function (index, item) {
                 $('#ddlCountry').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
             });
+            $('#ddlCountry').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+
             $(data.MasterMarketExtenstion).each(function (index, item) {
                 $('#ddlMarketExtension').append('<option value="' + item.marketExtenstionId + '">' + item.marketExtenstionName + '</option>');
             });
@@ -59,11 +61,17 @@ function GetPIDFListFilterDropdownSuccess(data) {
                 $('#ddlBU').append('<option value="' + item.businessUnitId + '">' + item.businessUnitName + '</option>');
             });
             $(data.BudgetLaunchDate).each(function (index, item) {
-                $('#ddlBudgetLaunch').append('<option value="' + item.budgetLaunchDate + '">' + item.budgetLaunchDate + '</option>');
+                $('#ddlBudgetLaunch').append('<option value="' + item.budgetLaunchDate + '">' + item.budgetLaunchDateText + '</option>');
             }); 
             $(data.MasterManufacturing).each(function (index, item) {
                 $('#ddlManifacturer').append('<option value="' + item.manufacturingId + '">' + item.manufacturingName + '</option>');
             });
+
+            $('#ddlManifacturer').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+            $('#ddlMarketExtension').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+            $('#ddlInHouse').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+            $('#ddlBU').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+            $('#ddlBudgetLaunch').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
         }
     } catch (e) {
       //  toastr.error('Error:' + e.message);
@@ -86,12 +94,21 @@ function InitializePIDFList() {
             var pageNumber = $('#' + tableId).DataTable().page.info();
             d.PageNumber = pageNumber.page;
             d.ScreenId = _screenId;
-            d.countryid = $('#ddlCountry').val();
-            d.marketextenstionid = $('#ddlMarketExtension').val();
-            d.buid = $('#ddlBU').val();
-            d.manufacturingid = $('#ddlManifacturer').val();
+
+            //d.countryid = $('#ddlCountry').val();
+            //d.marketextenstionid = $('#ddlMarketExtension').val();
+            //d.buid = $('#ddlBU').val();
+            //d.manufacturingid = $('#ddlManifacturer').val();
+            //d.budgetlaunchdate = $('#ddlBudgetLaunch').val();
+            //d.inhouse = $('#ddlInHouse').val();
+
+            d.countryid = $('#ddlCountry').val().toString();
+            d.marketextenstionid = $('#ddlMarketExtension').val().toString();
+            d.buid = $('#ddlBU').val().toString();
+            d.manufacturingid = $('#ddlManifacturer').val().toString();
             d.budgetlaunchdate = $('#ddlBudgetLaunch').val();
-            d.inhouse = $('#ddlInHouse').val();
+            d.inhouse = $('#ddlInHouse').val().toString();
+
         },
         "datatype": "json"
     };

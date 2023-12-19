@@ -49,7 +49,8 @@ namespace EmcureNPD.Web.Controllers
             {
                 TempData[UserHelper.SuccessMessage] = TempData[UserHelper.SuccessMessage];
             }
-            return View();
+            PIDFFIlterEntity model = new();
+            return View(model);
         }
 
         public IActionResult PIDF(int? PIDFId, int? bui, bool _Partial = false, bool IsViewMode = false)
