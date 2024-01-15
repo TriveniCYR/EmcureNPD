@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -55,6 +54,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterFormRnDdivision> MasterFormRnDdivisions { get; set; }
         public virtual DbSet<MasterFormulation> MasterFormulations { get; set; }
         public virtual DbSet<MasterHeadWiseBudgetActivity> MasterHeadWiseBudgetActivities { get; set; }
+        public virtual DbSet<MasterIndication> MasterIndications { get; set; }
         public virtual DbSet<MasterManufacturing> MasterManufacturings { get; set; }
         public virtual DbSet<MasterMarketExtenstion> MasterMarketExtenstions { get; set; }
         public virtual DbSet<MasterModule> MasterModules { get; set; }
@@ -179,8 +179,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -737,6 +737,19 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ProjectActivitiesId).ValueGeneratedNever();
 
                 entity.Property(e => e.ProjectActivitiesName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterIndication>(entity =>
+            {
+                entity.HasKey(e => e.IndicationId);
+
+                entity.ToTable("Master_Indication", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IndicationName).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MasterManufacturing>(entity =>
@@ -3608,6 +3621,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.BefinalReport)
                     .HasColumnType("datetime")
                     .HasColumnName("BEFinalReport");
+
+                entity.Property(e => e.BudgetLaunchDate).HasColumnType("datetime");
 
                 entity.Property(e => e.CountryApprovalDate).HasColumnType("datetime");
 

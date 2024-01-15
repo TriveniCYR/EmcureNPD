@@ -9,6 +9,7 @@ namespace EmcureNPD.Business.Core.Interface
     {
         Task<dynamic> FillDropdown(int userid);
 
+        Task<dynamic> GetPIDFFilterFormData();
         Task<DataTableResponseModel> GetAllPIDFList(DataTableAjaxPostModel model, int ScreenId);
 
         Task<DBOperation> AddUpdatePIDF(PIDFEntity entityPIDF);

@@ -17,6 +17,13 @@ namespace EmcureNPD.Business.Models
         public List<Column> columns { get; set; }
         public Search search { get; set; }
         public List<Order> order { get; set; }
+        public string countryid { get; set; }
+        public string marketextenstionid { get; set; }
+        public string buid { get; set; }
+        public string manufacturingid { get; set; }
+        public string budgetlaunchdate { get; set; }
+        public string inhouse { get; set; }
+
     }
     public class Column
     {

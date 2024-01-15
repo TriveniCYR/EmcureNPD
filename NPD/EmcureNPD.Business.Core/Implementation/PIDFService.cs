@@ -88,6 +88,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.MasterBusinessUnits = dsDropdownOptions.Tables[5];
             DropdownObjects.MasterAPISourcing = dsDropdownOptions.Tables[6];
             DropdownObjects.MasterDIAs = dsDropdownOptions.Tables[7];
+            DropdownObjects.MasterIndications = dsDropdownOptions.Tables[8];
 
             //DropdownObjects.MasterCountrys = GetCountryByUserId(userid).Result;
             DropdownObjects.InHouses = new List<InHouseEntity> { new InHouseEntity { InHouseId = 1, InHouseName = "Yes" }, new InHouseEntity { InHouseId = 2, InHouseName = "No" } };
@@ -163,6 +164,14 @@ namespace EmcureNPD.Business.Core.Implementation
                     new SqlParameter("@SortDirection", SortDir),
                     new SqlParameter("@SearchText", SearchText),
                     new SqlParameter("@ScreenId", ScreenId),
+
+                    new SqlParameter("@countryid", model.countryid),
+                    new SqlParameter("@marketextenstionid", model.marketextenstionid),
+                    new SqlParameter("@buid", model.buid),
+                    new SqlParameter("@manufacturingid", model.manufacturingid),
+                    new SqlParameter("@budgetlaunchdate", model.budgetlaunchdate),
+                    new SqlParameter("@inhouse", model.inhouse),
+
             };
 
             var PIDFList = await _repository.GetBySP("stp_npd_GetPIDFList", System.Data.CommandType.StoredProcedure, osqlParameter);
@@ -307,6 +316,7 @@ namespace EmcureNPD.Business.Core.Implementation
                                     objPIDFBusinessUnit.RfdpriceDiscounting = entityPIDF.RFDPriceDiscounting;
                                     objPIDFBusinessUnit.RfdcommercialBatchSize = entityPIDF.RFDCommercialBatchSize;
                                     objPIDFBusinessUnit.Diaid = entityPIDF.Diaid;
+                                    objPIDFBusinessUnit.IndicationId = entityPIDF.IndicationId;
                                     objPIDFBusinessUnit.MarketExtenstionId = entityPIDF.MarketExtenstionId;
                                     objPIDFBusinessUnit.TradeNameDate = entityPIDF.TradeNameDate;
                                     objPIDFBusinessUnit.TradeNameRequired = entityPIDF.TradeNameRequired;
@@ -617,7 +627,8 @@ namespace EmcureNPD.Business.Core.Implementation
                             data.RFDInitialRevenuePotential = _objPIDFBusinessUnit.RfdinitialRevenuePotential;
                             data.RFDPriceDiscounting = _objPIDFBusinessUnit.RfdpriceDiscounting;
                             data.RFDCommercialBatchSize = _objPIDFBusinessUnit.RfdcommercialBatchSize;
-                            data.Diaid = _objPIDFBusinessUnit.Diaid;
+                            data.Diaid = _objPIDFBusinessUnit.Diaid; 
+                            data.IndicationId = _objPIDFBusinessUnit.IndicationId;
                             data.MarketExtenstionId = _objPIDFBusinessUnit.MarketExtenstionId;
                             data.TradeNameDate = _objPIDFBusinessUnit.TradeNameDate;
                             data.TradeNameRequired = (_objPIDFBusinessUnit.TradeNameRequired == null ? false : Convert.ToBoolean(_objPIDFBusinessUnit.TradeNameRequired));
@@ -829,6 +840,25 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 return DBOperation.NotFound;
             }
+        }
+
+        public async Task<dynamic> GetPIDFFilterFormData()
+        {
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@UserId", loggedInUserId),
+            };
+
+            DataSet dsCommercial = await _repository.GetDataSetBySP("stp_npd_Get_PIDFListFilterDropdowndata", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            dynamic DropdownObjects = new ExpandoObject();
+            DropdownObjects.MasterCountry = dsCommercial.Tables[0];
+            DropdownObjects.MasterMarketExtenstion = dsCommercial.Tables[1];
+            DropdownObjects.MasterBusinessUnit = dsCommercial.Tables[2];
+            DropdownObjects.MasterManufacturing = dsCommercial.Tables[3];
+            DropdownObjects.BudgetLaunchDate = dsCommercial.Tables[4];
+            return DropdownObjects;
         }
     }
 }
