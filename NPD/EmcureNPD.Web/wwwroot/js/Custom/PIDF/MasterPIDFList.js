@@ -42,7 +42,7 @@ function GetPIDFListFilterDropdownSuccess(data) {
             //$('#ddlMarketExtension').append(_emptyOption);
             //$('#ddlInHouse').append(_emptyOption);
             //$('#ddlBU').append(_emptyOption);
-            //$('#ddlBudgetLaunch').append(_emptyOption);
+           // $('#ddlBudgetLaunch').append(_emptyOption);
             //$('#ddlManifacturer').append(_emptyOption);
 
             $(data.MasterCountry).each(function (index, item) {
@@ -106,7 +106,8 @@ function InitializePIDFList() {
             d.marketextenstionid = $('#ddlMarketExtension').val().toString();
             d.buid = $('#ddlBU').val().toString();
             d.manufacturingid = $('#ddlManifacturer').val().toString();
-            d.budgetlaunchdate = $('#ddlBudgetLaunch').val();
+            d.budgetlaunchdate = $('#ddlBudgetLaunch').val().toString();
+            //d.budgetlaunchdate = $('#ddlBudgetLaunch').val();
             d.inhouse = $('#ddlInHouse').val().toString();
 
         },
@@ -239,7 +240,11 @@ function InitializePIDFList() {
             "data": "inidication", "title": "Inidication", "sClass": "pidf-80"
         },
         {
-            "data": "diaName", "title": "DIA ", "sClass": "pidf-80"
+            "data": "diaName", "title": "DIA/Manifacturer", "sClass": "pidf-80"
+        },
+        {
+            "data": "budgetLaunchDate", "title": "Budget Launch Date ", "sClass": "pidf-80"
+            //,"render": function (data, type, row, meta) {  return moment(data).format("DD MMM YYYY"); }
         },
         {
             "data": "createdBy", "title": "Created By", "sClass": "pidf-100"
