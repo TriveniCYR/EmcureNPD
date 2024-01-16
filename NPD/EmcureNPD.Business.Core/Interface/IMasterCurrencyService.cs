@@ -17,6 +17,6 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<MasterCountryEntity> GetCountryByCurrencyId(int id);
 
-        Task<List<MasterCurrencyEntity>> GetCurrencyByLoggedInUser();
+        Task<dynamic> GetCurrencyByLoggedInUser();
     }
 }

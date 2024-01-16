@@ -267,11 +267,13 @@ function GetCurrencyList() {
         ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
 
-function GetCurrencyListSuccess(data) {
+function GetCurrencyListSuccess(Currencies) {
+    var ddl_Data = Currencies._object.CurrencyList; //ConvertCurrencyList
+    FillConvertCurrencyDropdowns(Currencies._object.ConvertCurrencyList)
     try {
         $('#Currency').html('')
         let optionhtml = '';//'<option value = "-1">Select All</option>';
-        $.each(data._object, function (index, object) {
+        $.each(ddl_Data, function (index, object) {
             let currencyText = object.currencyCode == null ? object.currencyName : object.currencyCode + "-" + object.currencyName;
             optionhtml += '<option value="' +
                 object.currencyId + '" title="' + object.currencyCode+'">' + currencyText + '</option>';
@@ -300,6 +302,58 @@ function GetCurrencyListSuccess(data) {
     }
 }
 function GetCurrencyListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function FillConvertCurrencyDropdowns(data){
+    try {
+        $('#CurrentCurrency').html('');
+       let optionhtml = '<option value = "0">--Select--</option>';
+        $.each(data, function (index, object) {
+            optionhtml += '<option value="' +
+                object.currencyId + '">' + object.currencyName + '</option>';
+        });
+        $("#CurrentCurrency").append(optionhtml);
+        $("#ConvertCurrency").append(optionhtml);
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+
+}
+
+$(".clsConvertCerrency").change(function () {
+    var from_curr_val = $('#CurrentCurrency').val();
+    var to_curr_val = $('#ConvertCurrency').val();
+    if (from_curr_val != 0 && to_curr_val != 0) {
+
+    
+    ajaxServiceMethod($('#hdnBaseURL').val() + "api/CurrencyConverter?fromCurrency=" + from_curr_val + "&toCurrency=" + to_curr_val, 'GET', GetConvertCurrencySuccess, GetConvertCurrencyError);
+
+    }
+
+});
+function GetConvertCurrencySuccess(data) {
+    try {
+        var rate = data;
+        var result = 0;
+        if (rate == '' || rate == undefined || isNaN(rate)) { }
+        else {
+            rate = (rate == '' || rate == undefined || isNaN(rate)) ? 1 : rate;
+            var curnt_val = 0
+            $('.format-currency').each(function () {
+                curnt_val = $(this).val();
+                result = curnt_val * rate
+                if (isNaN(result)) {
+                    result = curnt_val;
+                }
+                $(this).val(result);
+            });
+        }
+
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetConvertCurrencyError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 

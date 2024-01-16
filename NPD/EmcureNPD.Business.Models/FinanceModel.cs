@@ -17,6 +17,8 @@ namespace EmcureNPD.Business.Models
 		public DateTime ?ForecastDate { get; set; }
 		public string Currencyid { get; set; }
 		public int? DosageFrom { get; set; }
+		public int? CurrentCurrency { get; set; }
+		public int? ConvertCurrency { get; set; }
 		public string ManufacturingSiteOrPartner { get; set; }
 		public string Skus { get; set; }
 		public int? Mspersentage { get; set; }

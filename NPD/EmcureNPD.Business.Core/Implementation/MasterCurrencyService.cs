@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -153,16 +154,20 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             return _mapperFactory.Get<MasterCountry, MasterCountryEntity>(country);
         }
 
-        public async Task<List<MasterCurrencyEntity>> GetCurrencyByLoggedInUser()
+        public async Task<dynamic> GetCurrencyByLoggedInUser()
         {
-            var _loggedInUser = _helper.GetLoggedInUser();
+            dynamic Currencies = new ExpandoObject();
+			var _loggedInUser = _helper.GetLoggedInUser();
             SqlParameter[] osqlParameter = {
                 new SqlParameter("@UserId", _loggedInUser.UserId)
             };
-            DataSet dsCureenctList = await _repository.GetDataSetBySP("SP_GetCurrencyByUser", CommandType.StoredProcedure, osqlParameter);
-
+			DataSet dsCureenctList = await _repository.GetDataSetBySP("SP_GetCurrencyByUser", CommandType.StoredProcedure, osqlParameter);
             var _currencyList = dsCureenctList.Tables[0].DataTableToList<MasterCurrencyEntity>();
-            return _currencyList;
+
+            Currencies.CurrencyList = _currencyList;
+			Currencies.ConvertCurrencyList = dsCureenctList.Tables[1];
+
+            return Currencies;
         }
     }
 }

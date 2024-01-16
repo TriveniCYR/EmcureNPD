@@ -27,12 +27,13 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             try
             {
-                var APIKEY = _configuration.GetSection("ConvertCurrency:ApiKey").Value;
-                var converter = new EmcureNPD.CurrencyConverter.Converter(APIKEY);
-                var from = (EmcureNPD.CurrencyConverter.Enums.CurrencyType)Enum.Parse(typeof(EmcureNPD.CurrencyConverter.Enums.CurrencyType), fromCurrency);
-                var to = (EmcureNPD.CurrencyConverter.Enums.CurrencyType)Enum.Parse(typeof(EmcureNPD.CurrencyConverter.Enums.CurrencyType), toCurrency);
-                var convertAmount = await converter.ConvertAsync(1, from, to);
-                return convertAmount;
+                return 100.00;
+                //var APIKEY = _configuration.GetSection("ConvertCurrency:ApiKey").Value;
+                //var converter = new EmcureNPD.CurrencyConverter.Converter(APIKEY);
+                //var from = (EmcureNPD.CurrencyConverter.Enums.CurrencyType)Enum.Parse(typeof(EmcureNPD.CurrencyConverter.Enums.CurrencyType), fromCurrency);
+                //var to = (EmcureNPD.CurrencyConverter.Enums.CurrencyType)Enum.Parse(typeof(EmcureNPD.CurrencyConverter.Enums.CurrencyType), toCurrency);
+                //var convertAmount = await converter.ConvertAsync(1, from, to);
+                //return convertAmount;
             }
             catch (HttpRequestException ex)
             {
