@@ -321,9 +321,8 @@ function FillConvertCurrencyDropdowns(data) {
 
 $(".clsConvertCerrency").change(function () {
     var from_curr_val = $('#Currency').find("option:selected").attr("title");
-    var to_curr_val = $('#ConvertCurrency').find("option:selected").attr("title");
-
-    if (from_curr_val != 0 && to_curr_val != 0) {
+    var to_curr_val = $('#ConvertCurrency').find("option:selected").attr("title");    
+    if (from_curr_val != undefined && to_curr_val  != undefined) {
         $('#Currency').val($('#ConvertCurrency').val());
         ajaxServiceMethod($('#hdnBaseURL').val() + "api/CurrencyConverter?fromCurrency=" + from_curr_val + "&toCurrency=" + to_curr_val, 'GET', GetConvertCurrencySuccess, GetConvertCurrencyError);
     }
@@ -338,16 +337,16 @@ function GetConvertCurrencySuccess(data) {
             var curnt_val = 0
             $('.format-currency').each(function () {
                 if (this.nodeName == 'TD') {
-                    curnt_val = $(this).text();
-                    result = curnt_val * rate
+                    curnt_val = $(this).text().replace(/,/g, '');
+                    result = parseFloat(curnt_val) * rate
                     if (isNaN(result)) {
                         result = curnt_val;
                     }
                     $(this).text(result.toFixed(2));
                 }
                 else if (this.nodeName == 'INPUT') {
-                    curnt_val = $(this).val();
-                    result = curnt_val * rate
+                    curnt_val = $(this).val().replace(/,/g, '');
+                    result = parseFloat(curnt_val) * rate
                     if (isNaN(result)) {
                         result = curnt_val;
                     }
