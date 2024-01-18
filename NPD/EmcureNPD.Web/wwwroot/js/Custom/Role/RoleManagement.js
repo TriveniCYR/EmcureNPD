@@ -9,6 +9,7 @@
             toastr.error(StatusMessage);
         }
     }
+    setTimeout(function () { $('#loading-wrapper').hide(); }, 300);
 });
 function SetupRoleTable() {
     StaticDataTable("#RoleTable");
