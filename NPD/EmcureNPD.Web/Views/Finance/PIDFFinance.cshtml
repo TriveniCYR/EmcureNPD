@@ -14,1321 +14,1325 @@
 @{
 
 	ViewData["Title"] = @MasterLocalizer["Finance Management"];
-	var PidafId=Context.Request.Query["pidfid"];
+	var PidafId = Context.Request.Query["pidfid"];
 	var encBuid = Context.Request.Query["bui"];
 	var decryptBU = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
 	var decryptPidfid = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"])));
-	var SelectedBuId=Model!=null? Model.BussinessUnitId:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
+	var SelectedBuId = Model != null ? Model.BussinessUnitId : Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
 	SelectedBuId = (SelectedBuId == 0) ? decryptBU : SelectedBuId;
-	var selectedPidafId =Model!=null ?Model.dycrPidfid:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(PidafId)));
+	var selectedPidafId = Model != null ? Model.dycrPidfid : Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(PidafId)));
 	selectedPidafId = (selectedPidafId == 0) ? decryptPidfid : selectedPidafId;
-    var selectedSkus = string.Empty;
-    var selectedPackSize=string.Empty;
-    var ProjectStartDate=Model!=null?Model.ProjectStartDate:DateTime.Now;
-    if(Model != null && Model.lsPidfFinanceBatchSizeCoating != null){
-        if(Model.lsPidfFinanceBatchSizeCoating.Count() > 0){
-            selectedSkus = string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.Skus));
-            selectedPackSize=string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.PakeSize));
-        }
-    }
-    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
-    var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
-    var CurrencyId=Model == null ? "" : Model.Currencyid;
-    var DosageFormId=Model == null ? 0 : Model.DosageFrom;
-    var MSPercent=Model==null?0:Model.Mspersentage;
-    var TargetPriceScenario=Model==null?0:Model.TargetPriceScenario;
-    RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
-    string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
+	var selectedSkus = string.Empty;
+	var selectedPackSize = string.Empty;
+	var ProjectStartDate = Model != null ? Model.ProjectStartDate : DateTime.Now;
+	if (Model != null && Model.lsPidfFinanceBatchSizeCoating != null)
+	{
+		if (Model.lsPidfFinanceBatchSizeCoating.Count() > 0)
+		{
+			selectedSkus = string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.Skus));
+			selectedPackSize = string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.PakeSize));
+		}
+	}
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+	var PidfNumber = UtilityHelper.Decreypt(Convert.ToString(PidafId));
+	var CurrencyId = Model == null ? "" : Model.Currencyid;
+	var DosageFormId = Model == null ? 0 : Model.DosageFrom;
+	var MSPercent = Model == null ? 0 : Model.Mspersentage;
+	var TargetPriceScenario = Model == null ? 0 : Model.TargetPriceScenario;
+	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+	string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
 
 }
 
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
 <div class="content-header row">
-	<div class="col-md-6">
-        <h2 class="m-0">Finance Management</h2>
+	<div class="col-md-9">
+		<h2 class="m-0">Finance Management</h2>
+	</div>
+	@*<div class="col-md-3">
+	<div class="form-group required">
+	<label class="control-label">Current Currency</label>
+	<div>
+	@Html.DropDownListFor(model => model.CurrentCurrency,
+	new List<SelectListItem> { new SelectListItem { Value = "0", Text = "--Select--"} },new { @class="form-control clsConvertCerrency"})
+	</div>
+	</div>
+	</div>*@
+	<div class="col-md-3">
+		<div class="form-group required">
+			<label class="control-label">Currency to be Convert</label>
+			<div>
+				@Html.DropDownListFor(model => model.ConvertCurrency,
+				new List<SelectListItem> { new SelectListItem { Value = "0", Text = "--Select--"} },new { @class="form-control clsConvertCerrency searchable-dropdown"})
+			</div>
 		</div>
-		<div class="col-md-3">
-        	<div class="form-group required">
-				<label class="control-label">Current Currency</label>
-				 <div>
-					@Html.DropDownListFor(model => model.CurrentCurrency,
-					new List<SelectListItem> { new SelectListItem { Value = "0", Text = "--Select--"} },new { @class="form-control clsConvertCerrency"})
-				</div>
-			</div>
-			</div>
-			<div class="col-md-3">
-			<div class="form-group required">
-				<label class="control-label">Currency to be Convert</label>
-				 <div>
-					@Html.DropDownListFor(model => model.ConvertCurrency,
-				new List<SelectListItem> { new SelectListItem { Value = "0", Text = "--Select--"} },new { @class="form-control clsConvertCerrency"})
-				</div>
-			</div>
-			</div>
+	</div>
 </div>
 <div class="container-fluid background-white-card">
-<div id="SaveFinanceModel">
-    <form action="PIDFFinancePost" method="post" class="needs-validation">	
-		<div class="card">
-			<div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">New Project Details</button></h3>
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#pidfCollapse" title="Collapse">
-                           <i class="fas fa-minus"></i>
-					</button>
-				</div>
-			</div>
-            <div class="card-body collapse show" id="pidfCollapse" style="background-color:white">
-				<input type="hidden" id="Pidfid" name="Pidfid" value="@PidafId" />
-                <input type="hidden" id="SaveType" name="SaveType" />
-                <input type="hidden" id="HfStatusRemark" name="StatusRemark" />
-				 <input type="hidden" asp-for="hdnDynamicControlData" />
-				<input type="hidden" asp-for="hdnSelectedBussinesUnit" />
-			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group required">
-						<label class="control-label">Entity<span style="color:red;">*</span></label> 
-                        @Html.HiddenFor(@model=>model.PidffinaceId)
-						@Html.TextBoxFor(@modal=>modal.Entity,new{@class="form-control readOnlyUpdate",@required="required"})
-                         <div class="invalid-feedback">
-                                Please enter Entity
-                       </div>
-                       <div class="valid-feedback">
-                       Entity Looks good!
-                       </div>
+	<div id="SaveFinanceModel">
+		<form action="PIDFFinancePost" method="post" class="needs-validation">
+			<div class="card">
+				<div class="card-header bg-primary">
+					<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">New Project Details</button></h3>
+					<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#pidfCollapse" title="Collapse">
+							<i class="fas fa-minus"></i>
+						</button>
 					</div>
 				</div>
+				<div class="card-body collapse show" id="pidfCollapse" style="background-color:white">
+					<input type="hidden" id="Pidfid" name="Pidfid" value="@PidafId" />
+					<input type="hidden" id="SaveType" name="SaveType" />
+					<input type="hidden" id="HfStatusRemark" name="StatusRemark" />
+					<input type="hidden" asp-for="hdnDynamicControlData" />
+					<input type="hidden" asp-for="hdnSelectedBussinesUnit" />
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Entity<span style="color:red;">*</span></label>
+								@Html.HiddenFor(@model=>model.PidffinaceId)
+								@Html.TextBoxFor(@modal=>modal.Entity,new{@class="form-control readOnlyUpdate",@required="required"})
+								<div class="invalid-feedback">
+									Please enter Entity
+								</div>
+								<div class="valid-feedback">
+									Entity Looks good!
+								</div>
+							</div>
+						</div>
 
-				<div class="col-md-3">
-					<div class="form-group required">
-						<label class="control-label">Product<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Product,new{@class="form-control readOnlyUpdate",@required="required"})
-                             <div class="invalid-feedback">
-                                Please enter Product
-                       </div>
-                       <div class="valid-feedback">
-                       Product Looks good!
-                       </div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Product<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.Product,new{@class="form-control readOnlyUpdate",@required="required"})
+								<div class="invalid-feedback">
+									Please enter Product
+								</div>
+								<div class="valid-feedback">
+									Product Looks good!
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Forecast Date<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.ForecastDate,"{0:yyyy-MM-dd}",new{@class="form-control readOnlyUpdate",@required="required",@type="date"})
+								<div class="invalid-feedback">
+									Please select Forecast Date.
+								</div>
+								<div class="valid-feedback">
+									Forecast Date Looks good!
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Currency<span style="color:red;">*</span></label>
+								<input type="hidden" name="Currencyid" id="Currencyid" />
+								<select class="form-control readOnlyUpdate searchable-dropdown" id="Currency" required="required"></select>
+								@*@Html.DropDownListFor(model => model.Currencyid,
+								new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency" } },new { @class="form-control readOnlyUpdate",@required="required",@name="Currency",@id="Currency",multiple = "multiple"})*@
+								<div class="invalid-feedback">
+									Please select Currency.
+								</div>
+								<div class="valid-feedback">
+									Currency Looks good!
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group required">
-						<label class="control-label">Forecast Date<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ForecastDate,"{0:yyyy-MM-dd}",new{@class="form-control readOnlyUpdate",@required="required",@type="date"})
-					<div class="invalid-feedback">
-                                Please select Forecast Date.
-                       </div>
-                       <div class="valid-feedback">
-                       Forecast Date Looks good!
-                       </div>
-                        </div>
-				</div>
-				<div class="col-md-3 d-none">
-					<div class="form-group required">
-						<label class="control-label">Currency<span style="color:red;">*</span></label>
-                            @*@Html.HiddenFor(model => model.Currencyid);*@
-                            <input type="hidden" name="Currencyid" id="Currencyid"/>
-                            <select class="form-control readOnlyUpdate" id="Currency" required="required" multiple="multiple"></select>
-							@*@Html.DropDownListFor(model => model.Currencyid,
-                                new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency" } },new { @class="form-control readOnlyUpdate",@required="required",@name="Currency",@id="Currency",multiple = "multiple"})*@
-							<div class="invalid-feedback">
-                                Please select Currency.
-                       </div>
-                       <div class="valid-feedback">
-                       Currency Looks good!
-                       </div>
-					</div>
-				</div>
-			</div>
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group required">
 								<label class="control-label">Dosage Form<span style="color:red;">*</span></label>
-								 <div id="DvDosageFrom">
-							@Html.DropDownListFor(model => model.DosageFrom,
-							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom"} },new { @class="form-control readOnlyUpdate",@required="required"})
+								<div id="DvDosageFrom">
+									@Html.DropDownListFor(model => model.DosageFrom,
+									new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom"} },new { @class="form-control readOnlyUpdate",@required="required"})
 
-                                <div class="invalid-feedback">
-                                Please select Dosage Form.
-                       </div>
+									<div class="invalid-feedback">
+										Please select Dosage Form.
+									</div>
 								</div>
-                       <div class="valid-feedback">
-                       Dosage Form Looks good!
-                       </div>
+								<div class="valid-feedback">
+									Dosage Form Looks good!
+								</div>
 							</div>
 						</div>
 
 						<div class="col-md-3">
 							<div class="form-group required">
 								<label class="control-label">Manufacturing Site / Partner<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ManufacturingSiteOrPartner,new{@class="form-control readOnlyUpdate",@required="required"})
-						 <div class="invalid-feedback">
-                                Please enter Manufacturing Site / Partner.
-                       </div>
-                       <div class="valid-feedback">
-                       Manufacturing Site / Partner  Looks good!
-                       </div>	
-                        </div>
+								@Html.TextBoxFor(@modal=>modal.ManufacturingSiteOrPartner,new{@class="form-control readOnlyUpdate",@required="required"})
+								<div class="invalid-feedback">
+									Please enter Manufacturing Site / Partner.
+								</div>
+								<div class="valid-feedback">
+									Manufacturing Site / Partner  Looks good!
+								</div>
+							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group required">
 								<label class="control-label">SKUs<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Skus,new{@class="form-control readOnlyUpdate",@required="required"})
-                             <div class="invalid-feedback">
-                                Please enter SKUs.
-                       </div>
-                       <div class="valid-feedback">
-                       SKUs Looks good!
-                       </div>
+								@Html.TextBoxFor(@modal=>modal.Skus,new{@class="form-control readOnlyUpdate",@required="required"})
+								<div class="invalid-feedback">
+									Please enter SKUs.
+								</div>
+								<div class="valid-feedback">
+									SKUs Looks good!
+								</div>
 							</div>
 						</div>
-						
+
 					</div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group required">
 								<label class="control-label">Input Values</label>
-                                <hr class="my-12"/>
-								
+								<hr class="my-12" />
+
 							</div>
 						</div>
-                        </div>
-                        <div class="row">
-                        <div class="col-md-3">
+					</div>
+					<div class="row">
+						<div class="col-md-3">
 							<div class="form-group required">
 								<label class="control-label">MS %<span style="color:red;">*</span></label>
-							    <select id="MSPersentage" name="MSPersentage" class="form-control readOnlyUpdate UpdateProjectionCommercial" required>
-												<option value="1">Low</option>
-												<option value="2">Medium</option>
-												<option value="3">High</option>
-											</select>
-                                         <div class="invalid-feedback">
-                                            Please select MS %.
-                                   </div>
-                                   <div class="valid-feedback"> 
-                                   MS % Looks good!
-                                   </div>
+								<select id="MSPersentage" name="MSPersentage" class="form-control readOnlyUpdate UpdateProjectionCommercial" required>
+									<option value="1">Low</option>
+									<option value="2">Medium</option>
+									<option value="3">High</option>
+								</select>
+								<div class="invalid-feedback">
+									Please select MS %.
+								</div>
+								<div class="valid-feedback">
+									MS % Looks good!
+								</div>
 							</div>
 						</div>
-                         <div class="col-md-3">
+						<div class="col-md-3">
 							<div class="form-group required">
 								<label class="control-label">Target Price Scenario<span style="color:red;">*</span></label>
 								<select id="TargetPriceScenario" name="TargetPriceScenario" class="form-control readOnlyUpdate UpdateProjectionCommercial" required>
-												<option value="1">Low</option>
-												<option value="2">Medium</option>
-												<option value="3">High</option>
-											</select>
-                                            <div class="invalid-feedback">
-                                            Please select Target Price Scenario.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Target Price Scenario Looks good!
-                                           </div>       
+									<option value="1">Low</option>
+									<option value="2">Medium</option>
+									<option value="3">High</option>
+								</select>
+								<div class="invalid-feedback">
+									Please select Target Price Scenario.
+								</div>
+								<div class="valid-feedback">
+									Target Price Scenario Looks good!
+								</div>
 							</div>
 						</div>
 					</div>
-			</div>
-		</div>
-            <div class="card collapsed-card">
-			<div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Project Timelines</button></h3>
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#TimelinesCollapse" title="Collapse">
-                           <i class="fas fa-plus"></i>
-					</button>
 				</div>
 			</div>
-			<div class="card-body collapse" id="TimelinesCollapse" style="background-color:white">
-				<input type="hidden" />
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
+			<div class="card collapsed-card">
+				<div class="card-header bg-primary">
+					<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Project Timelines</button></h3>
+					<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#TimelinesCollapse" title="Collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
+				<div class="card-body collapse" id="TimelinesCollapse" style="background-color:white">
+					<input type="hidden" />
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
 								@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required",@readonly ="readonly", @onchange="SetExpectedFillingBatchManufacturingDate(this.value);"})
-						                   
-                        </div>
-					</div>
 
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
 								@Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date", @class="form-control readOnlyUpdate",@required="required",@readonly ="readonly"})
-						               
-                        </div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
+
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
 								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date", @class="form-control readOnlyUpdate",@required="required",@readonly ="readonly"})
-                                        
+
+							</div>
 						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Approval Period in Days<span style="color:red;">*</span></label>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Approval Period in Days<span style="color:red;">*</span></label>
 								@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate clsProjectTimeline format-currency",@required="required",@type="text"})
-                                          <div class="invalid-feedback">
-                                            Please enter Approval Period in Days.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Approval Period in Days Looks good!
-                                           </div> 
+								<div class="invalid-feedback">
+									Please enter Approval Period in Days.
+								</div>
+								<div class="valid-feedback">
+									Approval Period in Days Looks good!
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Approval Date<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ApprovalDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                                         <div class="invalid-feedback">
-                                            Please enter Approval Date.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Approval Date Looks good!
-                                           </div> 
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Approval Date<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.ApprovalDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+								<div class="invalid-feedback">
+									Please enter Approval Date.
+								</div>
+								<div class="valid-feedback">
+									Approval Date Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
 
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Product Launch Date<span style="color:red;">*</span></label>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Product Launch Date<span style="color:red;">*</span></label>
 								@Html.TextBoxFor(@modal=>modal.ProductLaunchDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-						                <div class="invalid-feedback">
-                                            Please enter Product Launch Date.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Product Launch Date Looks good!
-                                           </div> 
-                        </div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Gestation Period in Years<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.GestationPeriodinYears,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
-                                          <div class="invalid-feedback">
-                                            Please enter Gestation Period in Years.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Gestation Period in Years Looks good!
-                                           </div> 
+								<div class="invalid-feedback">
+									Please enter Product Launch Date.
+								</div>
+								<div class="valid-feedback">
+									Product Launch Date Looks good!
+								</div>
+							</div>
 						</div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Gestation Period in Years<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.GestationPeriodinYears,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Gestation Period in Years.
+								</div>
+								<div class="valid-feedback">
+									Gestation Period in Years Looks good!
+								</div>
+							</div>
+						</div>
+
 					</div>
 
-				</div>
-				
-                <div class="row">
+					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group required">
 								<h5 class="mb-0"><b>Commercials</b></h5>
-                                <hr class="my-12"/>
-								
+								<hr class="my-12" />
+
 							</div>
 						</div>
-                        </div>
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Market Share Erosion Rate % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-                                           <div class="invalid-feedback">
-                                            Please enter Market Share Erosion rate.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Market Share Erosion rate Looks good!
-                                           </div> 
-						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Market Share Erosion Rate % <span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Market Share Erosion rate.
+								</div>
+								<div class="valid-feedback">
+									Market Share Erosion rate Looks good!
+								</div>
+							</div>
+						</div>
 
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Price Erosion % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.PriceErosion,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
-                                          <div class="invalid-feedback">
-                                            Please enter Price Erosion.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Price Erosion Looks good!
-                                           </div> 
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Price Erosion % <span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.PriceErosion,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Price Erosion.
+								</div>
+								<div class="valid-feedback">
+									Price Erosion Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Escalation in COGS % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-                                          <div class="invalid-feedback">
-                                            Please enter Escalation in COGS.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Escalation in COGS Looks good!
-                                           </div> 
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Escalation in COGS % <span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Escalation in COGS.
+								</div>
+								<div class="valid-feedback">
+									Escalation in COGS Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
 
-				</div>
-		</div>
-		</div>
-		<div class="card collapsed-card">
-            <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Finance Inputs</button></h3>
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#FinanceCollapse" title="Collapse">
-                           <i class="fas fa-plus"></i>
-					</button>
+					</div>
 				</div>
 			</div>
+			<div class="card collapsed-card">
+				<div class="card-header bg-primary">
+					<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Finance Inputs</button></h3>
+					<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#FinanceCollapse" title="Collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
 
-			<div class="card-body collapse" id="FinanceCollapse" style="background-color:white">
-				<input type="hidden" />
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Discount Rate<span style="color:red;">*</span></label>
+				<div class="card-body collapse" id="FinanceCollapse" style="background-color:white">
+					<input type="hidden" />
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Discount Rate<span style="color:red;">*</span></label>
 								@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-                                         <div class="invalid-feedback">
-                                            Please enter Discount Rate.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Discount Rate Looks good!
-                                           </div> 
+								<div class="invalid-feedback">
+									Please enter Discount Rate.
+								</div>
+								<div class="valid-feedback">
+									Discount Rate Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
 
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Income tax rate<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-                                          <div class="invalid-feedback">
-                                            Please enter Income tax rate.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Income tax rate Looks good!
-                                           </div> 
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Income tax rate<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Income tax rate.
+								</div>
+								<div class="valid-feedback">
+									Income tax rate Looks good!
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Opex as a % to sales <span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Opex as a % to sales.
+								</div>
+								<div class="valid-feedback">
+									Opex as a % to sales Looks good!
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">External Profit Share % <span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter External Profit Share %.
+								</div>
+								<div class="valid-feedback">
+									External Profit Share % Looks good!
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Opex as a % to sales <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-                                          <div class="invalid-feedback">
-                                            Please enter Opex as a % to sales.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Opex as a % to sales Looks good!
-                                           </div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Collection in Days<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Collection in Days.
+								</div>
+								<div class="valid-feedback">
+									Collection in Days Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">External Profit Share % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-                                           <div class="invalid-feedback">
-                                            Please enter External Profit Share %.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           External Profit Share % Looks good!
-                                           </div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Collection in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
-                                          <div class="invalid-feedback">
-                                            Please enter Collection in Days.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Collection in Days Looks good!
-                                           </div>
-						</div>
-					</div>
 
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Inventory in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
-                                          <div class="invalid-feedback">
-                                            Please enter Inventory in Days.
-                                           </div>
-                                           <div class="valid-feedback"> 
-                                           Inventory in Days Looks good!
-                                           </div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Inventory in Days<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Inventory in Days.
+								</div>
+								<div class="valid-feedback">
+									Inventory in Days Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Creditor in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
-                                       <div class="invalid-feedback">
-                                            Please enter Creditor in Days.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Creditor in Days Looks good!
-                                           </div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Creditor in Days<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Creditor in Days.
+								</div>
+								<div class="valid-feedback">
+									Creditor in Days Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Marketing Allowance<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-                                       <div class="invalid-feedback">
-                                            Please enter Marketing Allowance.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Marketing Allowance Looks good!
-                                           </div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Marketing Allowance<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Marketing Allowance.
+								</div>
+								<div class="valid-feedback">
+									Marketing Allowance Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
 
-				</div>
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Regulatory Maintenance Cost<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
-                            <div class="invalid-feedback">
-                                            Please enter Regulatory Maintenance Cost.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Regulatory Maintenance Cost Looks good!
-                                           </div>
-						</div>
 					</div>
-
-					<div class="col-md-3">
-						<div class="form-group required">
-							<label class="control-label">Gross to Net<span style="color:red;">*</span></label>
-                                @Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
-                             <div class="invalid-feedback">
-                                            Please enter Gross to Net.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Gross to Net Looks good!
-                                           </div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Regulatory Maintenance Cost<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Regulatory Maintenance Cost.
+								</div>
+								<div class="valid-feedback">
+									Regulatory Maintenance Cost Looks good!
+								</div>
+							</div>
 						</div>
-					</div>
-					
 
-				</div>
-			</div>
-		</div>
-            <div class="card collapsed-card">
-			
-            <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Deal Terms</button></h3>
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#DealCollapse" title="Collapse">
-                           <i class="fas fa-plus"></i>
-					</button>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Gross to Net<span style="color:red;">*</span></label>
+								@Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate format-currency",@required="required",@type="text"})
+								<div class="invalid-feedback">
+									Please enter Gross to Net.
+								</div>
+								<div class="valid-feedback">
+									Gross to Net Looks good!
+								</div>
+							</div>
+						</div>
+
+
+					</div>
 				</div>
 			</div>
+			<div class="card collapsed-card">
 
-			<div class="card-body collapse" id="DealCollapse" style="background-color:white">
-				<input type="hidden" />
-				<table id="FinanceTableDealTerms" class="table table-bordered table-striped table-hover" style="width:100%">
-					<thead>
-						<tr>
-							<th>Terms</th>
-							<th></th>
-							<th>Phase End Date</th>
+				<div class="card-header bg-primary">
+					<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Deal Terms</button></h3>
+					<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#DealCollapse" title="Collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
 
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var pwb in ViewBag.PhaseWiseBudget)
-						{
+				<div class="card-body collapse" id="DealCollapse" style="background-color:white">
+					<input type="hidden" />
+					<table id="FinanceTableDealTerms" class="table table-bordered table-striped table-hover" style="width:100%">
+						<thead>
+							<tr>
+								<th>Terms</th>
+								<th></th>
+								<th>Phase End Date</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var pwb in ViewBag.PhaseWiseBudget)
+							{
+								<tr>
+									<td>
+										<div class="">
+											<div class="form-group required">
+												<label class="control-label">@pwb.terms</label>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="">
+											<div class="form-group required">
+												<label class="control-label format-currency" pattern="\d{1,5}">@pwb.cost</label>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="">
+											<div class="form-group required">
+												<label class="control-label">@pwb.endDate</label>
+											</div>
+										</div>
+									</td>
+								</tr>
+							}
 							<tr>
 								<td>
 									<div class="">
 										<div class="form-group required">
-											<label class="control-label">@pwb.terms</label>
+											<label class="control-label">No of batches to be manufactured<span style="color:red;">*</span></label>
 										</div>
 									</div>
 								</td>
 								<td>
 									<div class="">
 										<div class="form-group required">
-											<label class="control-label format-currency" pattern="\d{1,5}">@pwb.cost</label>
+											@Html.TextBoxFor(@modal=>modal.Noofbatchestobemanufactured,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
+											<div class="invalid-feedback">
+												Please enter No of batches to be manufactured.
+											</div>
+											<div class="valid-feedback">
+												No of batches to be manufactured Looks good!
+											</div>
 										</div>
 									</div>
 								</td>
 								<td>
 									<div class="">
 										<div class="form-group required">
-											<label class="control-label">@pwb.endDate</label>
+											@Html.TextBoxFor(@modal=>modal.NoofbatchestobemanufacturedPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter No of batches to be manufactured phase end date.
+											</div>
+											<div class="valid-feedback">
+												No of batches to be manufactured phase end date Looks good!
+											</div>
 										</div>
 									</div>
 								</td>
 							</tr>
-						}
-						<tr>
-							<td>
-							<div class="">
-								<div class="form-group required">
-										<label class="control-label">No of batches to be manufactured<span style="color:red;">*</span></label>
-								</div>
-							</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Noofbatchestobemanufactured,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-                                        <div class="invalid-feedback">
-                                            Please enter No of batches to be manufactured.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           No of batches to be manufactured Looks good!
-                                           </div>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">No of SKUs <span style="color:red;">*</span></label>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.NoofbatchestobemanufacturedPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter No of batches to be manufactured phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           No of batches to be manufactured phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">No of SKUs <span style="color:red;">*</span></label>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.NoSkus,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
+											<div class="invalid-feedback">
+												Please enter No of SKUs.
+											</div>
+											<div class="valid-feedback">
+												SKUs Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.NoSkus,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text"})
-									<div class="invalid-feedback">
-                                            Please enter No of SKUs.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           SKUs Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.NoSkusPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter SKUs phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           SKUs phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">R&D/Analytical cost <span style="color:red;">*</span></label>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.NoSkusPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter SKUs phase end date.
+											</div>
+											<div class="valid-feedback">
+												SKUs phase end date Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">R&D/Analytical cost <span style="color:red;">*</span></label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
 											@Html.TextBoxFor(@modal=>modal.RandDanalyticalcost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter R&D/Analytical cost.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           R&D/Analytical cost Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
+											<div class="invalid-feedback">
+												Please enter R&D/Analytical cost.
+											</div>
+											<div class="valid-feedback">
+												R&D/Analytical cost Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
 											@Html.TextBoxFor(@modal=>modal.RandDanalyticalcostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter R&D/Analytical cost phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           R&D/Analytical cost phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">RLD sample cost <span style="color:red;">*</span></label>
+											<div class="invalid-feedback">
+												Please enter R&D/Analytical cost phase end date.
+											</div>
+											<div class="valid-feedback">
+												R&D/Analytical cost phase end date Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Rldsamplecost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter RLD sample cost.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           RLD sample cost Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.RldsamplecostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter RLD sample cost phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           RLD sample cost phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">Batch manufacturing cost/ API Actuals Est <span style="color:red;">*</span></label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">RLD sample cost <span style="color:red;">*</span></label>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEst,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter Batch manufacturing cost/ API Actuals Est.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Batch manufacturing cost/ API Actuals Est Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEstPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter Batch manufacturing cost/ API Actuals Est phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Batch manufacturing cost/ API Actuals Est phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">6 months stability cost <span style="color:red;">*</span></label>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.Rldsamplecost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter RLD sample cost.
+											</div>
+											<div class="valid-feedback">
+												RLD sample cost Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Sixmonthsstabilitycost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter 6 months stability cost.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           6 months stability cost Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.SixmonthsstabilitycostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter 6 months stability cost phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           6 months stability cost phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">Tech Transfer <span style="color:red;">*</span></label>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.RldsamplecostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter RLD sample cost phase end date.
+											</div>
+											<div class="valid-feedback">
+												RLD sample cost phase end date Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.TechTransfer,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter Tech Transfer.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Tech Transfer Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.TechTransferPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter Tech Transfer phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Tech Transfer phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">BE studies <span style="color:red;">*</span></label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">Batch manufacturing cost/ API Actuals Est <span style="color:red;">*</span></label>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Bestudies,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter BE studies.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           BE studies Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BestudiesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter BE studies phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           BE studies phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">Filing fees <span style="color:red;">*</span></label>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEst,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter Batch manufacturing cost/ API Actuals Est.
+											</div>
+											<div class="valid-feedback">
+												Batch manufacturing cost/ API Actuals Est Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Filingfees,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter Filing fees.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Filing fees Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.FilingfeesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter Filing fees phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Filing fees phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">Bio Study Cost <span style="color:red;">*</span></label>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEstPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter Batch manufacturing cost/ API Actuals Est phase end date.
+											</div>
+											<div class="valid-feedback">
+												Batch manufacturing cost/ API Actuals Est phase end date Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BioStuddyCost,new{@class="form-control deal-term readOnlyUpdate format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter Bio Study Cost.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Bio Study Cost Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BioStuddyCostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-									<div class="invalid-feedback">
-                                            Please enter Bio Study Cost phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Bio Study Cost phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">Capex <span style="color:red;">*</span></label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">6 months stability cost <span style="color:red;">*</span></label>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-                                            @Html.TextBoxFor(@modal=>modal.Capex,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter Capex.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Capex Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.CapexPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-								<div class="invalid-feedback">
-                                            Please enter Capex phase end date.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Capex phase end date Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">Tooling & Change Parts <span style="color:red;">*</span></label>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.Sixmonthsstabilitycost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter 6 months stability cost.
+											</div>
+											<div class="valid-feedback">
+												6 months stability cost Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-                                            @Html.TextBoxFor(@modal=>modal.ToolingAndChangeParts,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
-									<div class="invalid-feedback">
-                                            Please enter Tooling & Change Parts.
-                                           </div>
-                                           <div class="valid-feedback">
-                                           Tooling & Change Parts Looks good!
-                                           </div>
-                                    </div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.SixmonthsstabilitycostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter 6 months stability cost phase end date.
+											</div>
+											<div class="valid-feedback">
+												6 months stability cost phase end date Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">Tech Transfer <span style="color:red;">*</span></label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.TechTransfer,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter Tech Transfer.
+											</div>
+											<div class="valid-feedback">
+												Tech Transfer Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.TechTransferPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter Tech Transfer phase end date.
+											</div>
+											<div class="valid-feedback">
+												Tech Transfer phase end date Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">BE studies <span style="color:red;">*</span></label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.Bestudies,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter BE studies.
+											</div>
+											<div class="valid-feedback">
+												BE studies Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.BestudiesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter BE studies phase end date.
+											</div>
+											<div class="valid-feedback">
+												BE studies phase end date Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">Filing fees <span style="color:red;">*</span></label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.Filingfees,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter Filing fees.
+											</div>
+											<div class="valid-feedback">
+												Filing fees Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.FilingfeesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter Filing fees phase end date.
+											</div>
+											<div class="valid-feedback">
+												Filing fees phase end date Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">Bio Study Cost <span style="color:red;">*</span></label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.BioStuddyCost,new{@class="form-control deal-term readOnlyUpdate format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter Bio Study Cost.
+											</div>
+											<div class="valid-feedback">
+												Bio Study Cost Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.BioStuddyCostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+											<div class="invalid-feedback">
+												Please enter Bio Study Cost phase end date.
+											</div>
+											<div class="valid-feedback">
+												Bio Study Cost phase end date Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">Capex <span style="color:red;">*</span></label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.Capex,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter Capex.
+											</div>
+											<div class="valid-feedback">
+												Capex Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.CapexPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
+											<div class="invalid-feedback">
+												Please enter Capex phase end date.
+											</div>
+											<div class="valid-feedback">
+												Capex phase end date Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">Tooling & Change Parts <span style="color:red;">*</span></label>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@Html.TextBoxFor(@modal=>modal.ToolingAndChangeParts,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial format-currency",@required="required",@type="text",@onchange="calculateDealTerm();"})
+											<div class="invalid-feedback">
+												Please enter Tooling & Change Parts.
+											</div>
+											<div class="valid-feedback">
+												Tooling & Change Parts Looks good!
+											</div>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
 											@Html.TextBoxFor(@modal=>modal.ToolingAndChangePartsPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
-                                        <div class="invalid-feedback">
-                                            Please enter Tooling & Change Parts phase end date.
-                                        </div>
-                                        <div class="valid-feedback">
-                                            Tooling & Change Parts phase end date Looks good!
-                                        </div>
-                                    </div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="">
-									<div class="form-group required">
-										<label class="control-label">Total</label>
-                                           
+											<div class="invalid-feedback">
+												Please enter Tooling & Change Parts phase end date.
+											</div>
+											<div class="valid-feedback">
+												Tooling & Change Parts phase end date Looks good!
+											</div>
+										</div>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="">
-									<div class="form-group required">
-                                        @*<input type="text" id="spanTotal" readonly="true"/>*@
-                                            <b><span id="spanTotal" class="format-currency" name="Total"></span></b>
-                                            @Html.HiddenFor(@modal=>modal.Total)
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											<label class="control-label">Total</label>
+
+										</div>
 									</div>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-		
-
-        <div class="card collapsed-card">
-            
-             <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Costing</button></h3>
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#BatchSizeCollapse" title="Collapse">
-                           <i class="fas fa-plus"></i>
-					</button>
+								</td>
+								<td>
+									<div class="">
+										<div class="form-group required">
+											@*<input type="text" id="spanTotal" readonly="true"/>*@
+											<b><span id="spanTotal" class="format-currency" name="Total"></span></b>
+											@Html.HiddenFor(@modal=>modal.Total)
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
-			<div class="card-body collapse" id="BatchSizeCollapse" style="background-color:white;overflow-x:auto;">
-				<input type="hidden" />
-            <div class="col-12 table-overflow batch-size-coating-table">
-                                        <table class="table table-bordered text-center m-0">
-                                            <thead>
-                                                <tr>
-                                    <th style="width: 100px;">SKU <span style="color:red;">*</span></th>
-                                                    <th>Packsize <span style="color:red;">*</span></th>
-													 <th>Packsize Value <span style="color:red;">*</span></th>
-                                                    <th>Brand Price <span style="color:red;">*</span></th>
-                                                    <th>Generic List price <span style="color:red;">*</span></th>
-                                                    <th>Net Realisation <span style="color:red;">*</span></th>
-                                                    @*<th>Est MAT 2016/12 Units <span style="color:red;">*</span></th>*@
-                                                    <th>Est MAT 2020/12 Units <span style="color:red;">*</span></th>
-                                                   @* <th>CAGR over 2016/12 Est MAT units <span style="color:red;">*</span></th>*@
-                                                    <th>Market in packs <span style="color:red;">*</span></th>
-                                                    <th>Batch size in ltr/tabs <span style="color:red;">*</span></th>
-                                                    <th>Batch size <span style="color:red;">*</span></th>
-                                                    <th style="width: 50px;">Yield % <span style="color:red;">*</span></th>
-                                                    <th>Batch output <span style="color:red;">*</span></th>
-                                                    <th>API (CAD) <span style="color:red;">*</span></th>
-                                                    <th>Excipients (CAD) <span style="color:red;">*</span></th>
-                                                    <th>PM (CAD) <span style="color:red;">*</span></th>
-                                                    <th>CCPC (CAD) <span style="color:red;">*</span></th>
-                                                    <th>Freight (CAD) <span style="color:red;">*</span></th>
-                                    <th>Emcure COGs/pack <span style="color:red;">*</span></th>
-                                <th class="dtfc-fixed-right">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="FinanceTableBoy">
-						    @if (Model!=null && Model.lsPidfFinanceBatchSizeCoating != null && Model.lsPidfFinanceBatchSizeCoating.Count() > 0)
-						    {
-							    int j = 0;
-                                
-							    foreach (var item in Model.lsPidfFinanceBatchSizeCoating)
-							    {
-                                    string dbPakeSize = "PakeSize"+@j;
-									string dbPackSizeValue = "PackSizeValue" + @j;
-                                    string dbSkubalue = "DbSkus"+@j;
-                                    string dbBrandPrice="BrandPrice" + @j;
-                                    string dbGenericListprice="GenericListprice"+@j;
-                                    string dbNetRealisation="NetRealisation"+@j;
-                                    string dbEstMat2020By12units="EstMat2020By12units"+@j;
-                                    string dbMarketinpacks="Marketinpacks"+@j;
+
+
+
+			<div class="card collapsed-card">
+
+				<div class="card-header bg-primary">
+					<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Costing</button></h3>
+					<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#BatchSizeCollapse" title="Collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
+				<div class="card-body collapse" id="BatchSizeCollapse" style="background-color:white;overflow-x:auto;">
+					<input type="hidden" />
+					<div class="col-12 table-overflow batch-size-coating-table">
+						<table class="table table-bordered text-center m-0">
+							<thead>
+								<tr>
+									<th style="width: 100px;">SKU <span style="color:red;">*</span></th>
+									<th>Packsize <span style="color:red;">*</span></th>
+									<th>Packsize Value <span style="color:red;">*</span></th>
+									<th>Brand Price <span style="color:red;">*</span></th>
+									<th>Generic List price <span style="color:red;">*</span></th>
+									<th>Net Realisation <span style="color:red;">*</span></th>
+									@*<th>Est MAT 2016/12 Units <span style="color:red;">*</span></th>*@
+									<th>Est MAT 2020/12 Units <span style="color:red;">*</span></th>
+									@* <th>CAGR over 2016/12 Est MAT units <span style="color:red;">*</span></th>*@
+									<th>Market in packs <span style="color:red;">*</span></th>
+									<th>Batch size in ltr/tabs <span style="color:red;">*</span></th>
+									<th>Batch size <span style="color:red;">*</span></th>
+									<th style="width: 50px;">Yield % <span style="color:red;">*</span></th>
+									<th>Batch output <span style="color:red;">*</span></th>
+									<th>API (CAD) <span style="color:red;">*</span></th>
+									<th>Excipients (CAD) <span style="color:red;">*</span></th>
+									<th>PM (CAD) <span style="color:red;">*</span></th>
+									<th>CCPC (CAD) <span style="color:red;">*</span></th>
+									<th>Freight (CAD) <span style="color:red;">*</span></th>
+									<th>Emcure COGs/pack <span style="color:red;">*</span></th>
+									<th class="dtfc-fixed-right">Action</th>
+								</tr>
+							</thead>
+							<tbody id="FinanceTableBoy">
+								@if (Model != null && Model.lsPidfFinanceBatchSizeCoating != null && Model.lsPidfFinanceBatchSizeCoating.Count() > 0)
+								{
+									int j = 0;
+
+									foreach (var item in Model.lsPidfFinanceBatchSizeCoating)
+									{
+										string dbPakeSize = "PakeSize" + @j;
+										string dbPackSizeValue = "PackSizeValue" + @j;
+										string dbSkubalue = "DbSkus" + @j;
+										string dbBrandPrice = "BrandPrice" + @j;
+										string dbGenericListprice = "GenericListprice" + @j;
+										string dbNetRealisation = "NetRealisation" + @j;
+										string dbEstMat2020By12units = "EstMat2020By12units" + @j;
+										string dbMarketinpacks = "Marketinpacks" + @j;
 										string dbBatchsizeinLtrTabs = "BatchsizeinLtrTabs" + @j;
-                                        <tr id="financeDetailsRow_0">
-									    <td>
-                                                <select id="@dbSkubalue" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus DbSkus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
-                                                </select>
-                                            <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
-                                             
-                                        </td>
-                                            <td><select id="@dbPakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" style="width: 100px;" onchange="GetSUIMSVolumeYearWiseByPackSize(this)"></select>
-                                                
-                                            <input type="hidden" id="hdnMSLow" />
-                                        <input type="hidden" id="hdnMSMid" />
-                                        <input type="hidden" id="hdnMSHigh" />
-                                        <input type="hidden" id="hdnNSPLow" />
-                                        <input type="hidden" id="hdnNSPMid" />
-                                        <input type="hidden" id="hdnNSPHigh" />
+										<tr id="financeDetailsRow_0">
+											<td>
+												<select id="@dbSkubalue" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus DbSkus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
+												</select>
+												<input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
 
-                                            </td>
+											</td>
+											<td>
+												<select id="@dbPakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" style="width: 100px;" onchange="GetSUIMSVolumeYearWiseByPackSize(this)"></select>
+
+												<input type="hidden" id="hdnMSLow" />
+												<input type="hidden" id="hdnMSMid" />
+												<input type="hidden" id="hdnMSHigh" />
+												<input type="hidden" id="hdnNSPLow" />
+												<input type="hidden" id="hdnNSPMid" />
+												<input type="hidden" id="hdnNSPHigh" />
+
+											</td>
 											<td><input type="number" id="@dbPackSizeValue" readonly name="lsPidfFinanceBatchSizeCoating[@j].PackSizeValue" value="@item.PackSizeValue" class="PackSizeValue form-control readOnlyUpdate" /></td>
-                                        <td><input type="number" id="@dbBrandPrice" readonly name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
-									     <td><input type="number" id="@dbGenericListprice" readonly name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate" /></td>
-                                            <td><input type="text" id="@dbNetRealisation" readonly name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" value="@item.NetRealisation" class="NetRealisation form-control readOnlyUpdate"></td>
-                                        @* <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" value="@item.EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate"  /></td>*@
+											<td><input type="number" id="@dbBrandPrice" readonly name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
+											<td><input type="number" id="@dbGenericListprice" readonly name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate" /></td>
+											<td><input type="text" id="@dbNetRealisation" readonly name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" value="@item.NetRealisation" class="NetRealisation form-control readOnlyUpdate"></td>
+											@* <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" value="@item.EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate"  /></td>*@
 
-                                            <td><input type="number" id="@dbEstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" value="@item.EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
-									     
-									     @*<td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" value="@item.Cagrover2016By12estMatunits"  class="Cagrover2016By12estMatunits form-control readOnlyUpdate" /></td>*@
-									     <td><input type="text" id="@dbMarketinpacks" readonly="readonly" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" value="@item.Marketinpacks"  class="Marketinpacks form-control readOnlyUpdate" /></td>
+											<td><input type="number" id="@dbEstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" value="@item.EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
+
+											@*<td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" value="@item.Cagrover2016By12estMatunits"  class="Cagrover2016By12estMatunits form-control readOnlyUpdate" /></td>*@
+											<td><input type="text" id="@dbMarketinpacks" readonly="readonly" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" value="@item.Marketinpacks" class="Marketinpacks form-control readOnlyUpdate" /></td>
 											@*<td><input type="number"  id="BatchsizeinLtrTabs"	name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>*@
 											<td><input type="number" id="@dbBatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
 
-									    <td>
+											<td>
 
-										    <input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" value="@item.Batchsize" class="Batchsize form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" style="width: 100px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" value="@item.Yield" onchange="calculateBatchSizeCaoting(this);" class="Yield form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" value="@item.Batchoutput"  class=" Batchoutput form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" value="@item.ApiCad" onchange="calculateBatchSizeCaoting(this);" class="API_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" value="@item.ExcipientsCad" onchange="calculateBatchSizeCaoting(this);" class=" Excipients_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" value="@item.PmCad" onchange="calculateBatchSizeCaoting(this);" class="PM_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" value="@item.CcpcCad" onchange="calculateBatchSizeCaoting(this);" class="CCPC_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-                                                <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" value="@item.FreightCad" onchange="calculateBatchSizeCaoting(this);" class="Freight_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-												<input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack"  class="EmcureCOGs_pack form-control readOnlyUpdate UpdateProjectionCommercial" required />
-									    </td>
-									    <td class="align-middle abc">
-                                               
-                                            <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="@item.PidffinaceBatchSizeCoatingId"> 
-                                                            <div class="d-flex justify-content-center">
-                                                                <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
-                                                    <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this,@item.PidffinaceBatchSizeCoatingId)"></i>
-                                                            </div>
-                                           </td>
-								    </tr>
-								    j++;
-							    }
-						    }
-						    else
-						    {
-							int j = 0;
+												<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" value="@item.Batchsize" class="Batchsize form-control readOnlyUpdate" required />
+											</td>
+											<td>
+												<input type="number" style="width: 100px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" value="@item.Yield" onchange="calculateBatchSizeCaoting(this);" class="Yield form-control readOnlyUpdate" required />
+											</td>
+											<td>
+												<input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" value="@item.Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
+											</td>
+											<td>
+												<input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" value="@item.ApiCad" onchange="calculateBatchSizeCaoting(this);" class="API_CAD form-control readOnlyUpdate" required />
+											</td>
+											<td>
+												<input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" value="@item.ExcipientsCad" onchange="calculateBatchSizeCaoting(this);" class=" Excipients_CAD form-control readOnlyUpdate" required />
+											</td>
+											<td>
+												<input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" value="@item.PmCad" onchange="calculateBatchSizeCaoting(this);" class="PM_CAD form-control readOnlyUpdate" required />
+											</td>
+											<td>
+												<input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" value="@item.CcpcCad" onchange="calculateBatchSizeCaoting(this);" class="CCPC_CAD form-control readOnlyUpdate" required />
+											</td>
+											<td>
+												<input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" value="@item.FreightCad" onchange="calculateBatchSizeCaoting(this);" class="Freight_CAD form-control readOnlyUpdate" required />
+											</td>
+											<td>
+												<input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate UpdateProjectionCommercial" required />
+											</td>
+											<td class="align-middle abc">
 
-                                    string dbPakeSize = "PakeSize" + @j;
+												<input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="@item.PidffinaceBatchSizeCoatingId">
+												<div class="d-flex justify-content-center">
+													<i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
+													<i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this,@item.PidffinaceBatchSizeCoatingId)"></i>
+												</div>
+											</td>
+										</tr>
+										j++;
+									}
+								}
+								else
+								{
+									int j = 0;
+
+									string dbPakeSize = "PakeSize" + @j;
 									string dbPackSizeValue = "PackSizeValue" + @j;
-                                    string dbBrandPrice="BrandPrice" + @j;
-                                    string dbGenericListprice="GenericListprice"+@j;
-                                    string dbNetRealisation="NetRealisation"+@j;
-                                    string dbEstMat2020By12units="EstMat2020By12units"+@j;
-                                    string dbMarketinpacks="Marketinpacks"+@j;
-									string dbBatchsizeinLtrTabs="BatchsizeinLtrTabs"+@j; 
-							<tr id="financeDetailsRow_@j">
-								
-									<td>
-                                            <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" class="Skus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
-                                                </select>
-                                            <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="0">
-                                            
-                                        </td>
+									string dbBrandPrice = "BrandPrice" + @j;
+									string dbGenericListprice = "GenericListprice" + @j;
+									string dbNetRealisation = "NetRealisation" + @j;
+									string dbEstMat2020By12units = "EstMat2020By12units" + @j;
+									string dbMarketinpacks = "Marketinpacks" + @j;
+									string dbBatchsizeinLtrTabs = "BatchsizeinLtrTabs" + @j;
+									<tr id="financeDetailsRow_@j">
 
-                                        <td><select  id="@dbPakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" style="width: 100px;" onchange="GetSUIMSVolumeYearWiseByPackSize(this)" ></select>
-                                        <input type="hidden" id="hdnMSLow" />
-                                        <input type="hidden" id="hdnMSMid" />
-                                        <input type="hidden" id="hdnMSHigh" />
-                                        <input type="hidden" id="hdnNSPLow" />
-                                        <input type="hidden" id="hdnNSPMid" />
-                                        <input type="hidden" id="hdnNSPHigh" />
-                                        </td>
+										<td>
+											<select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" class="Skus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
+											</select>
+											<input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="0">
+
+										</td>
+
+										<td>
+											<select id="@dbPakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" style="width: 100px;" onchange="GetSUIMSVolumeYearWiseByPackSize(this)"></select>
+											<input type="hidden" id="hdnMSLow" />
+											<input type="hidden" id="hdnMSMid" />
+											<input type="hidden" id="hdnMSHigh" />
+											<input type="hidden" id="hdnNSPLow" />
+											<input type="hidden" id="hdnNSPMid" />
+											<input type="hidden" id="hdnNSPHigh" />
+										</td>
 										<td><input type="number" id="@dbPackSizeValue" readonly name="lsPidfFinanceBatchSizeCoating[@j].PackSizeValue" class="PackSizeValue form-control readOnlyUpdate" /></td>
-                                        <td><input type="number" id="@dbBrandPrice" readonly name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
-									    <td><input type="number" id="@dbGenericListprice" readonly name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice"  onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate"  ></td>
-                                        <td><input type="text" id="@dbNetRealisation" readonly name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" class="NetRealisation form-control readOnlyUpdate"></td>
-                                       @* <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate" /></td>*@
+										<td><input type="number" id="@dbBrandPrice" readonly name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
+										<td><input type="number" id="@dbGenericListprice" readonly name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate"></td>
+										<td><input type="text" id="@dbNetRealisation" readonly name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" class="NetRealisation form-control readOnlyUpdate"></td>
+										@* <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate" /></td>*@
 
-                                        <td><input type="number" id="@dbEstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
-									    
-									    @*<td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" class="Cagrover2016By12estMatunits form-control readOnlyUpdate" required /></td>*@
-                                        <td><input type="text" id="@dbMarketinpacks" readonly="readonly" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" class="Marketinpacks form-control readOnlyUpdate" required /></td>
+										<td><input type="number" id="@dbEstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
+
+										@*<td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" class="Cagrover2016By12estMatunits form-control readOnlyUpdate" required /></td>*@
+										<td><input type="text" id="@dbMarketinpacks" readonly="readonly" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" class="Marketinpacks form-control readOnlyUpdate" required /></td>
 										<td><input type="number" id="@dbBatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
 										<td>
-										<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
-									</td> 
-									<td>
-                                            <input type="number" style="width: 100px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" onchange="calculateBatchSizeCaoting(this);" class="Yield form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
-									</td>
-									<td>
-                                            <input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" onchange="calculateBatchSizeCaoting(this);" class="API_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" onchange="calculateBatchSizeCaoting(this);" class=" Excipients_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" onchange="calculateBatchSizeCaoting(this);" class="PM_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" onchange="calculateBatchSizeCaoting(this);" class="CCPC_CAD form-control readOnlyUpdate" required />
-									</td>
-                                    <td>
-                                            <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" onchange="calculateBatchSizeCaoting(this);" class="Freight_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-                                        <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
-									</td>
-                                    <td class="align-middle abc">
-                                            
-                                            <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="0">
-                                                        <div class="d-flex justify-content-center">
-                                                            <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
-                                                            <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this,0)"></i>
-                                                        </div>
-                                                    </td>
-								</tr>
-						}
-					          </tbody>
-                               </table>
-                                    </div>
-            </div>
-		</div>
-        <div class="card collapsed-card">
-			
-             <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button"  class="btn btn-tool" data-card-widget="collapse">Projections</button></h3>
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool"  data-card-widget="collapse" data-target="#ProjectionsCollapse" title="Collapse">
-                           <i class="fas fa-plus"></i>
-					</button>
+											<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
+										</td>
+										<td>
+											<input type="number" style="width: 100px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" onchange="calculateBatchSizeCaoting(this);" class="Yield form-control readOnlyUpdate" required />
+										</td>
+										<td>
+											<input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
+										</td>
+										<td>
+											<input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" onchange="calculateBatchSizeCaoting(this);" class="API_CAD form-control readOnlyUpdate" required />
+										</td>
+										<td>
+											<input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" onchange="calculateBatchSizeCaoting(this);" class=" Excipients_CAD form-control readOnlyUpdate" required />
+										</td>
+										<td>
+											<input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" onchange="calculateBatchSizeCaoting(this);" class="PM_CAD form-control readOnlyUpdate" required />
+										</td>
+										<td>
+											<input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" onchange="calculateBatchSizeCaoting(this);" class="CCPC_CAD form-control readOnlyUpdate" required />
+										</td>
+										<td>
+											<input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" onchange="calculateBatchSizeCaoting(this);" class="Freight_CAD form-control readOnlyUpdate" required />
+										</td>
+										<td>
+											<input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
+										</td>
+										<td class="align-middle abc">
+
+											<input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="0">
+											<div class="d-flex justify-content-center">
+												<i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
+												<i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this,0)"></i>
+											</div>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
+			<div class="card collapsed-card">
+
+				<div class="card-header bg-primary">
+					<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Projections</button></h3>
+					<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#ProjectionsCollapse" title="Collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
 				<div class="card-body collapse" id="ProjectionsCollapse" style="background-color:white;overflow-x:auto;">
-				
-                                @*<div class="accordion-body row">*@                                   
-                                   <div class="col-12 table-overflow">
-                                        <h5 class="fw-bold mb-3">Business Unit Projection</h5>
-                                        <div class="card card-primary card-outline card-outline-tabs">
-                                            <div class="card-header p-0 border-bottom-0">
-                                                <ul class="nav nav-tabs" id="custom-tabs-business-tab" role="tablist">
-                                                  
-                                                </ul>
-                                            </div>
-                                            <div class="card-body">
+
+					@*<div class="accordion-body row">*@
+					<div class="col-12 table-overflow">
+						<h5 class="fw-bold mb-3">Business Unit Projection</h5>
+						<div class="card card-primary card-outline card-outline-tabs">
+							<div class="card-header p-0 border-bottom-0">
+								<ul class="nav nav-tabs" id="custom-tabs-business-tab" role="tablist">
+								</ul>
+							</div>
+							<div class="card-body">
 								<div class="tab-content clsContentUnderBUTab_Finance" id="custom-tabs-business-tabContent">
 									<div class="tab-pane fade show active" id="custom-tabs-usa" style="background-color:white;overflow-x:auto;"
-                                                        role="tabpanel" aria-labelledby="custom-tabs-business-usa-tab">
+										 role="tabpanel" aria-labelledby="custom-tabs-business-usa-tab">
 										<div class="col-12 table-overflow">
-                                                             <table id="tblCommercialPerPack" class="table table-bordered text-center mb-4">
-                                                             </table>
-															 <table id="tblOutputGridFinanceProjection" class="table table-bordered text-center mb-4">
-                                                             </table>
-                                                            <table id="tblFinanceProjection" class="table table-bordered text-center mb-4">
-                                                             </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
+											<table id="tblCommercialPerPack" class="table table-bordered text-center mb-4">
+											</table>
+											<table id="tblOutputGridFinanceProjection" class="table table-bordered text-center mb-4">
+											</table>
+											<table id="tblFinanceProjection" class="table table-bordered text-center mb-4">
+											</table>
+										</div>
+									</div>
+								</div>
 
 								<div id="dvNotInterestedBUNote_Finance">
 									<label class="text-lg text-wrap w-100 dvNotInterestedBUNoteHeading_Finance" id="dvNotInterestedBUNoteHeading_Finance"></label>
 								</div>
-											</div>
-                                        </div>
-                                    </div>
-                               @* </div>*@
-                            
-				
-			</div>
-		</div>
-          
-            
-        @Html.Partial("_PIDFApproveReject")
+							</div>
+						</div>
+					</div>
+					@* </div>*@
 
-<div class="row">
-					<div class="col-12 text-end">
-						<div class="form-group">
+
+				</div>
+			</div>
+
+
+			@Html.Partial("_PIDFApproveReject")
+
+			<div class="row">
+				<div class="col-12 text-end">
+					<div class="form-group">
 
 						@if (Convert.ToBoolean(Context.Request.Query["finance"]) == false)
-                {
-                   
-                <button type="submit" id="btnSaveDraft" class="btn btn-primary btnControll" onclick="SaveDraftClick();">
-                    @*<i class="fab fa-firstdraft"></i>*@
-                    Save as Draft</button>
-                 }
-                            <button type="submit" id="btnSave" class="btn btn-success operationButton btnControll" onclick=" return SaveClick();">
-                                @* <i class="fa fa-save"></i> *@
-                                Submit
-                            </button>
-            
-            @if(ViewBag.Access.Approve == true)
-            {
-                if ((Model != null && Model.PIDFStatusId > 0 && (Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.CommercialSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.APISubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.PBFSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.APIInProgress)) && (Convert.ToBoolean(Context.Request.Query["finance"])))
-                {       
-                    <a style="@IsApproveAllow" class="btn btn-success operationButton btnControll" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                    <a style="@IsApproveAllow" class="btn btn-danger  operationButton btnControll" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
-                }
-            }
-                        
-            <a class="btn btn-danger" onclick="CancelPopup()">
-                    @*<i class="fa fa-times" aria-hidden="true"></i>*@
-                    Cancel</a>
-			</div>
-            </div>
-            </div>
+						{
 
-        
-	</form>
+							<button type="submit" id="btnSaveDraft" class="btn btn-primary btnControll" onclick="SaveDraftClick();">
+								@*<i class="fab fa-firstdraft"></i>*@
+								Save as Draft
+							</button>
+						}
+						<button type="submit" id="btnSave" class="btn btn-success operationButton btnControll" onclick=" return SaveClick();">
+							@* <i class="fa fa-save"></i> *@
+							Submit
+						</button>
+
+						@if (ViewBag.Access.Approve == true)
+						{
+							if ((Model != null && Model.PIDFStatusId > 0 && (Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.CommercialSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.APISubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.PBFSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.APIInProgress)) && (Convert.ToBoolean(Context.Request.Query["finance"])))
+							{
+								<a style="@IsApproveAllow" class="btn btn-success operationButton btnControll" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+								<a style="@IsApproveAllow" class="btn btn-danger  operationButton btnControll" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+							}
+						}
+
+						<a class="btn btn-danger" onclick="CancelPopup()">
+							@*<i class="fa fa-times" aria-hidden="true"></i>*@
+							Cancel
+						</a>
+					</div>
+				</div>
+			</div>
+
+
+		</form>
+	</div>
 </div>
-</div>
-     @Html.Partial("_CancelRequest", (int)PIDFScreen.Finance)
+@Html.Partial("_CancelRequest", (int)PIDFScreen.Finance)
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
 	<script src="~/js/custom/pidf/PIDFFinance.js?v=@jsVersion"></script>
 	<script src="~/js/custom/managementapproval/financechartercommon.js"></script>
 	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
 	<script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
-	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
-    <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
-<script>
-	const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
-    const AllDosageForm = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveDosageFormFinance";
-	const isView = "@Context.Request.Query["IsView"]";
-    const  ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
-	const GetActiveEncryptedBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveEncryptedBusinessUnit";
-	var GetIsInterestedByPIDFandBUurlFinance = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIsInterestedByPIDFandBU";
-    const selectedDosageFormId="@DosageFormId";
-    const selectedCurrencyId="@CurrencyId";
-    const selectedMsId="@MSPercent";
-    const selectedTargetPriceScenario = "@TargetPriceScenario";
-    const pidfId="@PidafId";
-    const selectedSKUs="@selectedSkus";
-    const _selectedPackSize="@selectedPackSize";
-    const _selectBusinessUnit="@SelectedBuId";
-    const _selectedPidfId="@selectedPidafId";
-    const _selectedProjectStartDate="@ProjectStartDate";
-    var _encBuid="@encBuid";
-</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+	<script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
+	<script>
+		const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
+		const AllDosageForm = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveDosageFormFinance";
+		const isView = "@Context.Request.Query["IsView"]";
+		const ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
+		const GetActiveEncryptedBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveEncryptedBusinessUnit";
+		var GetIsInterestedByPIDFandBUurlFinance = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIsInterestedByPIDFandBU";
+		const selectedDosageFormId = "@DosageFormId";
+		const selectedCurrencyId = "@CurrencyId";
+		const selectedMsId = "@MSPercent";
+		const selectedTargetPriceScenario = "@TargetPriceScenario";
+		const pidfId = "@PidafId";
+		const selectedSKUs = "@selectedSkus";
+		const _selectedPackSize = "@selectedPackSize";
+		const _selectBusinessUnit = "@SelectedBuId";
+		const _selectedPidfId = "@selectedPidafId";
+		const _selectedProjectStartDate = "@ProjectStartDate";
+		var _encBuid = "@encBuid";
+	</script>
 }

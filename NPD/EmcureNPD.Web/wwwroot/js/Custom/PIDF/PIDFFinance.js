@@ -3,7 +3,7 @@ let selectedCurrencyText = "";
 let el = document.querySelectorAll('input[type="number"]');
 let isValidSku = false;
 var SumOfSales = [];
-var SumOfCOGS = []; 
+var SumOfCOGS = [];
 var SumOfGC = [];
 var Expiries_Yearwise_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var AnnualConfirmatoryRelease_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -15,7 +15,7 @@ var TabKeyPressed_controlAnnualConf = '';
 var ScreenName = 'Finance';
 
 $(document).ready(function () {
- /*   console.log("selectedSKUs" + selectedSKUs);*/
+    /*   console.log("selectedSKUs" + selectedSKUs);*/
     SelectedTabBU_Finance = _selectBusinessUnit;
     GetCurrencyList();
     calculateDealTerm();
@@ -24,7 +24,7 @@ $(document).ready(function () {
     GetSelectedTargetPriceScanario();
     GetSkus(pidfId);
     fnGetActiveBusinessUnit();
-   
+
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);
         $('select.form-control.readOnlyUpdate').attr("disabled", true);
@@ -49,16 +49,16 @@ $(document).ready(function () {
         $(`.PackSizeValue`).attr("readonly", true);
     }
 
-    $("#Currency").select2({
-        placeholder: "Select Currency..",
-        allowClear: true,
-        dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') 
-    });
-    
+    //$("#Currency").select2({
+    //    placeholder: "Select Currency..",
+    //    allowClear: true,
+    //    dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') 
+    //});
+
     $(el).attr("step", "any");
 
-    $(document).on("change", "input[type = 'number']", function () {        
-     var selectedVal =   $(this).val()
+    $(document).on("change", "input[type = 'number']", function () {
+        var selectedVal = $(this).val()
         if (selectedVal == '')
             $(this).val('0');
     });
@@ -79,7 +79,7 @@ $(document).ready(function () {
     //    }
     //});
     UpdateProjectionCommercial();   // Expiriestxtbox
-    
+
 
     $(".Expiriestxtbox").on('keydown', function (e) {
 
@@ -88,12 +88,12 @@ $(document).ready(function () {
             e.preventDefault();
             TabKeyPressed_controlID = $(this).attr('id');
             $(this).trigger('change');
-           //alert('Tab Pressed');
+            //alert('Tab Pressed');
         }
     });
 
     $(".AnnualConfirmatoryRtxtbox").on('keydown', function (e) {
-       // alert('Tab Pressed');
+        // alert('Tab Pressed');
         var keyCode = e.keyCode || e.which;
         if (keyCode == 9) {
             e.preventDefault();
@@ -103,14 +103,14 @@ $(document).ready(function () {
             //alert('Tab Pressed');
         }
     });
-    if ($('#ProjectStartDate').val()!='')
+    if ($('#ProjectStartDate').val() != '')
         $('#ProjectStartDate').attr('readonly', true)
     if ($('#BatchManufacturing').val() != '')
         $('#BatchManufacturing').attr('readonly', true)
     if ($('#ExpectedFilling').val() != '')
         $('#ExpectedFilling').attr('readonly', true)
-    
-   
+
+
 });
 function ExpiriesValueChange(ele, index) {
 
@@ -118,20 +118,20 @@ function ExpiriesValueChange(ele, index) {
     Expiries_Yearwise_Data[index] = ele.value;
     RenderFinanceProjection();
     if (ExpiriestxtboxFocusId != '') {
-      //  console.log('This is onchnage: ' + ExpiriestxtboxFocusId);
+        //  console.log('This is onchnage: ' + ExpiriestxtboxFocusId);
         $('#' + ExpiriestxtboxFocusId).focus();
-       // ExpiriestxtboxFocusId = '';
+        // ExpiriestxtboxFocusId = '';
     }
 
-   if (index == 0) {
+    if (index == 0) {
         TabKeyPressed_controlID = 'ProjectionExpiries_0';
     }
-   
+
     $(".Expiriestxtbox").on('keydown', function (e) {
-       var keyCode = e.keyCode || e.which;
+        var keyCode = e.keyCode || e.which;
         if (keyCode == 9) {
             TabKeyPressed_controlID = $(this).attr('id');
-           // alert('Tab Pressed1');
+            // alert('Tab Pressed1');
         }
     });
     if (TabKeyPressed_controlID != '' && TabKeyPressed_controlID != 'ProjectionExpiries_9') {
@@ -144,17 +144,17 @@ function ExpiriesValueChange(ele, index) {
 function AnnualconfirmatoryValueChange(ele, index) {
     ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
     AnnualConfirmatoryRelease_Data[index] = ele.value;
-    RenderFinanceProjection();  
+    RenderFinanceProjection();
     if (AnnualConfirmatoryRtxtboxFocusId != '') {
         $('#' + AnnualConfirmatoryRtxtboxFocusId).focus();
-       // console.log('This is OnChnage: ' + AnnualConfirmatoryRtxtboxFocusId);
-       // AnnualConfirmatoryRtxtboxFocusId = '';
-    }  
+        // console.log('This is OnChnage: ' + AnnualConfirmatoryRtxtboxFocusId);
+        // AnnualConfirmatoryRtxtboxFocusId = '';
+    }
 
     if (index == 0) {
         TabKeyPressed_controlAnnualConf = 'ProjectionAnnualConfirmatoryRelease_0';
     }
- $(".AnnualConfirmatoryRtxtbox").on('keydown', function (e) {
+    $(".AnnualConfirmatoryRtxtbox").on('keydown', function (e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode == 9) {
             TabKeyPressed_controlAnnualConf = $(this).attr('id');
@@ -168,12 +168,12 @@ function AnnualconfirmatoryValueChange(ele, index) {
     }
 }
 
-function ValidateSKU_dropdown(){
+function ValidateSKU_dropdown() {
     var ArrayofInvalid = [];
     var ArrayofZeroInvalidValues = [];
     var isValidIPDForm = true;
     $('.batch-size-coating-table').find("select").each(function () {
-        var selectedval =   $(this).val()
+        var selectedval = $(this).val()
         if (selectedval == 0) {
             ArrayofInvalid.push($(this).attr('id'));
             $(this).focus();
@@ -192,11 +192,11 @@ function ValidateSKU_dropdown(){
             $(this).focus();
             $(this).css("border-color", "red");
             isValidIPDForm = false;
-           //toastr.error('Yield should not have "0" Value !');
+            //toastr.error('Yield should not have "0" Value !');
         }
         else {
             $(this).css("border-color", "");
-           
+
         }
     });
     $('.batch-size-coating-table').find(".Batchsize").each(function () {
@@ -206,11 +206,11 @@ function ValidateSKU_dropdown(){
             $(this).focus();
             $(this).css("border-color", "red");
             isValidIPDForm = false;
-           // toastr.error('Batchsize should not have "0" Value !');
+            // toastr.error('Batchsize should not have "0" Value !');
         }
 
         else {
-            $(this).css("border-color", "");            
+            $(this).css("border-color", "");
         }
     });
     if (ArrayofZeroInvalidValues.length > 0) {
@@ -219,20 +219,19 @@ function ValidateSKU_dropdown(){
     }
     if (ArrayofInvalid.length > 0) {
         isValidIPDForm = false;
-        toastr.error('Some required fields are missing!',"Batch Size Costing Validation");
+        toastr.error('Some required fields are missing!', "Batch Size Costing Validation");
     }
     return isValidIPDForm;
 }
 
-function UpdateProjectionCommercial(){
+function UpdateProjectionCommercial() {
     RenderCommercialPerPack();
     RenderFinanceProjection();
 }
 $('.UpdateProjectionCommercial').on('change', function () {
     UpdateProjectionCommercial();
 });
-function GetSelectedMSPercent()
-{
+function GetSelectedMSPercent() {
     $("select#MSPersentage option").each(function (index, value) {
         if (this.value === selectedMsId) {
             $("select#MSPersentage").prop('selectedIndex', index);
@@ -263,39 +262,39 @@ $("#btnRejects").click(function () {
     }
 })
 function GetCurrencyList() {
-      //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
-        ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+    //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
 
 function GetCurrencyListSuccess(Currencies) {
-    var ddl_Data = Currencies._object.CurrencyList; //ConvertCurrencyList
+    var ddl_Data = Currencies._object.ConvertCurrencyList; //ConvertCurrencyList
     FillConvertCurrencyDropdowns(Currencies._object.ConvertCurrencyList)
     try {
         $('#Currency').html('')
         let optionhtml = '';//'<option value = "-1">Select All</option>';
         $.each(ddl_Data, function (index, object) {
-            let currencyText = object.currencyCode == null ? object.currencyName : object.currencyCode + "-" + object.currencyName;
-            optionhtml += '<option value="' +
-                object.currencyId + '" title="' + object.currencyCode+'">' + currencyText + '</option>';
+            let currencyText = object.currencyCodeId == null ? object.currencyName : object.currencyCodeId + "-" + object.currencyName;
+            optionhtml += '<option value="' + object.id + '" title="' + object.currencyId + '">' + currencyText + '</option>';
         });
         $("#Currency").append(optionhtml);
+        $('select#Currency').trigger('change');
 
-        let arrCur = JSON.parse(JSON.stringify(selectedCurrencyId.split(',')));
-        $('select#Currency').select2(
-            {
-                placeholder: "Select Currency..",
-                allowClear: true,
-                dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') 
-            }
-        ).val(arrCur).trigger('change');
-        var data = $('#Currency').select2('data');
-        if (data) {
-            for (var i = 0; i < data.length; i++) {
-                if (i < data.length-1) { selectedCurrencyText += data[i].title + "/"; }
-                if (i == data.length-1) { selectedCurrencyText += data[i].title; }
-            }
-        }
-      
+        //let arrCur = JSON.parse(JSON.stringify(selectedCurrencyId.split(',')));
+        //$('select#Currency').select2(
+        //    {
+        //        placeholder: "Select Currency..",
+        //        allowClear: true,
+        //       // dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') 
+        //    }
+        //).val(arrCur).trigger('change');
+        //var data = $('#Currency').select2('data');
+        //if (data) {
+        //    for (var i = 0; i < data.length; i++) {
+        //        if (i < data.length-1) { selectedCurrencyText += data[i].title + "/"; }
+        //        if (i == data.length-1) { selectedCurrencyText += data[i].title; }
+        //    }
+        //}
+
         GetFinancialProjectionYear(_selectedProjectStartDate);
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -304,15 +303,15 @@ function GetCurrencyListSuccess(Currencies) {
 function GetCurrencyListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-function FillConvertCurrencyDropdowns(data){
+function FillConvertCurrencyDropdowns(data) {
     try {
-        $('#CurrentCurrency').html('');
-       let optionhtml = '<option value = "0">--Select--</option>';
+        $('#ConvertCurrency').html('');
+        let optionhtml = '<option value = "0">--Select--</option>';
         $.each(data, function (index, object) {
-            optionhtml += '<option value="' +
-                object.currencyId + '">' + object.currencyName + '</option>';
+            let currencyText = object.currencyCodeId == null ? object.currencyName : object.currencyCodeId + "-" + object.currencyName;
+            // optionhtml += '<option value="' + object.currencyId + '">' + currencyText + '</option>';
+            optionhtml += '<option value="' + object.id + '" title="' + object.currencyId + '">' + currencyText + '</option>';
         });
-        $("#CurrentCurrency").append(optionhtml);
         $("#ConvertCurrency").append(optionhtml);
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -321,15 +320,13 @@ function FillConvertCurrencyDropdowns(data){
 }
 
 $(".clsConvertCerrency").change(function () {
-    var from_curr_val = $('#CurrentCurrency').val();
-    var to_curr_val = $('#ConvertCurrency').val();
+    var from_curr_val = $('#Currency').find("option:selected").attr("title");
+    var to_curr_val = $('#ConvertCurrency').find("option:selected").attr("title");
+
     if (from_curr_val != 0 && to_curr_val != 0) {
-
-    
-    ajaxServiceMethod($('#hdnBaseURL').val() + "api/CurrencyConverter?fromCurrency=" + from_curr_val + "&toCurrency=" + to_curr_val, 'GET', GetConvertCurrencySuccess, GetConvertCurrencyError);
-
+        $('#Currency').val($('#ConvertCurrency').val());
+        ajaxServiceMethod($('#hdnBaseURL').val() + "api/CurrencyConverter?fromCurrency=" + from_curr_val + "&toCurrency=" + to_curr_val, 'GET', GetConvertCurrencySuccess, GetConvertCurrencyError);
     }
-
 });
 function GetConvertCurrencySuccess(data) {
     try {
@@ -337,15 +334,25 @@ function GetConvertCurrencySuccess(data) {
         var result = 0;
         if (rate == '' || rate == undefined || isNaN(rate)) { }
         else {
-            rate = (rate == '' || rate == undefined || isNaN(rate)) ? 1 : rate;
+            //rate = (rate == '' || rate == undefined || isNaN(rate)) ? 1 : rate;            
             var curnt_val = 0
             $('.format-currency').each(function () {
-                curnt_val = $(this).val();
-                result = curnt_val * rate
-                if (isNaN(result)) {
-                    result = curnt_val;
+                if (this.nodeName == 'TD') {
+                    curnt_val = $(this).text();
+                    result = curnt_val * rate
+                    if (isNaN(result)) {
+                        result = curnt_val;
+                    }
+                    $(this).text(result.toFixed(2));
                 }
-                $(this).val(result);
+                else if (this.nodeName == 'INPUT') {
+                    curnt_val = $(this).val();
+                    result = curnt_val * rate
+                    if (isNaN(result)) {
+                        result = curnt_val;
+                    }
+                    $(this).val(result.toFixed(2));
+                }
             });
         }
 
@@ -366,12 +373,12 @@ function GetDosageFormListSuccess(data) {
         $('#DosageFrom').html('')
         let optionhtml = '<option value = "0">--Select--</option>';
         $.each(data._object, function (index, object) {
-            optionhtml +='<option value="' +
+            optionhtml += '<option value="' +
                 object.dosageFormId + '">' + object.dosageFormName + '</option>';
         });
         $("#DosageFrom").append(optionhtml);
 
-        $("select#DosageFrom option").each(function (index,value) {
+        $("select#DosageFrom option").each(function (index, value) {
             if (this.value === selectedDosageFormId) {
                 $("select#DosageFrom").prop('selectedIndex', index);
                 return;
@@ -387,11 +394,11 @@ function GetDosageFormListError(x, y, z) {
 // #endregion
 function addRowFinanceDetails(j) {
     //if (validateDuplicateSKUs()) {
-        j = $('.Skus').length;//+ 1;
-        var table = $('#FinanceTableBoy');
-        var node = $('#financeDetailsRow_0').clone(true);
-        table.find('tr:last').after(node);
-        table.find('tr:last').find("input").val("");
+    j = $('.Skus').length;//+ 1;
+    var table = $('#FinanceTableBoy');
+    var node = $('#financeDetailsRow_0').clone(true);
+    table.find('tr:last').after(node);
+    table.find('tr:last').find("input").val("");
     table.find('tr:last').find("input").val("");
     table.find('tr:last').find('input[type = "number"]').val(0);
     SetChildRows();
@@ -406,7 +413,7 @@ function SaveClick() {
     if (isValidFinanaceForm) {
 
         $('#SaveType').val('submit');
-        $("#Currencyid").val($("#Currency").val().join(','));
+        $("#Currencyid").val($("#Currency").val());
         /*$("#HfStatusRemark").val("Submitted");*/
         SetChildRows();
         $('#hdnSelectedBussinesUnit').val(_encBuid);
@@ -440,24 +447,24 @@ function SaveDraftClick() {
     $("#ForecastDate").prop('required', true);
     $('#SaveType').val('draft');
     //let selectedCurrencyId = $("#Currency").val().join(',');
-    $("#Currencyid").val($("#Currency").val().join(','));
+    $("#Currencyid").val($("#Currency").val());
     /*$("#HfStatusRemark").val("SavedAsDraft");*/
     SetChildRows();
     $('#hdnSelectedBussinesUnit').val(_encBuid);
-    SetProjectionDynamicValues();    
+    SetProjectionDynamicValues();
     //}
     //else {
     //    preventSubmit();
     //}
-   // $('.readOnlyUpdate').removeAttr('required');
-   // grantSubmit();
+    // $('.readOnlyUpdate').removeAttr('required');
+    // grantSubmit();
 }
 function ApproveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
     $('#SaveType').val('approved');
-    $("#Currencyid").val($("#Currency").val().join(','));
+    $("#Currencyid").val($("#Currency").val());
     $("#HfStatusRemark").val($("#textApproveStatusRemark").val());
-        SetChildRows();
+    SetChildRows();
     //}
     //else {
     //    preventSubmit();
@@ -467,9 +474,9 @@ function ApproveClick() {
 function RejectClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
     $('#SaveType').val('rejected');
-    $("#Currencyid").val($("#Currency").val().join(','));
+    $("#Currencyid").val($("#Currency").val());
     $("#HfStatusRemark").val($("#textRejectStatusRemark").val());
-        SetChildRows();
+    SetChildRows();
     //}
     //else {
     //    preventSubmit();
@@ -478,7 +485,7 @@ function RejectClick() {
 }
 function SetChildRows() {
     $.each($('#FinanceTableBoy tr'), function (index, value) {
-        
+
         $(this).find("td:eq(0) select").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus");
         $(this).find("td:eq(0) select").attr("id", "Skus" + index.toString());
         $(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceId");
@@ -493,10 +500,10 @@ function SetChildRows() {
         $(this).find("td:eq(4) input").attr("id", "GenericListprice" + index.toString());
         $(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation");
         $(this).find("td:eq(5) input").attr("id", "NetRealisation" + index.toString());
-        
+
         $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units");
         $(this).find("td:eq(6) input").attr("id", "EstMat2020By12units" + index.toString());
-       
+
         $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks");
         $(this).find("td:eq(7) input").attr("id", "Marketinpacks" + index.toString());
         $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs");
@@ -521,8 +528,8 @@ function SetChildRows() {
         $(this).find("td:eq(17) input").attr("id", "EmcureCogsPack" + index.toString());
         $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
         $(this).find("td:eq(18) input").attr("id", "PidffinaceBatchSizeCoatingId" + index.toString());
-       
-       // console.log($(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId").value())
+
+        // console.log($(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId").value())
     });
 }
 function SetChildRowDeleteIcon() {
@@ -560,7 +567,7 @@ function grantSubmit() {
         //toastr.error('Error:required input fields could not be empty');
         //100% works
         //return;
-        
+
     });
 }
 
@@ -591,7 +598,7 @@ function calculateBatchSizeCaoting(ele) {
     let CcpcCad = 0;
     let FreightCad = 0;
     let packSize = 0;
-    let PackSizeValue = 0;    
+    let PackSizeValue = 0;
     let strengthId = 0;
     $.each($('#FinanceTableBoy tr'), function (index, value) {
 
@@ -615,7 +622,7 @@ function calculateBatchSizeCaoting(ele) {
 
         $(this).find("input.EmcureCOGs_pack").val(sumforEmcureCogsPack.toFixed(2));
         UpdateProjectionCommercial();
-        
+
 
         //strengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").val();
         ////getPackSize(strengthId);
@@ -648,22 +655,22 @@ function calculateBatchSizeCaoting(ele) {
         //    FreightCad = $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad").val();
         //    sumforEmcureCogsPack = parseInt(Batchsize) + parseInt(Yield) + parseInt(Batchoutput) + parseInt(ApiCad) + parseInt(ExcipientsCad) + parseInt(PmCad) + parseInt(CcpcCad) + parseInt(FreightCad);
         //    $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack").val(sumforEmcureCogsPack);
-       // });
+        // });
     })
 }
 function GetSkus(pidfId) {
-    
+
     ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetStrengthByPIDFAnddBuId/${pidfId}/${_encBuid}`, 'GET', GetSkusListSuccess, GetSkusListError);
     function GetSkusListSuccess(data) {
         try {
             let arrselectedSKUs = selectedSKUs.split(',');
-            if (arrselectedSKUs[0]!='' && arrselectedSKUs.length > 0) {
+            if (arrselectedSKUs[0] != '' && arrselectedSKUs.length > 0) {
                 $('select.DbSkus').html('')
                 let optionhtml = '<option value = "0" selected="selected">--Select--</option>';
                 $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
                         object.pidfProductStrengthId + '">' + object.strength + object.unitofMeasurementName + '</option>';
-                    
+
                 });
                 $("select.DbSkus").append(optionhtml);
                 arrselectedSKUs.forEach(function (val, i) {
@@ -677,10 +684,10 @@ function GetSkus(pidfId) {
                         $(`input#Marketinpacks${i}.Marketinpacks`).attr("readonly", true);
                         $(`input#PackSizeValue${i}.PackSizeValue`).attr("readonly", true);
                         $(`input#BatchsizeinLtrTabs${i}.BatchsizeinLtrTabs`).attr("readonly", true);
-                        
+
                     }
                 });
-                
+
             }
             else {
                 $('select#Skus').html('')
@@ -691,7 +698,7 @@ function GetSkus(pidfId) {
                 });
                 $("select#Skus").append(optionhtml);
             }
-           
+
         } catch (e) {
             toastr.error('Error:' + e.message);
         }
@@ -699,7 +706,7 @@ function GetSkus(pidfId) {
     function GetSkusListError() {
         toastr.error("Error");
     }
-   
+
 }
 function getPackSize(ele) {
     if (ele.value == undefined) {
@@ -709,18 +716,18 @@ function getPackSize(ele) {
     ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetPackSizeByStrengthId/${pidfId}/${_encBuid}/${ele.value}`, 'GET', getPackSizeSuccess, getPackSizeError);
     function getPackSizeSuccess(data) {
         try {
-            
+
             var row_index = $(ele).closest('tr').index();
-         
-                $(`select#PakeSize${row_index}.PakeSize`).html('')
-                let optionhtml = '<option value = "0">--Select--</option>';
-                $.each(data.table, function (index, object) {
-                    optionhtml += '<option value="' +
-                        object.packSizeId + '" data=' + object.packSize+ '>' + object.packSizeName + ' </option>';
-                    
-                    //calculateBatchSizeCaoting(ele);
-                   
-                });
+
+            $(`select#PakeSize${row_index}.PakeSize`).html('')
+            let optionhtml = '<option value = "0">--Select--</option>';
+            $.each(data.table, function (index, object) {
+                optionhtml += '<option value="' +
+                    object.packSizeId + '" data=' + object.packSize + '>' + object.packSizeName + ' </option>';
+
+                //calculateBatchSizeCaoting(ele);
+
+            });
             let arrselectedPackSize = _selectedPackSize.split(',');
             if (arrselectedPackSize[0] != '' && arrselectedPackSize.length > 0) {
                 arrselectedPackSize.forEach(function (val, i) {
@@ -735,7 +742,7 @@ function getPackSize(ele) {
             RenderCommercialPerPack();
             RenderFinanceProjection();
         }
-         catch (e) {
+        catch (e) {
             toastr.error('Error:' + e.message);
         }
     }
@@ -744,8 +751,8 @@ function getPackSize(ele) {
     }
 }
 
-function getEditPackSize(strengthId,rowIndex) {
-   
+function getEditPackSize(strengthId, rowIndex) {
+
     ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetPackSizeByStrengthId/${pidfId}/${_encBuid}/${strengthId}`, 'GET', getPackSizeSuccess, getPackSizeError);
     function getPackSizeSuccess(data) {
         try {
@@ -756,16 +763,16 @@ function getEditPackSize(strengthId,rowIndex) {
             let optionhtml = '<option value = "0">--Select--</option>';
             $.each(data.table, function (index, object) {
                 optionhtml += '<option value="' +
-                    object.packSizeId + '" data=' + object.packSize+ '>' + object.packSizeName + ' </option>';
+                    object.packSizeId + '" data=' + object.packSize + '>' + object.packSizeName + ' </option>';
             });
-            
+
             $(`select#PakeSize${rowIndex}.PakeSize`).append(optionhtml);
             let arrselectedPackSize = _selectedPackSize.split(',');
             if (arrselectedPackSize[0] != '' && arrselectedPackSize.length > 0) {
                 arrselectedPackSize.forEach(function (val, i) {
                     if (val == arrselectedPackSize[i]) {
                         $(`select#PakeSize${i}.PakeSize`).val(val);
-                        $(`select#PakeSize${i}.PakeSize`).find('option[value="' + val + '"]').prop('selected',true).trigger("change");
+                        $(`select#PakeSize${i}.PakeSize`).find('option[value="' + val + '"]').prop('selected', true).trigger("change");
                     }
                 });
             }
@@ -787,10 +794,10 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
     //let strengthId = $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val() == undefined ? skuElements : $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val();
 
     let packSizeId = $(ele).closest('tr').find("select.PakeSize option:selected").attr("value");
-    let strengthId =$(ele).closest('tr').find("select.Skus").val();
-    validateDuplicateSKUs();    
+    let strengthId = $(ele).closest('tr').find("select.Skus").val();
+    validateDuplicateSKUs();
     if (isValidSku) {
-      if (packSizeId > 0 && strengthId > 0) {
+        if (packSizeId > 0 && strengthId > 0) {
             ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${pidfId}/${_encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
             function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
                 try {
@@ -800,10 +807,10 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation.toFixed(2));
                     $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
                     $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
-                    $(`input#BatchsizeinLtrTabs${row_index}.BatchsizeinLtrTabs`).val(parseFloat((data.table.length > 0 ? data.table[0].commercialBatchSize : 0)).toFixed(2));  
-                      
+                    $(`input#BatchsizeinLtrTabs${row_index}.BatchsizeinLtrTabs`).val(parseFloat((data.table.length > 0 ? data.table[0].commercialBatchSize : 0)).toFixed(2));
+
                     $(`input#PackSizeValue${row_index}.PackSizeValue`).val((data.table.length > 0 ? data.table[0].packSizeValue : 0));
-                    
+
                     calculateBatchSizeCaoting(ele);
 
                     $(ele).closest('tr').find("#hdnMSLow").val((data.table.length > 0 ? data.table[0].marketSharePercentageLow : 0).toFixed(2));
@@ -816,7 +823,7 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     if (data.table2.length > 0) {
                         CommcercialBU_NPS_MS_Data = data.table2;
                     }
-                    if (data.table1.length>0)
+                    if (data.table1.length > 0)
                         UpdateDynamicTextBoxValues(data.table1);
 
                     RenderCommercialPerPack();
@@ -846,36 +853,36 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
 //    GetFinancialProjectionYear(_selectedProjectStartDate);
 //})
 $("select#Currency").on("select2:select select2:unselecting", function (e) {
-    selectedCurrencyText = ""; 
-    $(".tdCurrency").text(selectedCurrencyText);
-    let event = e;
-    if (event.params._type == "unselecting") {
-       
-        var data = $('#Currency').select2('data');
-        if (data) {
-            data.pop(event.params.args.data.id);
-            for (var i = 0; i < data.length; i++) {
-                if (i < data.length - 1) { selectedCurrencyText += data[i].title + "/"; }
-                if (i == data.length - 1) { selectedCurrencyText += data[i].title; }
-            }
-        }
-        else {
-            $(".tdCurrency").text("");
-        }
-    }
-    else if (event.params._type == "select") {
-       
-        var data = $('#Currency').select2('data');
-        if (data) {
-            for (var i = 0; i < data.length; i++) {
-                if (i < data.length - 1) { selectedCurrencyText += data[i].title + "/"; }
-                if (i == data.length - 1) { selectedCurrencyText += data[i].title; }
-            }
-        }
-        else {
-            $(".tdCurrency").text("");
-        }
-    }
+    //selectedCurrencyText = ""; 
+    //$(".tdCurrency").text(selectedCurrencyText);
+    //let event = e;
+    //if (event.params._type == "unselecting") {
+
+    //    var data = $('#Currency').select2('data');
+    //    if (data) {
+    //        data.pop(event.params.args.data.id);
+    //        for (var i = 0; i < data.length; i++) {
+    //            if (i < data.length - 1) { selectedCurrencyText += data[i].title + "/"; }
+    //            if (i == data.length - 1) { selectedCurrencyText += data[i].title; }
+    //        }
+    //    }
+    //    else {
+    //        $(".tdCurrency").text("");
+    //    }
+    //}
+    //else if (event.params._type == "select") {
+
+    //    var data = $('#Currency').select2('data');
+    //    if (data) {
+    //        for (var i = 0; i < data.length; i++) {
+    //            if (i < data.length - 1) { selectedCurrencyText += data[i].title + "/"; }
+    //            if (i == data.length - 1) { selectedCurrencyText += data[i].title; }
+    //        }
+    //    }
+    //    else {
+    //        $(".tdCurrency").text("");
+    //    }
+    //}
     GetFinancialProjectionYear(_selectedProjectStartDate);
 });
 
@@ -903,7 +910,7 @@ function validateDuplicateSKUs() {
         isValidSku = true;
         return isValidSku;
     });
-   // return false;
+    // return false;
 }
 //$("i.fas.fa-plus").click(function () {
 //    let count = 1;
@@ -920,7 +927,7 @@ function validateDuplicateSKUs() {
 
 //});
 
-function SetExpectedFillingBatchManufacturingDate(_projStartDate){
+function SetExpectedFillingBatchManufacturingDate(_projStartDate) {
     var DateType = new Date(_projStartDate);
     var _StratDate = DateType; //new Date(DateType.getFullYear() + '-' + DateType.getDate() + '-' + (DateType.getMonth() + 1));
     var _BatchManufacturing = new Date(_StratDate.setDate(_StratDate.getDate() + 120));
@@ -934,7 +941,7 @@ function SetExpectedFillingBatchManufacturingDate(_projStartDate){
 function GetFinancialProjectionYear(dates) {
     $(".trProjectionYear").empty();
     //selectedCurrencyText = $(`#Currency option:selected`).text().split('-')[0];       new Date('2023-05-11')
-  
+
     let td = `<td class="tdCurrency">${selectedCurrencyText}</td>`;
     for (var i = 0; i < 10; i++) {
         if (i == 0) {
@@ -942,7 +949,7 @@ function GetFinancialProjectionYear(dates) {
         }
         else {
             td += `<td>Mar-${parseInt(getYearByLast3Months(dates)) + i
-        }</td >`;
+                }</td >`;
         }
     }
     //alert(getYearByLast3Months(ele.value))
@@ -960,13 +967,13 @@ function getYearByLast3Months(date) {
         }
     }
 
-    return lastSixMonths.reverse() 
+    return lastSixMonths.reverse()
 }
 
 $(el).focus(function () {
-    $(this).attr("step","any");
+    $(this).attr("step", "any");
     let num = this.value;
-    
+
     if (num.toString() == "E" || num.toString() == "e") {
         this.value = null;
     }
@@ -984,7 +991,7 @@ $(el).focusout(function () {
         this.value = null;
         $(this).attr("required", true);
     }
-    if (num.toString()!="") {
+    if (num.toString() != "") {
         this.value = parseFloat(num).toFixed(2);
     }
 });
@@ -992,27 +999,27 @@ $(el).focusout(function () {
     'use strict'
 
     //// Fetch all the forms we want to apply custom Bootstrap validation styles to
-   var forms = document.querySelectorAll('.needs-validation')
+    var forms = document.querySelectorAll('.needs-validation')
 
-   // Loop over them and prevent submission
-   Array.prototype.slice.call(forms)
-       .forEach(function (form) {
-           form.addEventListener('submit', function (event) {
-               $(".readOnlyUpdate").removeClass("valid");
-               if (!form.checkValidity()) {
-                   event.preventDefault()
-                   event.stopPropagation()
-               }
-               else if ($("select#Currency").val() == "") {
-                   event.preventDefault()
-                   event.stopPropagation()
-                  // toastr.error("please select currency", "Required");
-                   $("select#Currency").siblings(".select2-container").css('border', '0.5px solid red');
-                   $("select#Currency").focus();
-               }
-               else if ($("select#Currency").val() != "") {
-                   $("select#Currency").siblings(".select2-container").css('border', '0px');
-               }
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                $(".readOnlyUpdate").removeClass("valid");
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                else if ($("select#Currency").val() == "") {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    // toastr.error("please select currency", "Required");
+                    $("select#Currency").siblings(".select2-container").css('border', '0.5px solid red');
+                    $("select#Currency").focus();
+                }
+                else if ($("select#Currency").val() != "") {
+                    $("select#Currency").siblings(".select2-container").css('border', '0px');
+                }
                 if ($("select#DosageFrom.form-control.readOnlyUpdate").val() == 0) {
                     $("#DvDosageFrom").css("border", "0.5px solid red");
                     $("#select#DosageFrom.form-control.readOnlyUpdate").focus();
@@ -1020,16 +1027,16 @@ $(el).focusout(function () {
                     event.stopPropagation()
                     //toastr.error("please select DosageFrom", "Required");
 
-               }
-               
-               $(".valid-feedback").hide();
-               form.classList.add('was-validated')
-           }, false)
-       })
+                }
+
+                $(".valid-feedback").hide();
+                form.classList.add('was-validated')
+            }, false)
+        })
 })()
 
 
-function loadFinanceProjectionData(pidfid, encBUId, buid){
+function loadFinanceProjectionData(pidfid, encBUId, buid) {
     _encBuid = encBUId;
     SelectedTabBU_Finance = buid;
     BussinesUnitInterestedFinance(pidfid, buid, 'Finance');
@@ -1068,7 +1075,7 @@ function GetBatchSizeCostingTRValues() {
 
 $('.clsProjectTimeline').change(function () {
 
-    
+
     let _appPeriodDays = isNaN($('#ApprovalPeriodinDays').val()) ? 0 : parseInt($('#ApprovalPeriodinDays').val());
 
     let _expDate = $('#ExpectedFilling').val();
@@ -1080,11 +1087,11 @@ $('.clsProjectTimeline').change(function () {
     $('#ApprovalDate').val(resultDate);
 
 
-    _expDate.setDate(_ExpectedFillingDate.getDate() + _appPeriodDays+60);
+    _expDate.setDate(_ExpectedFillingDate.getDate() + _appPeriodDays + 60);
 
     resultDate = _expDate.toISOString().split('T')[0];
     $('#ProductLaunchDate').val(resultDate);
-    
+
 
 
 });
