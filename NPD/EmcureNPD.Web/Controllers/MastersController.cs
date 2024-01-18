@@ -240,7 +240,7 @@ namespace EmcureNPD.Web.Controllers
             int rolId = _helper.GetLoggedInRoleId();
             RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
             if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
-            {
+            { 
                 return RedirectToAction("AccessRestriction", "Home");
             }
             ViewBag.Access = objPermssion;
