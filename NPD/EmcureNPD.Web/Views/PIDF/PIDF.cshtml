@@ -103,7 +103,7 @@
                                         <div class="form-group required">
                                             @Html.LabelFor(model => model.BusinessUnitId, Master.BusinessUnitName , new { @class = "control-label" }) <span class="text-danger">*</span>
                                             <input type="hidden" id="hdnBusinessUnitId" value="@Model.BusinessUnitId" />
-                                            <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate customvalidateformcontrol mandatoryformcontrol readonlyOtherBusinessUnit" required></select>
+                                            <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate customvalidateformcontrol mandatoryformcontrol readonlyOtherBusinessUnit searchable-dropdown" required></select>
                                             @Html.ValidationMessageFor(model => model.BusinessUnitId, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -111,7 +111,7 @@
                                         <div class="form-group required">
                                             @Html.LabelFor(model => model.OralId, Master.OralName, new { @class = "control-label" }) <span class="text-danger">*</span>
                                             <input type="hidden" id="hdnOralId" value="@Model.OralId" />
-                                            <select id="OralId" name="OralId" class="form-control readOnlyUpdate customvalidateformcontrol readonlyOtherBusinessUnit" required></select>
+                                            <select id="OralId" name="OralId" class="form-control readOnlyUpdate customvalidateformcontrol readonlyOtherBusinessUnit searchable-dropdown" required></select>
                                             @Html.ValidationMessageFor(model => model.OralId, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -327,7 +327,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group required">
                                             <label class="control-label">In house</label> <span class="text-danger">*</span>
-                                            <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
+                                            <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" class="searchable-dropdown" />
                                             @* <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />*@
                                             <select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate readonlyOtherBusinessUnit"></select>
                                             <input type="hidden" asp-for="InHouses" class="BindIDForInHouses" />

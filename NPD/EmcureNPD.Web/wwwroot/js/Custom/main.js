@@ -248,6 +248,9 @@ $(document).ready(function () {
     //    }
     //})
     //checkDuplicateLogin();
+
+    $("[class*=searchable-dropdown]").select2();
+    $('[class*=select2-selection__rendered]').parent().css('height', 40);
 });
 function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
     if (PIDFID != undefined && PIDFID != "" && PIDFID != null) {

@@ -41,8 +41,8 @@
     string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
 
 }
+ 
 
-<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
 <div class="content-header row">
 	<div class="col-md-6">
         <h2 class="m-0">Finance Management</h2>
@@ -52,7 +52,7 @@
 				<label class="control-label">Current Currency</label>
 				 <div>
 					@Html.DropDownListFor(model => model.CurrentCurrency,
-					new List<SelectListItem> { new SelectListItem { Value = "0", Text = "--Select--"} },new { @class="form-control clsConvertCerrency"})
+									new List<SelectListItem> { new SelectListItem { Value = "0", Text = "--Select--" } }, new { @class = "form-control clsConvertCerrency searchable-dropdown" })
 				</div>
 			</div>
 			</div>
@@ -61,7 +61,7 @@
 				<label class="control-label">Currency to be Convert</label>
 				 <div>
 					@Html.DropDownListFor(model => model.ConvertCurrency,
-				new List<SelectListItem> { new SelectListItem { Value = "0", Text = "--Select--"} },new { @class="form-control clsConvertCerrency"})
+									new List<SelectListItem> { new SelectListItem { Value = "0", Text = "--Select--" } }, new { @class = "form-control clsConvertCerrency searchable-dropdown" })
 				</div>
 			</div>
 			</div>
@@ -1307,10 +1307,9 @@
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
 	<script src="~/js/custom/pidf/PIDFFinance.js?v=@jsVersion"></script>
-	<script src="~/js/custom/managementapproval/financechartercommon.js"></script>
-	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+	<script src="~/js/custom/managementapproval/financechartercommon.js"></script>  
 	<script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
-	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
     <script type="text/javascript" src="~/js/custom/CommonCurrency.js?v=@jsVersion" defer></script>
 <script>
 	const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
