@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     // SetupRoleTable();
     $("[id^=MasterModules][type=checkbox]").change();
+    setTimeout(function () { $('#loading-wrapper').hide(); }, 300);
 });
 
 $('#chkView').change(function () {
