@@ -843,7 +843,7 @@ function UpdateChildTableDetail(_cObject) {
             });
             //' +
             //'<span class="text-danger" ><i class="fa fa-fw fa-trash" onclick="deleteCommercialYearRow(' + _cObject.packSizeId + ',' + index + ')"></i></span>
-            html += '<td> <span class="text-primary"> <i class="fa fa-fw fa-edit large-font operationButton" onclick="editCommercialYearRow(' + _cObject.packSizeId + ',' + index + ', ' + _cObject.businessUnitId + ', ' + _cObject.pidfProductStrengthId + ')"></i></span></td></tr>';
+            html += '<td> <span class="text-primary"> <i class="fa fa-fw fa-edit large-font operationButton" onclick="editCommercialYearRow(' + _cObject.packSizeId + ',' + index + ', ' + _cObject.businessUnitId + ', ' + _cObject.pidfProductStrengthId + ', ' + _cObject.countryId + ')"></i></span></td></tr>';
 
             $('#tblMainCommercial').find('#Yearclildrows_' + _cObject.packSizeId).find("#YearsTable").find("#AddYearTBody").append(html);
 
@@ -875,9 +875,9 @@ function parseAndFormatNumber(numberString) {
 
 
 
-function editCommercialYearRow(packSizeId, i, businessUnitId, pidfProductStrengthId) {
+function editCommercialYearRow(packSizeId, i, businessUnitId, pidfProductStrengthId, _countryId ) {
     EditIndex = i;
-    var _commercialIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == businessUnitId && obj.pidfProductStrengthId == pidfProductStrengthId));
+    var _commercialIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == businessUnitId && obj.pidfProductStrengthId == pidfProductStrengthId && obj.countryId == _countryId));
     MainRowEditIndex = _commercialIndex;
     OpenYearForm(packSizeId, i);
     var entityYear = ArrMainCommercial[_commercialIndex].PidfCommercialYears[i];
