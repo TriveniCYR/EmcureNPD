@@ -225,9 +225,18 @@ $(document).on("change", "#mainDivCommercial .InvalidBox", function () {
         $(this).removeClass("InvalidBox");
     }
 });
-$('#btnCancelYearForm').click(function () {
+
+function CloseYearForm() {
     IsShowCancel_Save_buttons(true);
     ResetYearFormValues();
+}
+
+$('#btnCloseYearForm').click(function () {
+    CloseYearForm();
+});
+
+$('#btnCancelYearForm').click(function () {
+    CloseYearForm();
 });
 $('#PriceDiscounting').focusout(function () {
     var ControlID = $(this).attr('id');
@@ -461,7 +470,7 @@ $('input[type="text"]').focusout(function () {
         MarketSizeAsLaunch = parseAndFormatNumber(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['marketSize'])
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
     }
-    $('#MarketSize').val(formatNumber(result.toFixed()));
+    //$('#MarketSize').val(formatNumber(result.toFixed()));
 });
 //--------- Estimated Market Share Units--------------------
 $('input[type="text"]').focusout(function () {
@@ -820,7 +829,7 @@ function OpenYearForm(packSizeId, yearIndex) {
 
 function UpdateNSPasperlasteYear(mainind, yearind, variable) {
     var nspval = ArrMainCommercial[mainind].PidfCommercialYears[yearind - 1]['nsp' + variable];
-    $('#Nspunits' + variable).val(nspval);
+    //$('#Nspunits' + variable).val(nspval);
 }
 
 function UpdateChildTableDetail(_cObject) {
